@@ -8,7 +8,6 @@ interface Props {
     className?: string;
     id: string;
     name: string;
-    // onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputBox = ({ type = "text", placeholder = "Enter Your Input Here", value = "", className = "", id, name}: Props) => {
@@ -16,7 +15,6 @@ const InputBox = ({ type = "text", placeholder = "Enter Your Input Here", value 
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
-        // onChange(event);
     };
 
     return (

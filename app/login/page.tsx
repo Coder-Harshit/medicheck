@@ -9,15 +9,13 @@ const LogInPage = () => {
 
         <div className="p-4 m-4 max-w-md mx-auto bg-white rounded-lg shadow-md">
             <h1 className="text-4xl font-bold mb-4 text-blue-600 text-center">Log In & SignUp</h1>
-            {/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
             <form>
                 <div className="mb-4">
-                    <label htmlFor="username" className="block text-sm font-medium text-black">Username</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-black">Email-ID</label>
                     <InputBox
-                        placeholder="Enter Your Username"
-                        id="username"
-                        name="username"
-                        className='usernameInp'
+                        placeholder="Enter Your EmailID"
+                        id="email"
+                        name="email"
                     />
                 </div>
                 <div className="mb-4">

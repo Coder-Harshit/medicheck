@@ -6,11 +6,12 @@ interface Props {
     placeholder?: string;
     value?: string;
     className?: string;
+    autoComplete?: string;
     id: string;
     name: string;
 }
 
-const InputBox = ({ type = "text", placeholder = "Enter Your Input Here", value = "", className = "", id, name}: Props) => {
+const InputBox = ({ type = "text", placeholder = "Enter Your Input Here", value = "", className = "", id, name, autoComplete = "on"}: Props) => {
     const [inputValue, setInputValue] = useState(value);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +24,11 @@ const InputBox = ({ type = "text", placeholder = "Enter Your Input Here", value 
                 type={type}
                 placeholder={placeholder}
                 value={inputValue}
-                className={`mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-slate-900 ${className}`}
+                className={`
+                    pl-12 mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 rounded-l-lg py-3 px-4 mt-1 text-sm shadow-sm disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-red-500 invalid:text-red-600 focus:invalid:border-red-500 focus:invalid:ring-red-500
+                    ${className}`}
                 id={id}
+                autoComplete={autoComplete}
                 name={name}
                 onChange={handleChange}
             />

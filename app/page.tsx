@@ -2,6 +2,9 @@ import React from 'react';
 
 export default function Home() {
   return (
-    <p>HelloWorld</p>
+    <>
+      <p>DASHBOARD</p>
+      <a href={'checklist'}>SSI CheckList</a>
+    </>
   );
 }

@@ -64,6 +64,13 @@ const SSISurveillanceForm: React.FC = () => {
     setFormData({ ...formData, antibiotics: updatedAntibiotics });
   };
 
+  const addAntibiotic = () => {
+    setFormData({
+      ...formData,
+      antibiotics: [...formData.antibiotics, { antibiotic: '', route: '', duration: '', doses: '' }]
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form Submitted:', formData);
@@ -88,6 +95,7 @@ const SSISurveillanceForm: React.FC = () => {
         <AntibioticPrescription
           formData={formData}
           handleAntibioticChange={handleAntibioticChange}
+          addAntibiotic={addAntibiotic}
         />
         <OperationTimings
           formData={formData}

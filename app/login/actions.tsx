@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
@@ -23,16 +22,13 @@ export async function login(formData: FormData) {
     // if (error.status == 400) {
     {
       console.log("Auth Error");
-      // revalidatePath('/ ', 'layout');
       redirect('/error');
     }
     // <Link href={'./error'}>console.error();
     // </Link>
     // }
   } else {
-    // <Link href={'/'}>HY </Link>
     // await fetch('/', { method: 'GET' })
-    // revalidatePath('/', 'layout')
     redirect('/')
   }
 }
@@ -51,10 +47,8 @@ export async function signup(formData: FormData) {
 
   if (error) {
     console.log("ERROR Encountered: ", error);
-    // revalidatePath('/', 'layout')
     redirect('/error')
   } else {
-    // revalidatePath('/', 'layout')
     redirect('/')
   }
 }

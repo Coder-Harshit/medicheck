@@ -1,7 +1,27 @@
 import React from 'react';
 
+
+interface FormData {
+  patientName: string;
+  patientId: string;
+  age: string
+  gender: 'M' | 'F';
+  dateOfAdmission: string;
+  dateOfProcedure: string;
+  admittingDepartment: string;
+  departmentPrimarySurgeon: string;
+  procedureName: string;
+  diagnosis: string;
+  procedureDoneBy: string;
+  operationTheatre: string;
+  outpatientProcedure: boolean;
+  scenarioOfProcedure: 'Elective' | 'Emergency';
+  woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
+}
+
+
 interface PatientDataProps {
-  formData: any;
+  formData: FormData;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleDropdownChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

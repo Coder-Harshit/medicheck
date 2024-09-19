@@ -35,7 +35,7 @@ const SignUpPage = () => {
             <InputBox type="password" name="password" id="password" placeholder="••••••••••" autoComplete="new-password" />
           </div>
         </div>
-        <button type="submit" className="w-full text-[#FFFFFF] bg-[#4F46E5] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6">Sign Up</button>
+        <button type="submit" className="w-full text-[#FFFFFF] bg-[#4F46E5] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6" formAction={signup}>Sign Up</button>
         <div className="text-sm font-light text-[#6B7280] text-center">Already have an account? <Link href={'/login'} className="font-medium text-[#4F46E5] hover:underline">Login</Link>
 
         </div>

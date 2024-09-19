@@ -1,7 +1,13 @@
 import React from 'react';
 
+interface FormData {
+  timeOfInduction: string;
+  timeOfSkinIncision: string;
+  timeOfEndSurgery: string;
+}
+
 interface OperationTimingsProps {
-  formData: any;
+  formData: FormData;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

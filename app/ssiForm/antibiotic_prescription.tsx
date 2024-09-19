@@ -1,7 +1,18 @@
 import React from 'react';
 
+interface Antibiotic {
+  antibiotic: string;
+  route: string;
+  duration: number;
+  doses: number;
+}
+
+interface FormData {
+  antibiotics: Antibiotic[];
+}
+
 interface AntibioticPrescriptionProps {
-  formData: any;
+  formData: FormData;
   handleAntibioticChange: (index: number, name: string, value: string) => void;
   addAntibiotic: () => void;
   removeAntibiotic: () => void;
@@ -11,7 +22,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
   return (
     <div className="container mx-auto p-4">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Antibiotic Prescription</h3>
-      {formData.antibiotics.map((antibiotic: any, index: number) => (
+      {formData.antibiotics.map((antibiotic: Antibiotic, index: number) => (
         <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 p-4 border rounded-lg shadow-md">
           <div className="flex flex-col">
             <label className="mb-2 font-semibold">Antibiotic Given Prior to Operation</label>
@@ -55,16 +66,16 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
       ))}
       <div className="flex justify-between mt-4">
         <button
-          onClick={removeAntibiotic}
-          className="bg-red-500 text-white p-2 rounded"
-        >
-          Remove Antibiotic
-        </button>
-        <button
           onClick={addAntibiotic}
           className="bg-blue-500 text-white p-2 rounded"
         >
           Add Antibiotic
+        </button>
+        <button
+          onClick={removeAntibiotic}
+          className="bg-red-500 text-white p-2 rounded"
+        >
+          Remove Antibiotic
         </button>
       </div>
     </div>

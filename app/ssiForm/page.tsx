@@ -6,8 +6,44 @@ import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
 import OperationTimings from './operation_timings';
 
+interface formData {
+  patientName: string;
+  patientId: string;
+  age: string
+  gender: 'M' | 'F';
+  dateOfAdmission: string;
+  dateOfProcedure: string;
+  admittingDepartment: string;
+  departmentPrimarySurgeon: string;
+  procedureName: string;
+  diagnosis: string;
+  procedureDoneBy: string;
+  operationTheatre: string;
+  outpatientProcedure: boolean;
+  scenarioOfProcedure: 'Elective' | 'Emergency';
+  woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
+  papGiven: boolean;
+  antibioticsGiven: string;
+  durationOfPAP: string;
+  ssiEventOccurred: boolean;
+  dateOfSSIEvent: string;
+  eventDetails: string;
+  detected: 'A' | 'P' | 'RF';
+  microorganisms: string[];
+  secondaryBSI: boolean;
+  antibiotics: {
+    antibiotic: string;
+    route: string;
+    duration: number;
+    doses: number;
+  }[];
+  timeOfInduction: string;
+  timeOfSkinIncision: string;
+  timeOfEndSurgery: string;
+}
+
 const SSISurveillanceForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<formData>({
     patientName: '',
     patientId: '',
     age: '',
@@ -35,8 +71,8 @@ const SSISurveillanceForm: React.FC = () => {
     antibiotics: [{
       antibiotic: '',
       route: '',
-      duration: '',
-      doses: ''
+      duration: 0,
+      doses: 0
     }],
     timeOfInduction: '',
     timeOfSkinIncision: '',
@@ -59,15 +95,14 @@ const SSISurveillanceForm: React.FC = () => {
   };
 
   const handleAntibioticChange = (index: number, name: string, value: string) => {
-    const updatedAntibiotics: { antibiotic: string; route: string; duration: string; doses: string; }[] = [...formData.antibiotics];
-    (updatedAntibiotics[index] as any)[name] = value;
+    const updatedAntibiotics = formData.antibiotics.map((antibiotic, i) => i===index ? { ...antibiotic, [name]: value } : antibiotic);
     setFormData({ ...formData, antibiotics: updatedAntibiotics });
   };
 
   const addAntibiotic = () => {
     setFormData({
       ...formData,
-      antibiotics: [...formData.antibiotics, { antibiotic: '', route: '', duration: '', doses: '' }]
+      antibiotics: [...formData.antibiotics, { antibiotic: '', route: '', duration: 0, doses: 0 }]
     });
   };
 

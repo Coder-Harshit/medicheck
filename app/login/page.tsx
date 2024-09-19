@@ -28,7 +28,7 @@ const LogInPage = () => {
                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                             </svg>
                         </span>
-                        <InputBox type="email" name="email" id="email" placeholder="NUID@jaypeehealthcare.com" autoComplete="off" />
+                        <InputBox type="email" name="email" id="email" placeholder="username@mail.com" autoComplete="off" />
                     </div>
                 </div>
                 <div className="pb-6">
@@ -46,9 +46,9 @@ const LogInPage = () => {
                     </div>
                 </div>
                 <button type="submit" className="w-full text-[#FFFFFF] bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6" formAction={login}>Login</button>
-                <div className="text-sm font-light text-[#6B7280] text-center">Don&a    pos;t have an accout yet?
-                    <Link href={'/signup'} className="font-medium text-[#4F46E5] hover:underline"> Sign Up</Link>
-                </div>
+{/*                 <div className="text-sm font-light text-[#6B7280] text-center">Don&a    pos;t have an accout yet? */}
+{/*                     <Link href={'/signup'} className="font-medium text-[#4F46E5] hover:underline"> Sign Up</Link> */}
+                // </div>
             </form>
         </div>
     );

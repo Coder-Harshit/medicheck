@@ -4,9 +4,10 @@ interface AntibioticPrescriptionProps {
   formData: any;
   handleAntibioticChange: (index: number, name: string, value: string) => void;
   addAntibiotic: () => void;
+  removeAntibiotic: () => void;
 }
 
-const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formData, handleAntibioticChange, addAntibiotic }) => {
+const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formData, handleAntibioticChange, addAntibiotic, removeAntibiotic }) => {
   return (
     <div className="container mx-auto p-4">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Antibiotic Prescription</h3>
@@ -52,12 +53,20 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
           </div>
         </div>
       ))}
-      <button
-        onClick={addAntibiotic}
-        className="bg-blue-500 text-white p-2 rounded mt-4"
-      >
-        Add Antibiotic
-      </button>
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={removeAntibiotic}
+          className="bg-red-500 text-white p-2 rounded"
+        >
+          Remove Antibiotic
+        </button>
+        <button
+          onClick={addAntibiotic}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Add Antibiotic
+        </button>
+      </div>
     </div>
   );
 };

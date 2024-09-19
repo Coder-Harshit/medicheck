@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 
-interface Props {
+interface InputBoxProps {
+    label?: string; // Option to display a label
     type?: string;
     placeholder?: string;
     value?: string;
@@ -9,17 +10,31 @@ interface Props {
     autoComplete?: string;
     id: string;
     name: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional onChange
 }
 
-const InputBox = ({ type = "text", placeholder = "Enter Your Input Here", value = "", className = "", id, name, autoComplete = "on"}: Props) => {
+const InputBox: React.FC<InputBoxProps> = ({
+    label = "", // Default label is an empty string (optional)
+    type = "text",
+    placeholder = "Enter Your Input Here",
+    value = "",
+    className = "",
+    id,
+    name,
+    autoComplete = "on",
+    onChange = () => {}, // Provide a default no-op function
+}) => {
     const [inputValue, setInputValue] = useState(value);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
+        onChange(event); // Call the parent's onChange handler (or default to no-op)
     };
 
     return (
-        <div>
+        <div className="mb-4">
+            {/* Optional label display */}
+            {label && <label htmlFor={id} className="block text-sm font-medium text-gray-700">{label}</label>}
             <input
                 type={type}
                 placeholder={placeholder}

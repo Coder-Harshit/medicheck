@@ -13,7 +13,7 @@ export async function login(formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
-  { console.log("Data: ", data); }
+  // { console.log("Data: ", data); }
 
   const { error } = await supabase.auth.signInWithPassword(data)
 
@@ -42,7 +42,7 @@ export async function signup(formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
-  { console.log("Data: ", data); }
+  // { console.log("Data: ", data); }
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {

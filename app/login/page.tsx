@@ -1,7 +1,6 @@
 import React from 'react';
 import { login } from './actions';
 import InputBox from '../components/InputBox';
-import Link from 'next/link';
 
 const LogInPage = () => {
 

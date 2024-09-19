@@ -1,8 +1,14 @@
 import React from 'react';
 
+interface FormData {
+  microorganisms: string[];
+  secondaryBSI: boolean;
+}
+
 interface MicrobiologyDataProps {
-  formData: any;
+  formData: FormData;
   handleCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDropdownChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleCheckboxChange }) => {

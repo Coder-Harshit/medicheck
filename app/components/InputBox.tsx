@@ -10,13 +10,13 @@ interface InputBoxProps {
     autoComplete?: string;
     id: string;
     name: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional onChange
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
-    label = "", // Default label is an empty string (optional)
+    label = "",
     type = "text",
-    placeholder = "Enter Your Input Here",
+    placeholder = "",
     value = "",
     className = "",
     id,
@@ -32,16 +32,14 @@ const InputBox: React.FC<InputBoxProps> = ({
     };
 
     return (
-        <div className="mb-4">
+        <div className={`flex flex-col space-y-1 ${className}`}>
             {/* Optional label display */}
-            {label && <label htmlFor={id} className="block text-sm font-medium text-gray-700">{label}</label>}
+            {label && <label htmlFor={id} className="text-white">{label}</label>}
             <input
                 type={type}
                 placeholder={placeholder}
                 value={inputValue}
-                className={`
-                    pl-12 mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 rounded-l-lg py-3 px-4 mt-1 text-sm shadow-sm disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-red-500 invalid:text-red-600 focus:invalid:border-red-500 focus:invalid:ring-red-500
-                    ${className}`}
+                className={`bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${className}`}
                 id={id}
                 autoComplete={autoComplete}
                 name={name}

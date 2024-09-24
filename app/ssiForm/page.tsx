@@ -6,10 +6,10 @@ import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
 import OperationTimings from './operation_timings';
 
-interface formData {
+interface FormData {
   patientName: string;
   patientId: string;
-  age: string
+  age: string;
   gender: 'M' | 'F';
   dateOfAdmission: string;
   dateOfProcedure: string;
@@ -43,11 +43,11 @@ interface formData {
 }
 
 const SSISurveillanceForm: React.FC = () => {
-  const [formData, setFormData] = useState<formData>({
+  const [formData, setFormData] = useState<FormData>({
     patientName: '',
     patientId: '',
     age: '',
-    gender: 'M', // 'M' or 'F'
+    gender: 'M',
     dateOfAdmission: '',
     dateOfProcedure: '',
     admittingDepartment: '',
@@ -57,55 +57,47 @@ const SSISurveillanceForm: React.FC = () => {
     procedureDoneBy: '',
     operationTheatre: '',
     outpatientProcedure: false,
-    scenarioOfProcedure: 'Elective', // 'Elective' or 'Emergency'
-    woundClass: 'Clean', // 'Clean', 'Clean Contaminated', 'Contaminated', 'Dirty/Infected'
+    scenarioOfProcedure: 'Elective',
+    woundClass: 'Clean',
     papGiven: false,
     antibioticsGiven: '',
     durationOfPAP: '',
     ssiEventOccurred: false,
     dateOfSSIEvent: '',
     eventDetails: '',
-    detected: 'A', // 'A', 'P', 'RF'
+    detected: 'A',
     microorganisms: [],
     secondaryBSI: false,
-    antibiotics: [{
-      antibiotic: '',
-      route: '',
-      duration: 0,
-      doses: 0
-    }],
+    antibiotics: [{ antibiotic: '', route: '', duration: 0, doses: 0 }],
     timeOfInduction: '',
     timeOfSkinIncision: '',
     timeOfEndSurgery: '',
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  // Generalized handler for both input and dropdown changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement | HTMLSelectElement;
+    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : false;
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData({ ...formData, [name]: checked });
-  };
-
-  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleAntibioticChange = (index: number, name: string, value: string) => {
-    const updatedAntibiotics = formData.antibiotics.map((antibiotic, i) => i===index ? { ...antibiotic, [name]: value } : antibiotic);
+  // Handler for updating antibiotics array
+  const handleAntibioticChange = (index: number, name: string, value: string | number) => {
+    const updatedAntibiotics = formData.antibiotics.map((antibiotic, i) =>
+      i === index ? { ...antibiotic, [name]: value } : antibiotic
+    );
     setFormData({ ...formData, antibiotics: updatedAntibiotics });
   };
 
+  // Add new antibiotic
   const addAntibiotic = () => {
     setFormData({
       ...formData,
-      antibiotics: [...formData.antibiotics, { antibiotic: '', route: '', duration: 0, doses: 0 }]
+      antibiotics: [...formData.antibiotics, { antibiotic: '', route: '', duration: 0, doses: 0 }],
     });
   };
 
+  // Remove last antibiotic (ensure at least one remains)
   const removeAntibiotic = () => {
     if (formData.antibiotics.length > 1) {
       const newAntibiotics = formData.antibiotics.slice(0, -1);
@@ -116,23 +108,20 @@ const SSISurveillanceForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form Submitted:', formData);
-    // Handle form submission, e.g., send data to API
+    // Handle form submission (e.g., send data to API)
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-xl font-bold mb-4">Surgical Site Infection Surveillance Form</h2>
+      <h2 className="text-2xl font-bold mb-6">Surgical Site Infection Surveillance Form</h2>
       <form onSubmit={handleSubmit}>
         <PatientData
           formData={formData}
-          handleInputChange={handleInputChange}
-          handleDropdownChange={handleDropdownChange}
-          handleCheckboxChange={handleCheckboxChange}
+          handleChange={handleChange}
         />
-        <MicrobiologyData
+        {/* <MicrobiologyData
           formData={formData}
-          handleDropdownChange={handleDropdownChange}
-          handleCheckboxChange={handleCheckboxChange}
+          handleChange={handleChange}
         />
         <AntibioticPrescription
           formData={formData}
@@ -142,9 +131,11 @@ const SSISurveillanceForm: React.FC = () => {
         />
         <OperationTimings
           formData={formData}
-          handleInputChange={handleInputChange}
-        />
-        <button type="submit" className="btn btn-primary mt-4">Submit</button>
+          handleChange={handleChange}
+        /> */}
+        <button type="submit" className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          Submit
+        </button>
       </form>
     </div>
   );

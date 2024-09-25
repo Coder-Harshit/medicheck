@@ -9,7 +9,7 @@ interface OperationTimingsProps {
 
 const OperationTimings: React.FC<OperationTimingsProps> = ({ formData, handleInputChange }) => {
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 rounded-lg section_box">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Operation Timings</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col">

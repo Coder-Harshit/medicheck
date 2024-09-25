@@ -11,7 +11,7 @@ interface AntibioticPrescriptionProps {
 
 const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formData, handleAntibioticChange, addAntibiotic, removeAntibiotic }) => {
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 rounded-lg section_box">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Antibiotic Prescription</h3>
       {formData.antibiotics.map((antibiotic, index: number) => (
         <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 p-4 border rounded-lg shadow-md">

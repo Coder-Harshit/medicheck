@@ -5,6 +5,7 @@ import PatientData from './patient_data';
 import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
 import OperationTimings from './operation_timings';
+import './style.css';
 
 interface Antibiotic {
   antibiotic: string;

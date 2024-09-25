@@ -142,20 +142,20 @@ const SSISurveillanceForm: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6">Surgical Site Infection Surveillance Form</h2>
+      <h2 className="text-4xl font-bold mb-6 text-center">Surgical Site Infection Surveillance Form</h2>
       <form onSubmit={handleSubmit}>
         <PatientData
           formData={formData}
           handleChange={handleChange}
         />
 
+{/*
 
         <MicrobiologyData
           formData={formData}
           handleChange={handleChange}
         />
 
-        {/*
 
         <AntibioticPrescription
           formData={formData}

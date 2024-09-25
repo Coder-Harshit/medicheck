@@ -12,8 +12,8 @@ interface PatientDataProps {
 
 const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => {
   return (
-    <div className="container mx-auto p-4">
-      <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Patient Data</h3>
+    <div className="container mx-auto p-4 rounded-lg section_box flex flex-col">
+      <h3 className="text-2xl font-bold mt-4 mb-6 text-center">BASIC DETAILS</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
         {/* PatientName Input */}
@@ -213,7 +213,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         />
 
         {/* PAP Duration */}
-        {formData.papGiven  && (
+        {formData.papGiven && (
           <TimePickerBox
             label="PAP Duration"
             id="papDuration"
@@ -266,8 +266,11 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
-
       </div>
+      <button className="mt-6 m-2 px-8 py-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 w-max self-center">
+        Continue
+      </button>
+
     </div>
   );
 };

@@ -1,15 +1,6 @@
 import React from 'react';
+import { FormData } from './page';
 
-interface Antibiotic {
-  antibiotic: string;
-  route: string;
-  duration: number;
-  doses: number;
-}
-
-interface FormData {
-  antibiotics: Antibiotic[];
-}
 
 interface AntibioticPrescriptionProps {
   formData: FormData;
@@ -22,7 +13,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
   return (
     <div className="container mx-auto p-4">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Antibiotic Prescription</h3>
-      {formData.antibiotics.map((antibiotic: Antibiotic, index: number) => (
+      {formData.antibiotics.map((antibiotic, index: number) => (
         <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 p-4 border rounded-lg shadow-md">
           <div className="flex flex-col">
             <label className="mb-2 font-semibold">Antibiotic Given Prior to Operation</label>

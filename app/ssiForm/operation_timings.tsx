@@ -1,10 +1,6 @@
 import React from 'react';
+import { FormData } from './page';
 
-interface FormData {
-  timeOfInduction: string;
-  timeOfSkinIncision: string;
-  timeOfEndSurgery: string;
-}
 
 interface OperationTimingsProps {
   formData: FormData;

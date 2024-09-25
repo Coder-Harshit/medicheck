@@ -1,17 +1,13 @@
+// NOT WORKING
 import React from 'react';
-
-interface FormData {
-  microorganisms: string[];
-  secondaryBSI: boolean;
-}
+import { FormData } from './page';
 
 interface MicrobiologyDataProps {
   formData: FormData;
-  handleCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDropdownChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
-const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleCheckboxChange }) => {
+const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleChange }) => {
   const microorganisms = [
     { label: 'Bacteria', value: 'bacteria' },
     { label: 'Virus', value: 'virus' },
@@ -32,7 +28,7 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleChe
                   name="microorganisms"
                   value={microorganism.value}
                   checked={formData.microorganisms.includes(microorganism.value)}
-                  onChange={handleCheckboxChange}
+                  onChange={handleChange}
                   className="mr-2"
                 />
                 {microorganism.label}
@@ -46,7 +42,7 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleChe
             type="checkbox"
             name="secondaryBSI"
             checked={formData.secondaryBSI}
-            onChange={handleCheckboxChange}
+            onChange={handleChange}
             className="mt-2"
           />
         </div>

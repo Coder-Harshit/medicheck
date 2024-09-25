@@ -3,28 +3,7 @@ import InputBox from '../components/InputBox';
 import DropdownBox from '../components/DropdownBox';
 import DatePickerBox from '../components/DatePickerBox';
 import TimePickerBox from '../components/TimePickerBox';
-
-interface FormData {
-  patientName: string;
-  patientId: string;
-  age: number;
-  gender: 'M' | 'F';
-  dateOfAdmission: string;
-  dateOfProcedure: string;
-  admittingDepartment: string;
-  departmentPrimarySurgeon: string;
-  primarySurgeonName: string;
-  procedureName: string;
-  diagnosis: string;
-  otno: number;
-  procedureDoneBy: string;
-  outpatientProcedure: boolean;
-  papGiven: boolean;
-  papDuration: string;
-  scenarioOfProcedure: 'Elective' | 'Emergency';
-  woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
-  ssiEvent: boolean;
-}
+import { FormData } from './page';
 
 interface PatientDataProps {
   formData: FormData;
@@ -36,6 +15,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
     <div className="container mx-auto p-4">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Patient Data</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         {/* PatientName Input */}
         <InputBox
           label='Patient Name'
@@ -46,6 +26,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input text-black p-3 rounded-md"
         />
+
         {/* Admitting Department Dropdown */}
         <DropdownBox
           label="Admitting Department"
@@ -60,6 +41,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* OutPatient Procedure Dropdown */}
         <DropdownBox
           label="Outpatient Procedure"
@@ -85,6 +67,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input text-black p-3 rounded-md"
         />
+
         {/* Department of Primary Surgeon Dropdown */}
         <DropdownBox
           label="Department (Primary Surgeon)"
@@ -99,7 +82,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
-        {/* Department of Primary Surgeon Dropdown */}
+
+        {/* Procedure Scenario */}
         <DropdownBox
           label="Scenario of Procedure"
           id="scenarioOfProcedure"
@@ -113,6 +97,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* Patient Age Input */}
         <InputBox
           label='Age'
@@ -123,6 +108,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input text-black p-3 rounded-md"
         />
+
         {/* Procedure Name Input */}
         <DropdownBox
           label="Procedure Name"
@@ -137,6 +123,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* Wound Class Input */}
         <DropdownBox
           label="Wound Class"
@@ -155,6 +142,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* Gender Dropdown */}
         <DropdownBox
           label="Gender"
@@ -169,6 +157,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* Diagnosis Dropdown */}
         <DropdownBox
           label="Diagnosis"
@@ -182,6 +171,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* PAP given Dropdown */}
         <DropdownBox
           label="PAP Given"
@@ -196,6 +186,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
+
         {/* Date of Admission */}
         <DatePickerBox
           label="Date of Admission"
@@ -205,6 +196,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input text-black p-3 rounded-md"
         />
+
         {/* Primary Surgeon Name */}
         <DropdownBox
           label="Primary Surgeon Name"
@@ -240,6 +232,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input text-black p-3 rounded-md"
         />
+
         {/* Operation Threater Number */}
         <DropdownBox
           label="Operation Theatre Number"
@@ -257,12 +250,13 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
-        {/* PAP given Dropdown */}
+
+        {/* SSI Given */}
         <DropdownBox
           label="SSI Event Occurred"
           id="ssiEvent"
           name="ssiEvent"
-          value={formData.papGiven ? 'No' : 'Yes'}
+          value={formData.ssiEventOccurred ? 'No' : 'Yes'}
           options={[
             // { value: '', label: '----' },
             { value: 'Yes', label: 'Yes' },
@@ -271,7 +265,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="select text-black p-3 rounded-md"
         />
-        {/* More InputBox and DropdownBox components can go here */}
+
       </div>
     </div>
   );

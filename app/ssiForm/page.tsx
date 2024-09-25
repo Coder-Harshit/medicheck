@@ -6,63 +6,69 @@ import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
 import OperationTimings from './operation_timings';
 
-interface FormData {
+interface Antibiotic {
+  antibiotic: string;
+  route: string;
+  duration: number;
+  doses: number;
+}
+
+export interface FormData {
   patientName: string;
   patientId: string;
-  age: string;
+  age: number;
   gender: 'M' | 'F';
   dateOfAdmission: string;
   dateOfProcedure: string;
   admittingDepartment: string;
   departmentPrimarySurgeon: string;
+  primarySurgeonName: string;
   procedureName: string;
   diagnosis: string;
+  otno: number;
   procedureDoneBy: string;
-  operationTheatre: string;
   outpatientProcedure: boolean;
   scenarioOfProcedure: 'Elective' | 'Emergency';
   woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
   papGiven: boolean;
+  papDuration: string;
   antibioticsGiven: string;
-  durationOfPAP: string;
   ssiEventOccurred: boolean;
   dateOfSSIEvent: string;
   eventDetails: string;
   detected: 'A' | 'P' | 'RF';
   microorganisms: string[];
   secondaryBSI: boolean;
-  antibiotics: {
-    antibiotic: string;
-    route: string;
-    duration: number;
-    doses: number;
-  }[];
+  antibiotics: Antibiotic[];
   timeOfInduction: string;
   timeOfSkinIncision: string;
   timeOfEndSurgery: string;
+
 }
 
 const SSISurveillanceForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     patientName: '',
     patientId: '',
-    age: '',
+    age: 0,
     gender: 'M',
     dateOfAdmission: '',
     dateOfProcedure: '',
     admittingDepartment: '',
     departmentPrimarySurgeon: '',
+    primarySurgeonName: '',
     procedureName: '',
     diagnosis: '',
+    otno: 1,
     procedureDoneBy: '',
-    operationTheatre: '',
-    outpatientProcedure: false,
+    // operationTheatre: '',
+    outpatientProcedure: true,
     scenarioOfProcedure: 'Elective',
     woundClass: 'Clean',
-    papGiven: false,
+    papGiven: true,
     antibioticsGiven: '',
-    durationOfPAP: '',
-    ssiEventOccurred: false,
+    papDuration: '',
+    ssiEventOccurred: true,
     dateOfSSIEvent: '',
     eventDetails: '',
     detected: 'A',
@@ -119,7 +125,9 @@ const SSISurveillanceForm: React.FC = () => {
           formData={formData}
           handleChange={handleChange}
         />
-        {/* <MicrobiologyData
+
+        {/*
+        <MicrobiologyData
           formData={formData}
           handleChange={handleChange}
         />

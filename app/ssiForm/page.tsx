@@ -61,7 +61,6 @@ const SSISurveillanceForm: React.FC = () => {
     diagnosis: '',
     otno: 1,
     procedureDoneBy: '',
-    // operationTheatre: '',
     outpatientProcedure: true,
     scenarioOfProcedure: 'Elective',
     woundClass: 'Clean',
@@ -82,11 +81,34 @@ const SSISurveillanceForm: React.FC = () => {
 
   // Generalized handler for both input and dropdown changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement | HTMLSelectElement;
-    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : false;
-    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
-  };
+    console.log('Event:', e.target);
+    // const { name, value, type } = e.target as HTMLInputElement;
+    const { name, value, type } = e.target;
 
+    // Handle input and select elements consistently
+    let updatedValue: string | boolean | Date | string[];
+    if (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred' || name === 'secondaryBSI') {
+      updatedValue = value === 'Yes';
+    }
+    else if (type === 'date') {
+      updatedValue = new Date(value);
+    } else if (name === 'microorganism1' || name === 'microorganism2') {
+      console.log('Microorganisms:', name, value);
+      const index = name === 'microorganism1' ? 0 : 1;
+      const updatedMicroorganisms = [...formData.microorganisms];
+      updatedMicroorganisms[index] = value;
+      updatedValue = updatedMicroorganisms;
+      setFormData({ ...formData, microorganisms: updatedMicroorganisms });
+    } else {
+      updatedValue = value;
+    }
+
+    // Update state using spread syntax and dynamic property access
+    setFormData({
+      ...formData,
+      [name === 'microorganism1' || name === 'microorganism2' ? 'microorganisms' : name]: updatedValue,
+    });
+  };
   // Handler for updating antibiotics array
   const handleAntibioticChange = (index: number, name: string, value: string | number) => {
     const updatedAntibiotics = formData.antibiotics.map((antibiotic, i) =>
@@ -112,8 +134,8 @@ const SSISurveillanceForm: React.FC = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
     console.log('Form Submitted:', formData);
+    e.preventDefault();
     // Handle form submission (e.g., send data to API)
   };
 
@@ -126,11 +148,14 @@ const SSISurveillanceForm: React.FC = () => {
           handleChange={handleChange}
         />
 
-        {/*
+
         <MicrobiologyData
           formData={formData}
           handleChange={handleChange}
         />
+
+        {/*
+
         <AntibioticPrescription
           formData={formData}
           handleAntibioticChange={handleAntibioticChange}

@@ -1,6 +1,6 @@
-// NOT WORKING
 import React from 'react';
 import { FormData } from './page';
+import DropdownBox from '../components/DropdownBox';
 
 interface MicrobiologyDataProps {
   formData: FormData;
@@ -20,23 +20,26 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleCha
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col">
           <label className="mb-2 font-semibold">Micro-organisms Implicated in SSI</label>
-          <div className="flex flex-col space-y-2">
-            {microorganisms.map((microorganism) => (
-              <label key={microorganism.value} className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="microorganisms"
-                  value={microorganism.value}
-                  checked={formData.microorganisms.includes(microorganism.value)}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                {microorganism.label}
-              </label>
-            ))}
-          </div>
+          <DropdownBox
+            label="Microorganism 1"
+            id="microorganism1"
+            name="microorganism1"
+            value={formData.microorganisms[0] || ''}
+            options={microorganisms}
+            onChange={handleChange}
+            className="select text-black p-3 rounded-md"
+          />
+          <DropdownBox
+            label="Microorganism 2"
+            id="microorganism2"
+            name="microorganism2"
+            value={formData.microorganisms[1] || ''}
+            options={microorganisms}
+            onChange={handleChange}
+            className="select text-black p-3 rounded-md"
+          />
         </div>
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <label className="mb-2 font-semibold">Secondary BSI contributed to death?</label>
           <input
             type="checkbox"
@@ -45,7 +48,7 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleCha
             onChange={handleChange}
             className="mt-2"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

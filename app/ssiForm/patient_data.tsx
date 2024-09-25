@@ -213,15 +213,16 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         />
 
         {/* PAP Duration */}
-        <TimePickerBox
-          label="PAP Duration"
-          id="papDuration"
-          name="papDuration"
-          value={formData.papDuration}
-          onChange={handleChange}
-          className="input text-black p-3 rounded-md" upperLimitMins={60}
-        />
-
+        {formData.papGiven  && (
+          <TimePickerBox
+            label="PAP Duration"
+            id="papDuration"
+            name="papDuration"
+            value={formData.papDuration}
+            onChange={handleChange}
+            className="input text-black p-3 rounded-md" upperLimitMins={60}
+          />
+        )}
 
         {/* Date of Operative Procedure */}
         <DatePickerBox

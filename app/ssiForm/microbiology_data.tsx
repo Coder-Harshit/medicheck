@@ -40,19 +40,49 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleCha
             className="select text-black py-3 px-6 mx-6 rounded-md w-full"
           />
         </div>
-        {/* <div className="flex flex-col">
-          <label className="mb-2 font-semibold">Secondary BSI contributed to death?</label>
-          <input
-            type="checkbox"
-            name="secondaryBSI"
-            checked={formData.secondaryBSI}
-            onChange={handleChange}
-            className="mt-2"
-          />
-        </div> */}
+
+
+        {/* Isolate 1 and Isolate 2 Antibiotic Susceptibility Pattern */}
+        <div className="grid grid-cols-2 gap-8">
+          <IsolateForm label="Isolate-1 (Antibiotic Susceptibility Pattern)" />
+          <IsolateForm label="Isolate-2 (Antibiotic Susceptibility Pattern)" />
+        </div>
+
       </div>
     </div>
   );
-};
+}
+
+
+
+// Component for each Isolate form section
+const IsolateForm: React.FC<{ label: string }> = ({ label }) => (
+  <div>
+    <label className="block text-sm font-semibold mb-2 text-white">
+      {label}
+    </label>
+    <div className="grid grid-cols-3 gap-4">
+      <div>
+        <label className="block text-xs text-gray-300 mb-2">Sensitive</label>
+        <select className="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600">
+          <option value="">Select</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs text-gray-300 mb-2">Resistant</label>
+        <select className="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600">
+          <option value="">Select</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs text-gray-300 mb-2">Intermediate</label>
+        <select className="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600">
+          <option value="">Select</option>
+        </select>
+      </div>
+    </div>
+  </div>
+);
+
 
 export default MicrobiologyData;

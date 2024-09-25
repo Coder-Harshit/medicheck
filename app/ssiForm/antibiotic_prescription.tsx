@@ -57,17 +57,18 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
       ))}
       <div className="flex justify-between mt-4">
         <button
-          onClick={addAntibiotic}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
-          Add Antibiotic
-        </button>
-        <button
           onClick={removeAntibiotic}
           className="bg-red-500 text-white p-2 rounded"
         >
           Remove Antibiotic
         </button>
+        <button
+          onClick={addAntibiotic}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Add Antibiotic
+        </button>
+
       </div>
     </div>
   );

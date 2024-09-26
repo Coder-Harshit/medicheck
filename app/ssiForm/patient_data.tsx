@@ -1,8 +1,6 @@
 import React from 'react';
 import InputBox from '../components/InputBox';
 import DropdownBox from '../components/DropdownBox';
-import DatePickerBox from '../components/DatePickerBox';
-import TimePickerBox from '../components/TimePickerBox';
 import DateTimePickerBox from '../components/DateTimePickerBox';
 import { FormData } from './page';
 
@@ -188,15 +186,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           className="select p-3 rounded-md"
         />
 
-        {/* <DatePickerBox
-          label="Date of Admission"
-          id="dateOfAdmission"
-          name="dateOfAdmission"
-          value={formData.dateOfAdmission}
-          onChange={handleChange}
-          className="input p-3 rounded-md"
-        /> */}
-
         {/* Date of Admission */}
         <DateTimePickerBox
           label="Date of Admission"
@@ -224,19 +213,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           className="select p-3 rounded-md"
         />
 
-        {/* {formData.papGiven && (
-          <TimePickerBox
-            label="PAP Duration"
-            id="papDuration"
-            name="papDuration"
-            value={formData.papDuration}
-            onChange={handleChange}
-            className="input p-3 rounded-md" upperLimitMins={60}
-          />
-        )} */}
-
         {/* PAP Duration */}
-        <DateTimePickerBox
+        {formData.papGiven && (<DateTimePickerBox
           label="PAP Duration"
           id="papDuration"
           name="papDuration"
@@ -245,17 +223,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           className="input p-3 rounded-md" upperLimitMins={60}
           type={'time'}
         />
-
-
-
-        {/* <DatePickerBox
-          label="Date of Operative Procedure"
-          id="dateOfProcedure"
-          name="dateOfProcedure"
-          value={formData.dateOfProcedure}
-          onChange={handleChange}
-          className="input p-3 rounded-md"
-        /> */}
+        )}
 
         {/* Date of Operative Procedure */}
         <DateTimePickerBox
@@ -301,9 +269,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           className="select p-3 rounded-md"
         />
       </div>
-      {/* <button className="mt-6 m-2 px-8 py-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 w-max self-center">
-        Continue
-      </button> */}
 
     </div>
   );

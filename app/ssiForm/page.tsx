@@ -224,7 +224,7 @@ const SSISurveillanceForm: React.FC = () => {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         {/* Render current step component */}
         {steps[currentStep].component}
 
@@ -250,8 +250,9 @@ const SSISurveillanceForm: React.FC = () => {
             </button>
           ) : (
             <button
-              type="submit"
+              type="button"
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              onClick={handleSubmit}
             >
               Submit
             </button>

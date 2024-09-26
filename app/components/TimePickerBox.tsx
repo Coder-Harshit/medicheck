@@ -6,6 +6,7 @@ interface TimePickerBoxProps {
   className?: string; // Optional CSS class(es) for styling
   id: string; // Unique identifier for the time picker
   name: string; // Name for the form element
+  labelClass?: string; // Optional CSS class(es) for styling the label
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void; // Function for handling value changes
   isDisabled?: boolean; // Optional flag to disable the time picker
   upperLimitMins: number; // Upper limit in minutes for the time selection
@@ -15,6 +16,7 @@ const TimePickerBox: React.FC<TimePickerBoxProps> = ({
   label = "",
   value = "",
   className = "",
+  labelClass = "",
   id,
   name,
   onChange = () => {},
@@ -35,7 +37,7 @@ const TimePickerBox: React.FC<TimePickerBoxProps> = ({
 
   return (
     <div className={`flex flex-col space-y-1 ${className}`}>  {/* Apply optional class(es) */}
-      {label && <label htmlFor={id} className="text-white">{label}</label>}
+      {label && <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>}
       <input
         type="time"
         id={id}

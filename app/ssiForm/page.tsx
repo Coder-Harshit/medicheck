@@ -178,14 +178,21 @@ const SSISurveillanceForm: React.FC = () => {
         />
     },
     {
-      id: 2, title: 'Antibiotic Prescription', component: <AntibioticPrescription
-        formData={formData}
-        handleAntibioticChange={handleAntibioticChange}
-        addAntibiotic={addAntibiotic}
-        removeAntibiotic={removeAntibiotic}
-      />
+      id: 2, title: 'Antibiotic Prescription', component:
+        <AntibioticPrescription
+          formData={formData}
+          handleAntibioticChange={handleAntibioticChange}
+          addAntibiotic={addAntibiotic}
+          removeAntibiotic={removeAntibiotic}
+        />
     },
-    // {id: 3, title: 'Operation Timings', component: <OperationTimings formData={formData} handleChange={handleChange} />},
+    // {
+    //   id: 3, title: 'Operation Timings', component:
+    //     <OperationTimings
+    //       formData={formData}
+    //       handleChange={handleChange}
+    //     />
+    // },
   ]
 
   const handleNextStep = () => {

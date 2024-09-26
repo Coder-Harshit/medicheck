@@ -38,7 +38,7 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({ formData, handleCha
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Microbiology Data</h3>
       <div className="grid grid-cols-3 md:grid-cols-1 gap-10">
         <div className="flex flex-row">
-          <label className="font-semibold self-center mx-3 px-3 basis-1/2">
+          <label className="font-semibold self-center mx-3 px-3 basis-2/3">
             Micro-organisms Implicated in SSI
           </label>
           <DropdownBox

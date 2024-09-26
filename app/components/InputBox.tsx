@@ -5,9 +5,10 @@ interface InputBoxProps {
     label?: string; // Option to display a label
     type?: string;
     placeholder?: string;
-    value?: string;
+    value?: string | number;
     className?: string;
     autoComplete?: string;
+    labelClass?: string;
     id: string;
     name: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,6 +23,7 @@ const InputBox: React.FC<InputBoxProps> = ({
     id,
     name,
     autoComplete = "on",
+    labelClass = "",
     onChange = () => {}, // Provide a default no-op function
 }) => {
     const [inputValue, setInputValue] = useState(value);
@@ -34,12 +36,12 @@ const InputBox: React.FC<InputBoxProps> = ({
     return (
         <div className={`flex flex-col space-y-1 ${className}`}>
             {/* Optional label display */}
-            {label && <label htmlFor={id} className="text-white">{label}</label>}
+            {label && <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>}
             <input
                 type={type}
                 placeholder={placeholder}
                 value={inputValue}
-                className={`bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${className}`}
+                className={`bg-slate-100 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${className}`}
                 id={id}
                 autoComplete={autoComplete}
                 name={name}

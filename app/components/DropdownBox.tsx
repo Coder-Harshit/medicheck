@@ -9,6 +9,7 @@ interface DropdownBoxProps {
     value: string;           // Value of the option (used for selection)
     label: string;           // Text displayed for the option
   }>;
+  labelClass?: string;      // Optional CSS class(es) for label styling
   className?: string;       // Optional CSS class(es) for styling
   id: string;                // Unique identifier for the dropdown
   name: string;              // Name for the form element
@@ -18,6 +19,7 @@ interface DropdownBoxProps {
 
 const DropdownBox: React.FC<DropdownBoxProps> = ({
   label = "",
+  labelClass = "",
   value = "",
   options,
   className = "",
@@ -35,10 +37,10 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
 
   return (
     <div className={`flex flex-col space-y-1 ${className}`}>  {/* Apply optional class(es) */}
-      <label htmlFor={id} className="text-white">{label}</label>
+      <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>
       <select
         id={id}
-        className={`bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''} ${className}`}
+        className={`bg-slate-100 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''} ${className}`}
         disabled={isDisabled} // Set disabled state based on the prop
         value={value}          // Set selected value from the prop
         name={name}

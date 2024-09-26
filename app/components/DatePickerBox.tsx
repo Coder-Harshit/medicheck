@@ -5,6 +5,7 @@ interface DatePickerBoxProps {
   value?: string;
   className?: string; // Optional CSS class(es) for styling
   id: string; // Unique identifier for the date picker
+  labelClass?: string; // Optional CSS class(es) for styling the label
   name: string; // Name for the form element
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void; // Function for handling value changes
   isDisabled?: boolean; // Optional flag to disable the date picker
@@ -12,6 +13,7 @@ interface DatePickerBoxProps {
 
 const DatePickerBox: React.FC<DatePickerBoxProps> = ({
   label = "",
+  labelClass = "",
   value = "",
   className = "",
   id,
@@ -25,7 +27,7 @@ const DatePickerBox: React.FC<DatePickerBoxProps> = ({
 
   return (
     <div className={`flex flex-col space-y-1 ${className}`}>  {/* Apply optional class(es) */}
-      {label && <label htmlFor={id} className="text-white">{label}</label>}
+      {label && <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>}
       <input
         type="date"
         id={id}

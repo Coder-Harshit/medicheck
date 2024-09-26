@@ -6,7 +6,6 @@ import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
 import OperationTimings from './operation_timings';
 import './style.css';
-import { title } from 'process';
 
 interface Antibiotic {
   antibiotic: string;
@@ -162,13 +161,6 @@ const SSISurveillanceForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    console.log('Form Submitted:', formData);
-    e.preventDefault();
-    // Handle form submission (e.g., send data to API)
-  };
-
-
   const steps = [
     {
       id: 0, title: 'Patient Data', component:
@@ -185,7 +177,14 @@ const SSISurveillanceForm: React.FC = () => {
           handleIsolateChange={handleIsolateChange}
         />
     },
-    { id: 2, title: 'Antibiotic Prescription', component: <AntibioticPrescription formData={formData} handleAntibioticChange={handleAntibioticChange} addAntibiotic={addAntibiotic} removeAntibiotic={removeAntibiotic} /> },
+    {
+      id: 2, title: 'Antibiotic Prescription', component: <AntibioticPrescription
+        formData={formData}
+        handleAntibioticChange={handleAntibioticChange}
+        addAntibiotic={addAntibiotic}
+        removeAntibiotic={removeAntibiotic}
+      />
+    },
     // {id: 3, title: 'Operation Timings', component: <OperationTimings formData={formData} handleChange={handleChange} />},
   ]
 
@@ -200,6 +199,13 @@ const SSISurveillanceForm: React.FC = () => {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form Submitted:', formData);
+    // Handle form submission (e.g., send data to API)
+  };
+
 
   return (
     <div className="container mx-auto p-4">

@@ -40,7 +40,7 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
       <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>
       <select
         id={id}
-        className={`bg-slate-100 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''} ${className}`}
+        className={`bg-slate-100 text-black p-3 py-3.5 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''} ${className}`}
         disabled={isDisabled} // Set disabled state based on the prop
         value={value}          // Set selected value from the prop
         name={name}

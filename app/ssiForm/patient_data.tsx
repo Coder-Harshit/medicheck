@@ -3,6 +3,7 @@ import InputBox from '../components/InputBox';
 import DropdownBox from '../components/DropdownBox';
 import DatePickerBox from '../components/DatePickerBox';
 import TimePickerBox from '../components/TimePickerBox';
+import DateTimePickerBox from '../components/DateTimePickerBox';
 import { FormData } from './page';
 
 interface PatientDataProps {
@@ -24,7 +25,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           id={''}
           name={''}
           onChange={handleChange}
-          className="input text-black p-3 rounded-md"
+          className="input p-3 rounded-md"
         />
 
         {/* Admitting Department Dropdown */}
@@ -39,7 +40,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add department options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* OutPatient Procedure Dropdown */}
@@ -54,7 +55,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'No', label: 'No' },
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* PatientID Input */}
@@ -65,7 +66,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           id={''}
           name={''}
           onChange={handleChange}
-          className="input text-black p-3 rounded-md"
+          className="input p-3 rounded-md"
         />
 
         {/* Department of Primary Surgeon Dropdown */}
@@ -80,7 +81,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add surgeon department options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* Procedure Scenario */}
@@ -95,7 +96,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add Scenario of Procedure options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* Patient Age Input */}
@@ -106,7 +107,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           id={''}
           name={''}
           onChange={handleChange}
-          className="input text-black p-3 rounded-md"
+          className="input p-3 rounded-md"
         />
 
         {/* Procedure Name Input */}
@@ -121,7 +122,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add Name of Procedure options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* Wound Class Input */}
@@ -140,7 +141,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add Wound Class options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* Gender Dropdown */}
@@ -155,7 +156,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'F', label: 'Female' },
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* Diagnosis Dropdown */}
@@ -169,7 +170,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
 
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* PAP given Dropdown */}
@@ -184,18 +185,29 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'No', label: 'No' },
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
-        {/* Date of Admission */}
-        <DatePickerBox
+        {/* <DatePickerBox
           label="Date of Admission"
           id="dateOfAdmission"
           name="dateOfAdmission"
           value={formData.dateOfAdmission}
           onChange={handleChange}
-          className="input text-black p-3 rounded-md"
+          className="input p-3 rounded-md"
+        /> */}
+
+        {/* Date of Admission */}
+        <DateTimePickerBox
+          label="Date of Admission"
+          id="dateOfAdmission"
+          name="dateOfAdmission"
+          value={formData.dateOfAdmission}
+          onChange={handleChange}
+          className="input p-3 rounded-md"
+          type='date'
         />
+
 
         {/* Primary Surgeon Name */}
         <DropdownBox
@@ -209,29 +221,51 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add Scenario of Procedure options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
-        {/* PAP Duration */}
-        {formData.papGiven && (
+        {/* {formData.papGiven && (
           <TimePickerBox
             label="PAP Duration"
             id="papDuration"
             name="papDuration"
             value={formData.papDuration}
             onChange={handleChange}
-            className="input text-black p-3 rounded-md" upperLimitMins={60}
+            className="input p-3 rounded-md" upperLimitMins={60}
           />
-        )}
+        )} */}
 
-        {/* Date of Operative Procedure */}
-        <DatePickerBox
+        {/* PAP Duration */}
+        <DateTimePickerBox
+          label="PAP Duration"
+          id="papDuration"
+          name="papDuration"
+          value={formData.papDuration}
+          onChange={handleChange}
+          className="input p-3 rounded-md" upperLimitMins={60}
+          type={'time'}
+        />
+
+
+
+        {/* <DatePickerBox
           label="Date of Operative Procedure"
           id="dateOfProcedure"
           name="dateOfProcedure"
           value={formData.dateOfProcedure}
           onChange={handleChange}
-          className="input text-black p-3 rounded-md"
+          className="input p-3 rounded-md"
+        /> */}
+
+        {/* Date of Operative Procedure */}
+        <DateTimePickerBox
+          label="Date of Operative Procedure"
+          id="dateOfProcedure"
+          name="dateOfProcedure"
+          value={formData.dateOfProcedure}
+          onChange={handleChange}
+          className="input p-3 rounded-md"
+          type={'date'}
         />
 
         {/* Operation Threater Number */}
@@ -249,7 +283,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // Add Scenario of Procedure options here
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
 
         {/* SSI Given */}
@@ -264,7 +298,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'No', label: 'No' },
           ]}
           onChange={handleChange}
-          className="select text-black p-3 rounded-md"
+          className="select p-3 rounded-md"
         />
       </div>
       {/* <button className="mt-6 m-2 px-8 py-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 w-max self-center">

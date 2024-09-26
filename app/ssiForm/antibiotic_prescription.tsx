@@ -2,6 +2,7 @@ import React from 'react';
 import { FormData } from './page';
 import InputBox from '../components/InputBox';
 import DropdownBox from '../components/DropdownBox';
+import DateTimePickerBox from '../components/DateTimePickerBox';
 
 
 interface AntibioticPrescriptionProps {
@@ -9,9 +10,10 @@ interface AntibioticPrescriptionProps {
   handleAntibioticChange: (index: number, name: string, value: string) => void;
   addAntibiotic: () => void;
   removeAntibiotic: () => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
-const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formData, handleAntibioticChange, addAntibiotic, removeAntibiotic }) => {
+const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formData, handleAntibioticChange, addAntibiotic, removeAntibiotic, handleChange }) => {
   return (
     <div className="container mx-auto p-4 rounded-lg section_box">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Antibiotic Prescription</h3>
@@ -114,7 +116,49 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
           Add Antibiotic
         </button>
       </div>
-      <div class="flex">
+      <div className="flex">
+        <div className="p-3 m-2 w-full">
+          {/* Time of Induction */}
+          <DateTimePickerBox
+            label="Time of Induction"
+            // labelClass=""
+            id="ind"
+            name="ind"
+            value={formData.timeOfInduction}
+            onChange={handleChange}
+            className="input p-3 rounded-md"
+            type='time'
+          />
+
+        </div>
+        <div className="p-3 m-2 w-full">
+          {/* Time of Incision */}
+          <DateTimePickerBox
+            label="Time of Incision"
+            // labelClass=""
+            id="inc"
+            name="inc"
+            value={formData.timeOfSkinIncision}
+            onChange={handleChange}
+            className="input p-3 rounded-md"
+            type='time'
+          />
+        </div>
+        <div className="p-3 m-2 w-full">
+
+          {/* End time of Surgery */}
+          <DateTimePickerBox
+            label="End time of Surgery"
+            // labelClass=""
+            id="eos"
+            name="eos"
+            value={formData.timeOfEndSurgery}
+            onChange={handleChange}
+            className="input p-3 rounded-md"
+            type='time'
+          />
+        </div>
+
 
       </div>
     </div>

@@ -45,7 +45,16 @@ export interface FormData {
   timeOfInduction: string;
   timeOfSkinIncision: string;
   timeOfEndSurgery: string;
-
+  isolate1: {
+    sensitive: string;
+    resistant: string;
+    intermediate: string;
+  };
+  isolate2: {
+    sensitive: string;
+    resistant: string;
+    intermediate: string;
+  };
 }
 
 const SSISurveillanceForm: React.FC = () => {
@@ -79,6 +88,16 @@ const SSISurveillanceForm: React.FC = () => {
     timeOfInduction: '',
     timeOfSkinIncision: '',
     timeOfEndSurgery: '',
+    isolate1: {
+      sensitive: '',
+      resistant: '',
+      intermediate: '',
+    },
+    isolate2: {
+      sensitive: '',
+      resistant: '',
+      intermediate: '',
+    },
   });
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -122,6 +141,11 @@ const SSISurveillanceForm: React.FC = () => {
     setFormData({ ...formData, antibiotics: updatedAntibiotics });
   };
 
+  const handleIsolateChange = (isolate: 'isolate1' | 'isolate2', category: 'sensitive' | 'resistant' | 'intermediate', value: string) => {
+    const updatedIsolate = { ...formData[isolate], [category]: value };
+    setFormData({ ...formData, [isolate]: updatedIsolate });
+  }
+
   // Add new antibiotic
   const addAntibiotic = () => {
     setFormData({
@@ -146,9 +170,22 @@ const SSISurveillanceForm: React.FC = () => {
 
 
   const steps = [
-    { id: 0, title: 'Patient Data', component: <PatientData formData={formData} handleChange={handleChange} /> },
-    { id: 1, title: 'Microbiology Data', component: <MicrobiologyData formData={formData} handleChange={handleChange} /> },
-    {id: 2, title: 'Antibiotic Prescription', component: <AntibioticPrescription formData={formData} handleAntibioticChange={handleAntibioticChange} addAntibiotic={addAntibiotic} removeAntibiotic={removeAntibiotic} />},
+    {
+      id: 0, title: 'Patient Data', component:
+        <PatientData
+          formData={formData}
+          handleChange={handleChange}
+        />
+    },
+    {
+      id: 1, title: 'Microbiology Data', component:
+        <MicrobiologyData
+          formData={formData}
+          handleChange={handleChange}
+          handleIsolateChange={handleIsolateChange}
+        />
+    },
+    { id: 2, title: 'Antibiotic Prescription', component: <AntibioticPrescription formData={formData} handleAntibioticChange={handleAntibioticChange} addAntibiotic={addAntibiotic} removeAntibiotic={removeAntibiotic} /> },
     // {id: 3, title: 'Operation Timings', component: <OperationTimings formData={formData} handleChange={handleChange} />},
   ]
 
@@ -173,8 +210,8 @@ const SSISurveillanceForm: React.FC = () => {
       <div className="flex justify-center mb-6">
         {steps.map((step, index) => (
           <div key={step.id}
-          // className={`mx-2 py-1 px-4 ${index === currentStep ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
-          className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
+            // className={`mx-2 py-1 px-4 ${index === currentStep ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
+            className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
           >
             {step.title}
           </div>
@@ -215,40 +252,7 @@ const SSISurveillanceForm: React.FC = () => {
           )}
         </div>
       </form>
-
-      {/*
-<form onSubmit={handleSubmit}>
-        <PatientData
-          formData={formData}
-          handleChange={handleChange}
-        />
-        <MicrobiologyData
-          formData={formData}
-          handleChange={handleChange}
-        />
-
-
-        <AntibioticPrescription
-          formData={formData}
-          handleAntibioticChange={handleAntibioticChange}
-          addAntibiotic={addAntibiotic}
-          removeAntibiotic={removeAntibiotic}
-        />
-        <OperationTimings
-          formData={formData}
-          handleChange={handleChange}
-        />
-        <button type="submit" className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-          Submit
-        </button>
-      </form>
     </div>
-    */}
-
-    </div>
-
-
-
   );
 };
 

@@ -6,6 +6,7 @@ import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
 import OperationTimings from './operation_timings';
 import './style.css';
+import PostOp_Sheet from './postop_form';
 
 interface Antibiotic {
   abop_stage: 'prior' | 'pre_peri' | 'after';
@@ -14,6 +15,36 @@ interface Antibiotic {
   duration: number;
   doses: number;
 }
+
+export const days = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16-30', '31-60', '61-90'];
+
+export const symptoms = [
+  'purulentDischarge',
+  'localizedPain',
+  'localizedSwelling',
+  'fever',
+  'incisionOpened',
+  'dehiscence',
+  'abscess',
+  'microorganismsSeen',
+  'imagingEvidence',
+  'positiveCulture',
+  'bloodCultureSent',
+  'diagnosisSSI',
+  // 'anyOther'
+];
+
+const symptomsDict: { [key: string]: { [key: string]: boolean } } = {};
+
+symptoms.forEach(symptom => {
+  symptomsDict[symptom] = {};
+  days.forEach(day => {
+    symptomsDict[symptom][day] = false;
+  });
+});
+
+// console.log(symptomsDict);
+
 
 export interface FormData {
   patientName: string;
@@ -55,6 +86,9 @@ export interface FormData {
     resistant: string;
     intermediate: string;
   };
+  symptomsDict: {
+    [key: string]: { [key: string]: boolean }
+  }
 }
 
 const SSISurveillanceForm: React.FC = () => {
@@ -104,6 +138,7 @@ const SSISurveillanceForm: React.FC = () => {
       resistant: '',
       intermediate: '',
     },
+    symptomsDict: symptomsDict,
   });
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -174,6 +209,19 @@ const SSISurveillanceForm: React.FC = () => {
     }
   };
 
+  const handlePostOpChange = (symptom: string, day: number | string, value: boolean) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      symptomsDict: {
+        ...prevFormData.symptomsDict,
+        [symptom]: {
+          ...prevFormData.symptomsDict[symptom],
+          [day]: value,
+        },
+      },
+    }));
+  };
+
   const steps = [
     {
       id: 0, title: 'Patient Data', component:
@@ -207,6 +255,13 @@ const SSISurveillanceForm: React.FC = () => {
     //       handleChange={handleChange}
     //     />
     // },
+    {
+      id: 3, title: 'Post Op Sheet', component:
+        <PostOp_Sheet
+          formData={formData}
+          handleChange={handlePostOpChange}
+        />
+    },
   ]
 
   const handleNextStep = () => {

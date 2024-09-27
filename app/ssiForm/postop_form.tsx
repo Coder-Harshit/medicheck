@@ -14,7 +14,7 @@ const PostOpForm: React.FC<PostOpProps> = ({ formData, handlePostOpChange }) => 
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">Post-op Monitoring Form</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center capitalize">Post-op Monitoring Form</h2>
       <div className="overflow-x-auto">
         <table className="table-auto border-collapse w-full text-center">
           <thead>

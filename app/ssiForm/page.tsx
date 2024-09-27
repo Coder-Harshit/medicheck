@@ -10,7 +10,8 @@ import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
 import { createClient } from '@/utils/supabase/client';
 // import {sanitizeFormData, formatDateForDB} from '@/utils/dateHandling';
-import {formatDate} from '@/utils/dateHandling';
+import { formatDate } from '@/utils/dateHandling';
+import SSIEvent from './ssiEvent';
 const supabase = createClient();
 
 interface Antibiotic {
@@ -27,6 +28,11 @@ export interface SSIEvalCheckListItem {
   remark: string; // Any remarks for that checklist item.
 }
 
+// interface ssiEvent{
+//   specificEvent: string;
+//   organSpace: string;
+//   detected: string;
+// }
 
 
 const symptomsDict: { [key: string]: { [key: string]: boolean } } = {};
@@ -82,7 +88,6 @@ export interface FormData {
   ssiEventOccurred: boolean;
   dateOfSSIEvent: string;
   eventDetails: string;
-  detected: 'A' | 'P' | 'RF';
   microorganisms: string[];
   secondaryBSI: boolean;
   antibiotics: Antibiotic[];
@@ -103,6 +108,11 @@ export interface FormData {
     [key: string]: { [key: string]: boolean }
   };
   SSIEvalCheckList: SSIEvalCheckListItem[];
+  // specificEvent: 'SIP' | 'SIS' | 'DIP' | 'DIS' | 'organSpace';
+  specificEvent: string;
+  organSpace: string;
+  detected: string;
+  // detected: 'A' | 'P' | 'RF';
 }
 
 const SSISurveillanceForm: React.FC = () => {
@@ -129,7 +139,6 @@ const SSISurveillanceForm: React.FC = () => {
     ssiEventOccurred: true,
     dateOfSSIEvent: '2000-12-30',
     eventDetails: '',
-    detected: 'A',
     microorganisms: [],
     secondaryBSI: false,
     antibiotics: [{
@@ -158,6 +167,9 @@ const SSISurveillanceForm: React.FC = () => {
       yesNo: false, // null initially, then true for "Yes", false for "No"
       remark: "",
     })),
+    specificEvent: '',
+    organSpace: '',
+    detected: '',
   });
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -177,7 +189,7 @@ const SSISurveillanceForm: React.FC = () => {
     else if (type === 'date') {
       updatedValue = formatDate(new Date(value));
       // updatedValue = formatDateForDB(new Date(value));
-    }else if(type === 'time'){
+    } else if (type === 'time') {
       updatedValue = value;
     } else if (name === 'microorganism1' || name === 'microorganism2') {
       console.log('Microorganisms:', name, value);
@@ -220,11 +232,37 @@ const SSISurveillanceForm: React.FC = () => {
   };
 
   const handleRemarkChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
+    const { value } = e.target;
     const newChecklist = [...formData.SSIEvalCheckList];
     newChecklist[index].remark = value;
     setFormData({ ...formData, SSIEvalCheckList: newChecklist });
   };
+
+  const handleSpecificEventChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setFormData({
+      ...formData,
+      specificEvent: value,
+      organSpace: value !== 'organSpace' ? '' : formData.organSpace // Reset organSpace if not selected
+    });
+  };
+
+  const handleDetectedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setFormData({
+      ...formData,
+      detected: value
+    });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
 
   // Add new antibiotic
   const addAntibiotic = () => {
@@ -299,11 +337,21 @@ const SSISurveillanceForm: React.FC = () => {
         <PostOp_Sheet
           formData={formData}
           handlePostOpChange={handlePostOpChange}
-          // handleChange={handleChange}
+        // handleChange={handleChange}
         />
     },
     {
-      id: 4, title: 'SSI Evaluation', component:
+      id: 4, title: 'SSI Event Details', component:
+        <SSIEvent
+          formData={formData}
+          handleSpecificEventChange={handleSpecificEventChange}
+          handleDetectedChange={handleDetectedChange}
+          handleInputChange={handleInputChange}
+        />
+    },
+
+    {
+      id: 5, title: 'SSI Evaluation', component:
         <SSIEval
           formData={formData}
           handleYesNoChange={handleYesNoChange}
@@ -330,12 +378,12 @@ const SSISurveillanceForm: React.FC = () => {
     // const sanitizedData = sanitizeFormData(formData);
     const sanitizedData = formData;
     console.log('Form Data:', sanitizedData);
-    const {data, error} = await supabase
+    const { data, error } = await supabase
       .from('SSI_Form')
-      .insert([sanitizedData] );
+      .insert([sanitizedData]);
     if (error) {
       console.error('Error Inserting Data:', error);
-    }else{
+    } else {
       console.log('Data Insertion Successful!', data);
     }
     // Handle form submission (e.g., send data to API)

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PatientData from './patient_data';
 import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
+import SSIEval from './ssiEval';
 import './style.css';
 import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
@@ -20,6 +21,13 @@ interface Antibiotic {
   doses: number;
 }
 
+export interface SSIEvalCheckListItem {
+  item: string;   // The description of the checklist item.
+  yesNo: boolean | null;  // Boolean value for Yes/No selection (null if not answered).
+  remark: string; // Any remarks for that checklist item.
+}
+
+
 
 const symptomsDict: { [key: string]: { [key: string]: boolean } } = {};
 
@@ -31,6 +39,24 @@ symptoms.forEach(symptom => {
 });
 
 // console.log(symptomsDict);
+const SSIEvalChecklistItems = [
+  "Administer antimicrobial prophylaxis in accordance with evidence-based standards.",
+  "Administer antimicrobial prophylaxis within 1 hour prior to incision.",
+  "Select antimicrobial prophylaxis agents on basis of surgical procedure.",
+  "Select antimicrobial prophylaxis agents on basis of SSI pathogens.",
+  "Select antimicrobial prophylaxis agents on published recommendations.",
+  "Discontinue antibiotics within 24 hours after surgery end.",
+  "Redose antibiotic at 3-hour interval in procedures > 3 hours.",
+  "Adjust antimicrobial prophylaxis dose for obese patients (BMI>30).",
+  "Not remove hair at operative site unless it interferes with operation.",
+  "Use razors for hair removal at operative site.",
+  "Use clippers or depilatory agent for hair removal.",
+  "Use appropriate antiseptic agent for skin preparation.",
+  "Mechanically prepare the colon (enemas, cathartic agents).",
+  "Administer non-absorbable oral antimicrobial agents before operation.",
+  "Keep OR doors closed during surgery except as needed.",
+  "Maintain immediate post-op normothermia.",
+];
 
 
 export interface FormData {
@@ -75,7 +101,8 @@ export interface FormData {
   };
   symptomsDict: {
     [key: string]: { [key: string]: boolean }
-  }
+  };
+  SSIEvalCheckList: SSIEvalCheckListItem[];
 }
 
 const SSISurveillanceForm: React.FC = () => {
@@ -126,6 +153,11 @@ const SSISurveillanceForm: React.FC = () => {
       intermediate: '',
     },
     symptomsDict: symptomsDict,
+    SSIEvalCheckList: SSIEvalChecklistItems.map((item) => ({
+      item: item,
+      yesNo: false, // null initially, then true for "Yes", false for "No"
+      remark: "",
+    })),
   });
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -180,6 +212,19 @@ const SSISurveillanceForm: React.FC = () => {
     const updatedIsolate = { ...formData[isolate], [category]: value };
     setFormData({ ...formData, [isolate]: updatedIsolate });
   }
+
+  const handleYesNoChange = (index: number, value: boolean) => {
+    const newChecklist = [...formData.SSIEvalCheckList];
+    newChecklist[index].yesNo = value;
+    setFormData({ ...formData, SSIEvalCheckList: newChecklist });
+  };
+
+  const handleRemarkChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const {value} = e.target;
+    const newChecklist = [...formData.SSIEvalCheckList];
+    newChecklist[index].remark = value;
+    setFormData({ ...formData, SSIEvalCheckList: newChecklist });
+  };
 
   // Add new antibiotic
   const addAntibiotic = () => {
@@ -257,6 +302,15 @@ const SSISurveillanceForm: React.FC = () => {
           // handleChange={handleChange}
         />
     },
+    {
+      id: 4, title: 'SSI Evaluation', component:
+        <SSIEval
+          formData={formData}
+          handleYesNoChange={handleYesNoChange}
+          handleRemarkChange={handleRemarkChange}
+        />
+    },
+
   ]
 
   const handleNextStep = () => {

@@ -10,12 +10,14 @@ interface InputBoxProps {
     autoComplete?: string;
     labelClass?: string;
     id: string;
+    disabled?: boolean
     name: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
     label = "",
+    disabled = false,
     type = "text",
     placeholder = "",
     value = "",
@@ -46,6 +48,7 @@ const InputBox: React.FC<InputBoxProps> = ({
                 autoComplete={autoComplete}
                 name={name}
                 onChange={handleChange}
+                disabled={disabled}
             />
         </div>
     );

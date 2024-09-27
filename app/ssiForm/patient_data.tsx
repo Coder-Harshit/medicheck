@@ -20,8 +20,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           label='Patient Name'
           type='text'
           value={formData.patientName}
-          id={''}
-          name={''}
+          id={'patientName'}
+          name={'patientName'}
           onChange={handleChange}
           className="input p-3 rounded-md"
         />
@@ -76,8 +76,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           label='Patient ID'
           type='number'
           value={formData.patientId}
-          id={''}
-          name={''}
+          id={'patientId'}
+          name={'patientId'}
           onChange={handleChange}
           className="input p-3 rounded-md"
         />
@@ -134,8 +134,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           label='Age'
           type='number'
           value={formData.age.toString()} // Convert number to string
-          id={''}
-          name={''}
+          id={'age'}
+          name={'age'}
           onChange={handleChange}
           className="input p-3 rounded-md"
         />
@@ -305,8 +305,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         {/* SSI Given */}
         <DropdownBox
           label="SSI Event Occurred"
-          id="ssiEvent"
-          name="ssiEvent"
+          id="ssiEventOccurred"
+          name="ssiEventOccurred"
           value={formData.ssiEventOccurred ? 'No' : 'Yes'}
           options={[
             // { value: '', label: '----' },

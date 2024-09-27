@@ -140,8 +140,8 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
           <DateTimePickerBox
             label="Time of Induction"
             // labelClass=""
-            id="ind"
-            name="ind"
+            id="timeOfInduction"
+            name="timeOfInduction"
             value={formData.timeOfInduction}
             onChange={handleChange}
             className="input p-3 rounded-md"
@@ -154,8 +154,8 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
           <DateTimePickerBox
             label="Time of Incision"
             // labelClass=""
-            id="inc"
-            name="inc"
+            id="timeOfSkinIncision"
+            name="timeOfSkinIncision"
             value={formData.timeOfSkinIncision}
             onChange={handleChange}
             className="input p-3 rounded-md"
@@ -168,8 +168,8 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
           <DateTimePickerBox
             label="End time of Surgery"
             // labelClass=""
-            id="eos"
-            name="eos"
+            id="timeOfEndSurgery"
+            name="timeOfEndSurgery"
             value={formData.timeOfEndSurgery}
             onChange={handleChange}
             className="input p-3 rounded-md"

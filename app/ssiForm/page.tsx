@@ -8,7 +8,8 @@ import './style.css';
 import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
 import { createClient } from '@/utils/supabase/client';
-import {formatDate} from '@/utils/formatDate';
+// import {sanitizeFormData, formatDateForDB} from '@/utils/dateHandling';
+import {formatDate} from '@/utils/dateHandling';
 const supabase = createClient();
 
 interface Antibiotic {
@@ -99,7 +100,7 @@ const SSISurveillanceForm: React.FC = () => {
     antibioticsGiven: '',
     papDuration: '',
     ssiEventOccurred: true,
-    dateOfSSIEvent: '',
+    dateOfSSIEvent: '2000-12-30',
     eventDetails: '',
     detected: 'A',
     microorganisms: [],
@@ -138,27 +139,34 @@ const SSISurveillanceForm: React.FC = () => {
 
     // Handle input and select elements consistently
     let updatedValue: string | boolean | Date | string[];
-    if (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred' || name === 'secondaryBSI') {
+    if (['papGiven', 'outpatientProcedure', 'ssiEventOccurred', 'secondaryBSI'].includes(name)) {
       updatedValue = value === 'Yes';
     }
     else if (type === 'date') {
       updatedValue = formatDate(new Date(value));
+      // updatedValue = formatDateForDB(new Date(value));
+    }else if(type === 'time'){
+      updatedValue = value;
     } else if (name === 'microorganism1' || name === 'microorganism2') {
       console.log('Microorganisms:', name, value);
       const index = name === 'microorganism1' ? 0 : 1;
-      const updatedMicroorganisms = [...formData.microorganisms];
-      updatedMicroorganisms[index] = value;
-      updatedValue = updatedMicroorganisms;
-      setFormData({ ...formData, microorganisms: updatedMicroorganisms });
+      setFormData((prevData) => {
+        const updatedMicroorganisms = [...prevData.microorganisms];
+        updatedMicroorganisms[index] = value;
+        return {
+          ...prevData,
+          microorganisms: updatedMicroorganisms,
+        };
+      });
+      return; // Exit early as we've already updated the state
     } else {
       updatedValue = value;
     }
 
-    // Update state using spread syntax and dynamic property access
-    setFormData({
-      ...formData,
-      [name === 'microorganism1' || name === 'microorganism2' ? 'microorganisms' : name]: updatedValue,
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: updatedValue,
+    }));
   };
   // Handler for updating antibiotics array
   const handleAntibioticChange = (index: number, name: string, value: string | number) => {
@@ -265,9 +273,12 @@ const SSISurveillanceForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // const sanitizedData = sanitizeFormData(formData);
+    const sanitizedData = formData;
+    console.log('Form Data:', sanitizedData);
     const {data, error} = await supabase
       .from('SSI_Form')
-      .insert([formData]);
+      .insert([sanitizedData] );
     if (error) {
       console.error('Error Inserting Data:', error);
     }else{

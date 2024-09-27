@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import PatientData from './patient_data';
 import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
-import OperationTimings from './operation_timings';
 import './style.css';
 import PostOp_Sheet from './postop_form';
 
@@ -256,10 +255,11 @@ const SSISurveillanceForm: React.FC = () => {
     //     />
     // },
     {
-      id: 3, title: 'Post Op Sheet', component:
+      id: 3, title: 'Post-Op Sheet', component:
         <PostOp_Sheet
           formData={formData}
-          handleChange={handlePostOpChange}
+          handlePostOpChange={handlePostOpChange}
+          // handleChange={handleChange}
         />
     },
   ]

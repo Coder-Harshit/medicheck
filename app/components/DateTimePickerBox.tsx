@@ -7,7 +7,7 @@ interface DateTimePickerBoxProps {
   id: string;
   name: string;
   labelClass?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   isDisabled?: boolean;
   type: 'date' | 'time' | 'datetime'; // Specify whether it's a date, time, or both
   upperLimitMins?: number; // Optional upper limit in minutes for the time selection
@@ -20,36 +20,24 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
   labelClass = "",
   id,
   name,
-  onChange = () => { },
+  onChange = () => {},
   isDisabled = false,
   type,
   upperLimitMins,
 }) => {
-  const generateTimeOptions = (upperLimitMins: number): string[] => {
+  const generateTimeOptions = (limitMins: number) => {
     const options = [];
-    for (let i = 0; i <= upperLimitMins; i += 1) {
+    for (let i = 0; i <= limitMins; i += 1) {
       const hours = Math.floor(i / 60);
       const minutes = i % 60;
       const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
       options.push(timeString);
     }
     return options;
-  }
+  };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (type === 'time' && upperLimitMins !== undefined) {
-      const selectedTime = event.target.value;
-      const [hours, minutes] = selectedTime.split(':').map(Number);
-      const totalMinutes = hours * 60 + minutes;
-
-      if (totalMinutes <= upperLimitMins) {
-        onChange(event); // Call the parent's onChange handler directly
-      } else {
-        alert(`Please select a time within ${upperLimitMins} minutes.`);
-      }
-    } else {
-      onChange(event); // Call the parent's onChange handler directly for date or time without limit
-    }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    onChange(event); // Call the parent's onChange handler directly
   };
 
   return (
@@ -76,6 +64,19 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
             onChange={handleChange}
           />
         </div>
+      ) : type === 'time' && upperLimitMins !== undefined ? (
+        <select
+          id={id}
+          className={`${className} bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
+          disabled={isDisabled}
+          value={value}
+          name={name}
+          onChange={handleChange}
+        >
+          {generateTimeOptions(upperLimitMins).map((time) => (
+            <option key={time} value={time}>{time}</option>
+          ))}
+        </select>
       ) : (
         <input
           type={type}

@@ -7,6 +7,9 @@ import AntibioticPrescription from './antibiotic_prescription';
 import './style.css';
 import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
+import { createClient } from '@/utils/supabase/client';
+
+const supabase = createClient();
 
 interface Antibiotic {
   abop_stage: 'prior' | 'pre_peri' | 'after';
@@ -260,9 +263,16 @@ const SSISurveillanceForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Submitted:', formData);
+    const {data, error} = await supabase
+      .from('SSI_Form')
+      .insert([formData]);
+    if (error) {
+      console.error('Error Inserting Data:', error);
+    }else{
+      console.log('Data Insertion Successful!', data);
+    }
     // Handle form submission (e.g., send data to API)
   };
 

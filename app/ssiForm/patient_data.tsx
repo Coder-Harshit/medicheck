@@ -33,6 +33,21 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="admittingDepartment"
           value={formData.admittingDepartment}
           options={[
+            { value: 'Cardiology', label: 'Cardiology' },
+            { value: 'Dermatology', label: 'Dermatology' },
+            { value: 'Endocrinology', label: 'Endocrinology' },
+            { value: 'Gastroenterology', label: 'Gastroenterology' },
+            { value: 'General Surgery', label: 'General Surgery' },
+            { value: 'Neurology', label: 'Neurology' },
+            { value: 'Obstetrics & Gynaecology', label: 'Obstetrics & Gynaecology' },
+            { value: 'Ophthalmology', label: 'Ophthalmology' },
+            { value: 'Orthopaedics', label: 'Orthopaedics' },
+            { value: 'Otorhinolaryngology', label: 'Otorhinolaryngology' },
+            { value: 'Paediatrics', label: 'Paediatrics' },
+            { value: 'Psychiatry', label: 'Psychiatry' },
+            { value: 'Pulmonology', label: 'Pulmonology' },
+            { value: 'Urology', label: 'Urology' },
+            { value: 'Others', label: 'Others' },
             // { value: '', label: 'Select Department' },
             // { value: '', label: '----' },
             // Add department options here
@@ -74,6 +89,21 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="departmentPrimarySurgeon"
           value={formData.departmentPrimarySurgeon}
           options={[
+            { value: 'Cardiology', label: 'Cardiology' },
+            { value: 'Dermatology', label: 'Dermatology' },
+            { value: 'Endocrinology', label: 'Endocrinology' },
+            { value: 'Gastroenterology', label: 'Gastroenterology' },
+            { value: 'General Surgery', label: 'General Surgery' },
+            { value: 'Neurology', label: 'Neurology' },
+            { value: 'Obstetrics & Gynaecology', label: 'Obstetrics & Gynaecology' },
+            { value: 'Ophthalmology', label: 'Ophthalmology' },
+            { value: 'Orthopaedics', label: 'Orthopaedics' },
+            { value: 'Otorhinolaryngology', label: 'Otorhinolaryngology' },
+            { value: 'Paediatrics', label: 'Paediatrics' },
+            { value: 'Psychiatry', label: 'Psychiatry' },
+            { value: 'Pulmonology', label: 'Pulmonology' },
+            { value: 'Urology', label: 'Urology' },
+            { value: 'Others', label: 'Others' },
             // { value: '', label: 'Select Surgeon Department' },
             // { value: '', label: '----' },
             // Add surgeon department options here
@@ -89,6 +119,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="scenarioOfProcedure"
           value={formData.scenarioOfProcedure}
           options={[
+            { value: 'Elective', label: 'Elective' },
+            { value: 'Emergency', label: 'Emergency' },
             // { value: '', label: 'Scenario of Procedure' },
             // { value: '', label: '----' },
             // Add Scenario of Procedure options here
@@ -115,6 +147,13 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="procedureName"
           value={formData.procedureName}
           options={[
+            { value: 'Appendectomy', label: 'Appendectomy' },
+            { value: 'Cholecystectomy', label: 'Cholecystectomy' },
+            { value: 'Hernioplasty', label: 'Hernioplasty' },
+            { value: 'Hysterectomy', label: 'Hysterectomy' },
+            { value: 'Mastectomy', label: 'Mastectomy' },
+            { value: 'Thyroidectomy', label: 'Thyroidectomy' },
+            { value: 'Others', label: 'Others' },
             // { value: '', label: 'Name of Procedure' },
             // { value: '', label: '----' },
             // Add Name of Procedure options here
@@ -165,7 +204,12 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           value={formData.diagnosis}
           options={[
             // { value: '', label: '----' },
-
+            { value: 'Appendicitis', label: 'Appendicitis' },
+            { value: 'Cholecystitis', label: 'Cholecystitis' },
+            { value: 'Hernia', label: 'Hernia' },
+            { value: 'Malignancy', label: 'Malignancy' },
+            { value: 'Thyroid Disease', label: 'Thyroid Disease' },
+            { value: 'Others', label: 'Others' },
           ]}
           onChange={handleChange}
           className="select p-3 rounded-md"
@@ -208,6 +252,10 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             // { value: '', label: 'Scenario of Procedure' },
             // { value: '', label: '----' },
             // Add Scenario of Procedure options here
+            { value: 'Dr. A', label: 'Dr. A' },
+            { value: 'Dr. B', label: 'Dr. B' },
+            { value: 'Dr. C', label: 'Dr. C' },
+            { value: 'Dr. D', label: 'Dr. D' },
           ]}
           onChange={handleChange}
           className="select p-3 rounded-md"

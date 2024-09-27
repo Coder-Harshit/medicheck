@@ -20,11 +20,22 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
   labelClass = "",
   id,
   name,
-  onChange = () => {},
+  onChange = () => { },
   isDisabled = false,
   type,
   upperLimitMins,
 }) => {
+  const generateTimeOptions = (upperLimitMins: number): string[] => {
+    const options = [];
+    for (let i = 0; i <= upperLimitMins; i += 1) {
+      const hours = Math.floor(i / 60);
+      const minutes = i % 60;
+      const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+      options.push(timeString);
+    }
+    return options;
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (type === 'time' && upperLimitMins !== undefined) {
       const selectedTime = event.target.value;

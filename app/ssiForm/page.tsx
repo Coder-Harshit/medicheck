@@ -8,7 +8,7 @@ import './style.css';
 import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
 import { createClient } from '@/utils/supabase/client';
-
+import {formatDate} from '@/utils/formatDate';
 const supabase = createClient();
 
 interface Antibiotic {
@@ -142,7 +142,7 @@ const SSISurveillanceForm: React.FC = () => {
       updatedValue = value === 'Yes';
     }
     else if (type === 'date') {
-      updatedValue = new Date(value);
+      updatedValue = formatDate(new Date(value));
     } else if (name === 'microorganism1' || name === 'microorganism2') {
       console.log('Microorganisms:', name, value);
       const index = name === 'microorganism1' ? 0 : 1;

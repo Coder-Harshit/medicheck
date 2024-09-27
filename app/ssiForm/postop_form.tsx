@@ -1,7 +1,7 @@
 import React from 'react';
 import DropdownBox from '../components/DropdownBox';
-import { FormData, days, symptoms } from './page';
-
+import {FormData} from './page';
+import { days, symptoms } from './constants';
 interface PostOpProps {
   formData: FormData;
   handlePostOpChange: (symptom: string, day: number | string, value: boolean) => void;

@@ -8,6 +8,7 @@ import OperationTimings from './operation_timings';
 import './style.css';
 
 interface Antibiotic {
+  abop_stage: 'prior' | 'pre_peri' | 'after';
   antibiotic: string;
   route: string;
   duration: number;
@@ -83,7 +84,13 @@ const SSISurveillanceForm: React.FC = () => {
     detected: 'A',
     microorganisms: [],
     secondaryBSI: false,
-    antibiotics: [{ antibiotic: '', route: '', duration: 0, doses: 0 }],
+    antibiotics: [{
+      abop_stage: 'prior',
+      antibiotic: '',
+      route: '',
+      duration: 0,
+      doses: 0,
+    }],
     timeOfInduction: '',
     timeOfSkinIncision: '',
     timeOfEndSurgery: '',
@@ -149,7 +156,13 @@ const SSISurveillanceForm: React.FC = () => {
   const addAntibiotic = () => {
     setFormData({
       ...formData,
-      antibiotics: [...formData.antibiotics, { antibiotic: '', route: '', duration: 0, doses: 0 }],
+      antibiotics: [...formData.antibiotics, {
+        abop_stage: 'prior',
+        antibiotic: '',
+        route: '',
+        duration: 0,
+        doses: 0,
+      }],
     });
   };
 
@@ -184,6 +197,7 @@ const SSISurveillanceForm: React.FC = () => {
           handleAntibioticChange={handleAntibioticChange}
           addAntibiotic={addAntibiotic}
           removeAntibiotic={removeAntibiotic}
+          handleChange={handleChange}
         />
     },
     // {

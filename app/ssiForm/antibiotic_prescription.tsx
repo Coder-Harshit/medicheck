@@ -18,7 +18,25 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
     <div className="container mx-auto p-4 rounded-lg section_box">
       <h3 className="text-2xl font-bold mt-4 mb-6 text-center">Antibiotic Prescription</h3>
       {formData.antibiotics.map((antibiotic, index: number) => (
-        <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 p-4 border rounded-lg shadow-md">
+        <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 p-4 border rounded-lg shadow-md">
+          <div className="flex flex-col">
+            {/* <label className="mb-2 font-semibold">Antibiotic Given Prior to Operation</label> */}
+            <DropdownBox
+              label='Stage'
+              labelClass='font-semibold'
+              value={antibiotic.abop_stage}
+              onChange={(e) => handleAntibioticChange(index, 'abop_stage', e.target.value)}
+              className="input rounded"
+              id={'stage'}
+              name={'stage'}
+              options={[
+                { value: 'prior', label: 'PRIOR to Operation' },
+                { value: 'pre_peri', label: 'PRE/PERI Operatively' },
+                { value: 'after', label: 'AFTER PeriOperatively' },
+              ]}
+            />
+          </div>
+
           <div className="flex flex-col">
             {/* <label className="mb-2 font-semibold">Antibiotic Given Prior to Operation</label> */}
             <InputBox

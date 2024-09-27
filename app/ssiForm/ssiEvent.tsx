@@ -1,7 +1,4 @@
 import React from 'react';
-import InputBox from '../components/InputBox';
-import DropdownBox from '../components/DropdownBox';
-import DateTimePickerBox from '../components/DateTimePickerBox';
 import { FormData } from './page';
 
 interface SSIEventProps {

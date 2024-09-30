@@ -20,7 +20,6 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
       {formData.antibiotics.map((antibiotic, index: number) => (
         <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 p-4 border rounded-lg shadow-md">
           <div className="flex flex-col">
-            {/* <label className="mb-2 font-semibold">Antibiotic Given Prior to Operation</label> */}
             <DropdownBox
               label='Stage'
               labelClass='font-semibold'
@@ -36,9 +35,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
               ]}
             />
           </div>
-
           <div className="flex flex-col">
-            {/* <label className="mb-2 font-semibold">Antibiotic Given Prior to Operation</label> */}
             <InputBox
               label='Antibiotic Given Prior to Operation'
               labelClass='font-semibold'
@@ -50,17 +47,6 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
             />
           </div>
           <div className="flex flex-col">
-            {/* <label className="mb-2 font-semibold">Route of Administration</label>
-            <select
-              value={antibiotic.route}
-              onChange={(e) => handleAntibioticChange(index, 'route', e.target.value)}
-              className="select text-black p-2 border rounded"
-            >
-              <option value="">Select Route</option>
-              <option value="IV">IV</option>
-              <option value="Oral">Oral</option>
-              <option value="IM">IM</option>
-            </select> */}
             <DropdownBox
               label='Route of Administration'
               labelClass={'font-semibold'}
@@ -76,16 +62,8 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
               id={'route'}
               name={'route'}
             />
-
           </div>
           <div className="flex flex-col">
-            {/* <label className="mb-2 font-semibold">Duration (mins)</label>
-            <input
-              type="number"
-              value={antibiotic.duration}
-              onChange={(e) => handleAntibioticChange(index, 'duration', e.target.value)}
-              className="input text-black p-2 border rounded"
-            /> */}
             <InputBox
               label='Duration (mins)'
               labelClass='font-semibold'
@@ -98,13 +76,6 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
             />
           </div>
           <div className="flex flex-col">
-            {/* <label className="mb-2 font-semibold">No. of Doses</label>
-            <input
-              type="number"
-              value={antibiotic.doses}
-              onChange={(e) => handleAntibioticChange(index, 'doses', e.target.value)}
-              className="input text-black p-2 border rounded"
-            /> */}
             <InputBox
               label='No. of Doses'
               labelClass='font-semibold'
@@ -136,10 +107,8 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
       </div>
       <div className="flex">
         <div className="p-3 m-2 w-full">
-          {/* Time of Induction */}
           <DateTimePickerBox
             label="Time of Induction"
-            // labelClass=""
             id="timeOfInduction"
             name="timeOfInduction"
             value={formData.timeOfInduction}
@@ -147,13 +116,10 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
             className="input p-3 rounded-md"
             type='time'
           />
-
         </div>
         <div className="p-3 m-2 w-full">
-          {/* Time of Incision */}
           <DateTimePickerBox
             label="Time of Incision"
-            // labelClass=""
             id="timeOfSkinIncision"
             name="timeOfSkinIncision"
             value={formData.timeOfSkinIncision}
@@ -163,11 +129,8 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
           />
         </div>
         <div className="p-3 m-2 w-full">
-
-          {/* End time of Surgery */}
           <DateTimePickerBox
             label="End time of Surgery"
-            // labelClass=""
             id="timeOfEndSurgery"
             name="timeOfEndSurgery"
             value={formData.timeOfEndSurgery}
@@ -176,8 +139,6 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formDat
             type='time'
           />
         </div>
-
-
       </div>
     </div>
   );

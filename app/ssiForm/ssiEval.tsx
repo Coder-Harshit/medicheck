@@ -5,7 +5,6 @@ import { FormData } from './page';
 interface SSIEvalProps {
     formData: FormData;
     handleYesNoChange: (index: number, value: boolean) => void;
-    // handleRemarkChange: (index: number, field: string, value: string) => void;
     handleRemarkChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -66,7 +65,6 @@ const SSIEval: React.FC<SSIEvalProps> = ({ formData, handleYesNoChange, handleRe
             {/* Checklist Table */}
             <table className="w-full border-collapse border border-gray-400 mt-6">
                 <thead>
-                    {/* <tr className="bg-gray-200"> */}
                     <tr className="bg-transparent">
                         <th className="border border-gray-400 p-2">S.No</th>
                         <th className="border border-gray-400 p-2">ITEMS</th>
@@ -100,7 +98,6 @@ const SSIEval: React.FC<SSIEvalProps> = ({ formData, handleYesNoChange, handleRe
                                 <input
                                     type="text"
                                     value={item.remark}
-                                    // onChange={(e) => handleRemarkChange(index, 'remark', e.target.value)}
                                     onChange={(e) => handleRemarkChange(index, e)}
                                     className="w-full p-2 border border-gray-300 rounded text-black"
                                 />

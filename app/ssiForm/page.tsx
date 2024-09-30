@@ -8,12 +8,9 @@ import SSIEval from './ssiEval';
 import './style.css';
 import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
-// import { createClient } from '@/utils/supabase/client';
 import { supabase } from '@/utils/supabase/client';
-// import {sanitizeFormData, formatDateForDB} from '@/utils/dateHandling';
 import { formatDate } from '@/utils/dateHandling';
 import SSIEvent from './ssiEvent';
-// const supabase = createClient();
 
 interface Antibiotic {
   abop_stage: 'prior' | 'pre_peri' | 'after';
@@ -29,13 +26,6 @@ export interface SSIEvalCheckListItem {
   remark: string; // Any remarks for that checklist item.
 }
 
-// interface ssiEvent{
-//   specificEvent: string;
-//   organSpace: string;
-//   detected: string;
-// }
-
-
 const symptomsDict: { [key: string]: { [key: string]: boolean } } = {};
 
 symptoms.forEach(symptom => {
@@ -45,7 +35,6 @@ symptoms.forEach(symptom => {
   });
 });
 
-// console.log(symptomsDict);
 const SSIEvalChecklistItems = [
   "Administer antimicrobial prophylaxis in accordance with evidence-based standards.",
   "Administer antimicrobial prophylaxis within 1 hour prior to incision.",
@@ -109,11 +98,9 @@ export interface FormData {
     [key: string]: { [key: string]: boolean }
   };
   SSIEvalCheckList: SSIEvalCheckListItem[];
-  // specificEvent: 'SIP' | 'SIS' | 'DIP' | 'DIS' | 'organSpace';
   specificEvent: string;
   organSpace: string;
   detected: string;
-  // detected: 'A' | 'P' | 'RF';
 }
 
 const SSISurveillanceForm: React.FC = () => {
@@ -179,7 +166,6 @@ const SSISurveillanceForm: React.FC = () => {
   // Generalized handler for both input and dropdown changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     console.log('Event:', e.target);
-    // const { name, value, type } = e.target as HTMLInputElement;
     const { name, value, type } = e.target;
 
     // Handle input and select elements consistently
@@ -189,7 +175,6 @@ const SSISurveillanceForm: React.FC = () => {
     }
     else if (type === 'date') {
       updatedValue = formatDate(new Date(value));
-      // updatedValue = formatDateForDB(new Date(value));
     } else if (type === 'time') {
       updatedValue = value;
     } else if (name === 'microorganism1' || name === 'microorganism2') {
@@ -326,19 +311,11 @@ const SSISurveillanceForm: React.FC = () => {
           handleChange={handleChange}
         />
     },
-    // {
-    //   id: 3, title: 'Operation Timings', component:
-    //     <OperationTimings
-    //       formData={formData}
-    //       handleChange={handleChange}
-    //     />
-    // },
     {
       id: 3, title: 'Post-Op Sheet', component:
         <PostOp_Sheet
           formData={formData}
           handlePostOpChange={handlePostOpChange}
-        // handleChange={handleChange}
         />
     },
     {
@@ -376,7 +353,6 @@ const SSISurveillanceForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // const sanitizedData = sanitizeFormData(formData);
     const sanitizedData = formData;
     console.log('Form Data:', sanitizedData);
     const { data, error } = await supabase
@@ -400,7 +376,6 @@ const SSISurveillanceForm: React.FC = () => {
       <div className="flex justify-center mb-6">
         {steps.map((step, index) => (
           <div key={step.id}
-            // className={`mx-2 py-1 px-4 ${index === currentStep ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
             className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
           >
             {step.title}

@@ -48,8 +48,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Pulmonology', label: 'Pulmonology' },
             { value: 'Urology', label: 'Urology' },
             { value: 'Others', label: 'Others' },
-            // { value: '', label: 'Select Department' },
-            // { value: '', label: '----' },
             // Add department options here
           ]}
           onChange={handleChange}
@@ -63,7 +61,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="outpatientProcedure"
           value={formData.outpatientProcedure ? 'Yes' : 'No'}
           options={[
-            // { value: '', label: '----' },
             { value: 'Yes', label: 'Yes' },
             { value: 'No', label: 'No' },
           ]}
@@ -104,8 +101,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Pulmonology', label: 'Pulmonology' },
             { value: 'Urology', label: 'Urology' },
             { value: 'Others', label: 'Others' },
-            // { value: '', label: 'Select Surgeon Department' },
-            // { value: '', label: '----' },
             // Add surgeon department options here
           ]}
           onChange={handleChange}
@@ -121,8 +116,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           options={[
             { value: 'Elective', label: 'Elective' },
             { value: 'Emergency', label: 'Emergency' },
-            // { value: '', label: 'Scenario of Procedure' },
-            // { value: '', label: '----' },
             // Add Scenario of Procedure options here
           ]}
           onChange={handleChange}
@@ -154,8 +147,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Mastectomy', label: 'Mastectomy' },
             { value: 'Thyroidectomy', label: 'Thyroidectomy' },
             { value: 'Others', label: 'Others' },
-            // { value: '', label: 'Name of Procedure' },
-            // { value: '', label: '----' },
             // Add Name of Procedure options here
           ]}
           onChange={handleChange}
@@ -169,8 +160,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="woundClass"
           value={formData.woundClass}
           options={[
-            // { value: '', label: 'Wound Class' },
-            // { value: '', label: '----' },
             { value: 'clean', label: 'Clean' },
             { value: 'clean_contaminated', label: 'Clean Contaminated' },
             { value: 'contaminated', label: 'Contaminated' },
@@ -188,7 +177,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="gender"
           value={formData.gender}
           options={[
-            // { value: '', label: '----' },
             { value: 'M', label: 'Male' },
             { value: 'F', label: 'Female' },
           ]}
@@ -203,7 +191,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="diagnosis"
           value={formData.diagnosis}
           options={[
-            // { value: '', label: '----' },
             { value: 'Appendicitis', label: 'Appendicitis' },
             { value: 'Cholecystitis', label: 'Cholecystitis' },
             { value: 'Hernia', label: 'Hernia' },
@@ -222,7 +209,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="papGiven"
           value={formData.papGiven ? 'Yes' : 'No'}
           options={[
-            // { value: '', label: '----' },
             { value: 'Yes', label: 'Yes' },
             { value: 'No', label: 'No' },
           ]}
@@ -249,9 +235,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="primarySurgeonName"
           value={formData.primarySurgeonName}
           options={[
-            // { value: '', label: 'Scenario of Procedure' },
-            // { value: '', label: '----' },
-            // Add Scenario of Procedure options here
+            // Add Primary Surgeon Name options here
             { value: 'Dr. A', label: 'Dr. A' },
             { value: 'Dr. B', label: 'Dr. B' },
             { value: 'Dr. C', label: 'Dr. C' },
@@ -294,8 +278,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: '1', label: 'OperationTheater-1' },
             { value: '2', label: 'OperationTheater-2' },
             { value: '3', label: 'OperationTheater-3' },
-            // { value: '', label: 'Scenario of Procedure' },
-            // { value: '', label: '----' },
             // Add Scenario of Procedure options here
           ]}
           onChange={handleChange}
@@ -309,7 +291,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="ssiEventOccurred"
           value={formData.ssiEventOccurred ? 'No' : 'Yes'}
           options={[
-            // { value: '', label: '----' },
             { value: 'Yes', label: 'Yes' },
             { value: 'No', label: 'No' },
           ]}

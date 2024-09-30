@@ -1,15 +1,12 @@
 'use client';
 
 import { useState } from 'react'
-// import { createClient } from '@/utils/supabase/client'
 import { supabase } from '@/utils/supabase/client'
 import InputBox from '../../components/InputBox'
-import { redirect } from 'next/navigation';
 
 export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    // const supabase = createClient();
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
@@ -22,25 +19,6 @@ export default function Login() {
     }
 
     return (
-        // <form onSubmit={handleLogin} className="space-y-4">
-        //     <input
-        //         type="email"
-        //         placeholder="Email"
-        //         value={email}
-        //         onChange={(e) => setEmail(e.target.value)}
-        //         className="w-full p-2 border rounded"
-        //     />
-        //     <input
-        //         type="password"
-        //         placeholder="Password"
-        //         value={password}
-        //         onChange={(e) => setPassword(e.target.value)}
-        //         className="w-full p-2 border rounded"
-        //     />
-        //     <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
-        //         Log In
-        //     </button>
-        // </form>
         <div className="flex flex-col w-full md:w-1/2 xl:w-2/5 2xl:w-2/5 3xl:w-1/3 mx-auto p-8 md:p-10 2xl:p-12 3xl:p-14 bg-[#ffffff] rounded-2xl shadow-xl">
             <div className="flex flex-row gap-3 pb-4">
                 {

@@ -18,17 +18,13 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    // console.log("ERROR Encountered: ", error.message);
-    // if (error.status == 400) {
+    console.log("ERROR Encountered: ", error.message);
     {
       console.log("Auth Error");
       redirect('/error');
     }
-    // <Link href={'./error'}>console.error();
-    // </Link>
-    // }
+
   } else {
-    // await fetch('/', { method: 'GET' })
     redirect('/')
   }
 }

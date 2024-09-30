@@ -13,7 +13,6 @@ interface MicrobiologyDataProps {
 }
 
 
-// Antibiotics options list
 const antibioticOptions = [
   { label: 'Antibiotic 1', value: 'antibiotic1' },
   { label: 'Antibiotic 2', value: 'antibiotic2' },

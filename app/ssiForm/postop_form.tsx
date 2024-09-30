@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownBox from '../components/DropdownBox';
+import DropdownBox from '../../components/DropdownBox';
 import {FormData} from './page';
 import { days, symptoms } from './constants';
 interface PostOpProps {

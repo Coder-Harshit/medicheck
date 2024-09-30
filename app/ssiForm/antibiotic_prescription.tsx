@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormData } from './page';
-import InputBox from '../components/InputBox';
-import DropdownBox from '../components/DropdownBox';
-import DateTimePickerBox from '../components/DateTimePickerBox';
+import InputBox from '../../components/InputBox';
+import DropdownBox from '../../components/DropdownBox';
+import DateTimePickerBox from '../../components/DateTimePickerBox';
 
 
 interface AntibioticPrescriptionProps {

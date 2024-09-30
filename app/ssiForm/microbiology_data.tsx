@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormData } from './page';
-import DropdownBox from '../components/DropdownBox';
+import DropdownBox from '../../components/DropdownBox';
 
 interface MicrobiologyDataProps {
   formData: FormData;

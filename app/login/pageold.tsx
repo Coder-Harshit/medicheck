@@ -1,6 +1,6 @@
 import React from 'react';
 import { login } from './actions';
-import InputBox from '../components/InputBox';
+import InputBox from '../../components/InputBox';
 
 const LogInPage = () => {
 

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 // import { createClient } from '@/utils/supabase/client'
 import { supabase } from '@/utils/supabase/client'
-import InputBox from '../components/InputBox'
+import InputBox from '../../components/InputBox'
 import { redirect } from 'next/navigation';
 
 export default function Login() {

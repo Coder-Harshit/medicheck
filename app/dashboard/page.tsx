@@ -1,8 +1,18 @@
 import React from 'react'
+import { useUser } from '@/hooks/useUser'
 
-const DashBoard  = () => {
+function DashBoard() {
+  const { user, userRole, loading } = useUser()
+
+  if (loading) return <div>Loading...</div>
+  if (!user) return <div>Please log in</div>
+
   return (
-    <div>DashBoard</div>
+    <div>
+      <h1>Welcome, {user.email}</h1>
+      <p>Your role is: {userRole?.role}</p>
+      {/* Render role-specific content here */}
+    </div>
   )
 }
 

@@ -8,11 +8,12 @@ import SSIEval from './ssiEval';
 import './style.css';
 import PostOp_Sheet from './postop_form';
 import { days, symptoms } from './constants';
-import { createClient } from '@/utils/supabase/client';
+// import { createClient } from '@/utils/supabase/client';
+import { supabase } from '@/utils/supabase/client';
 // import {sanitizeFormData, formatDateForDB} from '@/utils/dateHandling';
 import { formatDate } from '@/utils/dateHandling';
 import SSIEvent from './ssiEvent';
-const supabase = createClient();
+// const supabase = createClient();
 
 interface Antibiotic {
   abop_stage: 'prior' | 'pre_peri' | 'after';

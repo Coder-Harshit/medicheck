@@ -55,8 +55,7 @@ export default function DashBoard() {
         }
       }
     }
-  // }, [user, userRole, loading, router])
-}, [user, userRole, loading])
+  }, [user, userRole, loading, router])
 
   if (loading) {
     return <div>Loading...</div>

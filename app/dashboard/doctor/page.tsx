@@ -4,14 +4,14 @@ import { useUser } from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const doctorDashboard = () => {
-  const { user, userRole, loading } = useUser();
+const DoctorDashboard = () => {
+  const { userRole, loading } = useUser();
   const router = useRouter();
 
   if (loading) return <div>Loading...</div>;
 
   if (userRole?.role === 'doctor') {
-    return <div>doctorDashboard</div>;
+    return <div>DoctorDashboard</div>;
   } else {
     // Redirect to the appropriate dashboard based on role
     if (userRole) {
@@ -29,4 +29,4 @@ const doctorDashboard = () => {
   }
 };
 
-export default doctorDashboard;
+export default DoctorDashboard;

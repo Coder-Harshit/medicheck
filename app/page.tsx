@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import React from 'react';
+// import Link from 'next/link';
+// import React from 'react';
 import DashBoard from './dashboard/page';
 export default DashBoard;
 // export default function Home() {

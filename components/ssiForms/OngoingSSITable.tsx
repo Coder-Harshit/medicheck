@@ -91,7 +91,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
           </button>
         </div>
         <div className="flex items-center">
-          <span className="mr-2">
+          <span className="mr-2 text-black">
             Page{' '}
             <strong>
               {currentPage + 1} of {Math.ceil(data.length / pageSize)}
@@ -100,7 +100,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
           <select
             value={pageSize}
             onChange={e => handlePageSizeChange(Number(e.target.value))}
-            className="p-2 border border-gray-300 rounded-md"
+            className="p-2 border border-gray-300 rounded-md text-black"
           >
             {[10, 20, 30, 40, 50].map(size => (
               <option key={size} value={size}>

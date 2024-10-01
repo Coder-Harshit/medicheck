@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
 import OngoingSSITable from '@/components/ssiForms/OngoingSSITable';
 import { FormData } from '@/app/ssiForm/page';
+import { UUID } from 'crypto';
 // import handleLogout from '@/app/logout';
 
 const NurseDashboard = () => {
@@ -14,12 +15,15 @@ const NurseDashboard = () => {
   const [ssiForms, setSsiForms] = useState<FormData[]>([]);
 
   useEffect(() => {
-    const fetchSSIFOrms = async () => {
+    const fetchSSIFOrms = async (
+    ) => {
+      if (!user) return;
+
       const { data, error } = await supabase
         .from('SSI_Form')
         .select('*')
+        .eq('nuid', user.id)
         .eq('status', 'ongoing');
-
       if (error) {
         console.error('Error fetching SSI forms:', error);
       } else {
@@ -28,7 +32,7 @@ const NurseDashboard = () => {
     };
 
     fetchSSIFOrms();
-  }, []);
+  }, [user]);
 
 
   const handleSSIForm = () => {
@@ -46,43 +50,45 @@ const NurseDashboard = () => {
     }
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (user) {
+    if (loading) return <div>Loading...</div>;
 
-  if (userRole?.role === 'nurse') {
-    return (
-      <div>
-        <OngoingSSITable data={ssiForms} />
-        <div className='flex flex-row'>
+    if (userRole?.role === 'nurse') {
+      return (
+        <div>
+          <OngoingSSITable data={ssiForms} />
+          <div className='flex flex-row'>
 
-          <button
-            className='bg-red-500 text-white hover:bg-red-600 w-max px-4 py-2 rounded-lg m-2'
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-          <button
-            className='bg-indigo-500 text-white hover:bg-indigo-600 w-max px-4 py-2 rounded-lg m-2'
-            onClick={handleSSIForm}>
-            Click to Add SSI Form
-          </button>
+            <button
+              className='bg-red-500 text-white hover:bg-red-600 w-max px-4 py-2 rounded-lg m-2'
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+            <button
+              className='bg-indigo-500 text-white hover:bg-indigo-600 w-max px-4 py-2 rounded-lg m-2'
+              onClick={handleSSIForm}>
+              Click to Add SSI Form
+            </button>
+          </div>
+
         </div>
-
-      </div>
-    );
-  } else if (user) {
-    // Redirect to the appropriate dashboard based on role
-    if (userRole) {
-      switch (userRole.role) {
-        case 'doctor':
-          router.push('/dashboard/doctor');
-          break;
-        default:
-          router.push('/dashboard'); // Default case: redirect to generic dashboard
-      }
+      );
     } else {
-      router.push('/login'); // If no role is found, redirect to login
+      // Redirect to the appropriate dashboard based on role
+      if (userRole) {
+        switch (userRole.role) {
+          case 'doctor':
+            router.push('/dashboard/doctor');
+            break;
+          default:
+            router.push('/dashboard'); // Default case: redirect to generic dashboard
+        }
+      } else {
+        router.push('/login'); // If no role is found, redirect to login
+      }
+      return null; // Prevent rendering while navigation happens
     }
-    return null; // Prevent rendering while navigation happens
   }
 
   return <div>Unauthorized</div>;

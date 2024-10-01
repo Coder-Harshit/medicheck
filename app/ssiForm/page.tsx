@@ -359,16 +359,21 @@ const SSISurveillanceForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
     e.preventDefault();
+
     // FORM VALIDATION
     if (!isDraft) {
       for (const key in formData) {
-        if (!(formData as any)[key]) {
-          alert(`Please fill out the ${key} field.`);
-          return;
+        // Use Object.prototype.hasOwnProperty to avoid inherited properties
+        if (Object.prototype.hasOwnProperty.call(formData, key)) {
+          const value = formData[key as keyof FormData];
+
+          if (!value) {
+            alert(`Please fill out the ${key} field.`);
+            return;
+          }
         }
       }
     }
-
 
     const status = isDraft ? 'ongoing' : 'to-be-reviewed';// Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
 

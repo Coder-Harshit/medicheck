@@ -3,18 +3,27 @@
 import { useUser } from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import SSISurveillanceForm from '@/app/ssiForm/page';
+// import Link from 'next/link';
+// import SSISurveillanceForm from '@/app/ssiForm/page';
 
 const NurseDashboard = () => {
   const { userRole, loading } = useUser();
   const router = useRouter();
+
+  const handleSSIForm = () => {
+    router.push('/ssiForm');
+  }
 
   if (loading) return <div>Loading...</div>;
 
   if (userRole?.role === 'nurse') {
     return (
       <div>
-        <SSISurveillanceForm />
+        <button
+          className='bg-indigo-500 text-white hover:bg-indigo-600 w-max px-4 py-2 rounded-lg m-2'
+          onClick={handleSSIForm}>
+          Click to Add SSI Form
+        </button>
       </div>
     );
   } else {

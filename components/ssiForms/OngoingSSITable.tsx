@@ -41,7 +41,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
         <thead>
           <tr className="bg-gray-100">
             {columns.map((column, index) => (
-              <th key={index} className="px-6 py-3 text-left text-gray-600 font-semibold border-b border-gray-200">
+              <th key={index} className="px-6 py-3 text-left text-gray-600 font-bold border-b border-gray-200">
                 {column.Header}
               </th>
             ))}
@@ -51,7 +51,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
           {paginatedData.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-50">
               {columns.map((column, colIndex) => (
-                <td key={colIndex} className="px-6 py-4 border-b border-gray-200">
+                <td key={colIndex} className="px-6 py-4 border-b border-gray-200 text-black">
                   {row[column.accessor]}
                 </td>
               ))}

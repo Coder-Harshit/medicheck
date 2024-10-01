@@ -11,6 +11,7 @@ import { days, symptoms } from './constants';
 import { supabase } from '@/utils/supabase/client';
 import { formatDate } from '@/utils/dateHandling';
 import SSIEvent from './ssiEvent';
+import { useUser } from '@/hooks/useUser';
 
 interface Antibiotic {
   abop_stage: 'prior' | 'pre_peri' | 'after';
@@ -27,6 +28,7 @@ export interface SSIEvalCheckListItem {
 }
 
 const symptomsDict: { [key: string]: { [key: string]: boolean } } = {};
+
 
 symptoms.forEach(symptom => {
   symptomsDict[symptom] = {};
@@ -101,16 +103,19 @@ export interface FormData {
   specificEvent: string;
   organSpace: string;
   detected: string;
+  status: 'ongoing' | 'to-be-reviewed' | 'reviewed';
+  // did: number;
 }
 
 const SSISurveillanceForm: React.FC = () => {
+  const { userID } = useUser();
   const [formData, setFormData] = useState<FormData>({
     patientName: '',
     patientId: '',
     age: 0,
     gender: 'M',
-    dateOfAdmission: '',
-    dateOfProcedure: '',
+    dateOfAdmission: formatDate(new Date()),
+    dateOfProcedure: formatDate(new Date()),
     admittingDepartment: '',
     departmentPrimarySurgeon: '',
     primarySurgeonName: '',
@@ -125,7 +130,7 @@ const SSISurveillanceForm: React.FC = () => {
     antibioticsGiven: '',
     papDuration: '',
     ssiEventOccurred: true,
-    dateOfSSIEvent: '2000-12-30',
+    dateOfSSIEvent: formatDate(new Date()),
     eventDetails: '',
     microorganisms: [],
     secondaryBSI: false,
@@ -136,9 +141,9 @@ const SSISurveillanceForm: React.FC = () => {
       duration: 0,
       doses: 0,
     }],
-    timeOfInduction: '',
-    timeOfSkinIncision: '',
-    timeOfEndSurgery: '',
+    timeOfInduction: new Date().toLocaleTimeString(),
+    timeOfSkinIncision: new Date().toLocaleTimeString(),
+    timeOfEndSurgery: new Date().toLocaleTimeString(),
     isolate1: {
       sensitive: '',
       resistant: '',
@@ -158,8 +163,9 @@ const SSISurveillanceForm: React.FC = () => {
     specificEvent: '',
     organSpace: '',
     detected: '',
+    status: 'ongoing',
   });
-
+  console.log(userID);
   const [currentStep, setCurrentStep] = useState(0);
 
 
@@ -351,20 +357,93 @@ const SSISurveillanceForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
     e.preventDefault();
-    const sanitizedData = formData;
-    console.log('Form Data:', sanitizedData);
-    const { data, error } = await supabase
-      .from('SSI_Form')
-      .insert([sanitizedData]);
-    if (error) {
-      console.error('Error Inserting Data:', error);
-    } else {
-      console.log('Data Insertion Successful!', data);
+
+    // FORM VALIDATION
+    if (!isDraft) {
+      for (const key in formData) {
+        // Use Object.prototype.hasOwnProperty to avoid inherited properties
+        if (Object.prototype.hasOwnProperty.call(formData, key)) {
+          const value = formData[key as keyof FormData];
+
+          if (!value) {
+            alert(`Please fill out the ${key} field.`);
+            return;
+          }
+        }
+      }
     }
-    // Handle form submission (e.g., send data to API)
+
+    const status = isDraft ? 'ongoing' : 'to-be-reviewed';// Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
+
+    const sanitizedData = {
+      ...formData,
+      nuid: userID,
+      status: status,  // Set the status based on whether it's a draft or final submission
+    };
+
+    console.log('Form Data:', sanitizedData);
+    // Check if a draft already exists
+    const { data: existingDraft, error: fetchError } = await supabase
+      .from('SSI_Form')
+      .select('*')
+      .eq('patientId', formData.patientId)
+      .eq('nuid', userID)
+      .eq('status', 'ongoing')
+      .single();
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Error fetching existing draft:', fetchError);
+      return;
+    }
+
+    if (existingDraft) {
+      // Update existing draft
+      const { data, error } = await supabase
+        .from('SSI_Form')
+        .update(sanitizedData)
+        .eq('patientId', formData.patientId)
+        .eq('nuid', userID)
+        .eq('status', 'ongoing');
+
+      if (error) {
+        console.error('Error updating draft:', error);
+      } else {
+        console.log('Draft updated successfully!', data);
+      }
+    } else {
+      // Insert new row
+      const { data, error } = await supabase
+        .from('SSI_Form')
+        .insert([sanitizedData]);
+
+      if (error) {
+        console.error('Error inserting data:', error);
+      } else {
+        console.log('Data insertion successful!', data);
+      }
+    }
   };
+
+  const handleSaveDraft = (e: React.FormEvent) => {
+    handleSubmit(e, true);  // Save the form as a draft
+  };
+
+  // const loadDraft = async () => {
+  //   const { data, error } = await supabase
+  //     .from('SSI_Form')
+  //     .select('*')
+  //     .eq('nuid', userID)
+  //     .eq('status', 'ongoing');  // Only fetch forms with 'ongoing' status
+
+  //   if (error) {
+  //     console.error('Error Fetching Draft:', error);
+  //   } else if (data && data.length > 0) {
+  //     setFormData(data[0]);  // Load the first draft found
+  //   }
+  // };
+
 
 
   return (
@@ -398,11 +477,20 @@ const SSISurveillanceForm: React.FC = () => {
             Previous
           </button>
 
+          <button
+            type="button"
+            className={`px-4 py-2 bg-gray-500 text-white rounded`}
+            onClick={handleSaveDraft}
+          >
+            Save Draft
+          </button>
+
+
           {currentStep < steps.length - 1 ? (
             <button
               type="button"
               className="bg-indigo-500 text-white hover:bg-indigo-600 w-max
-              px-4 py-2 rounded"
+                      px-4 py-2 rounded"
               onClick={handleNextStep}
             >
               Next

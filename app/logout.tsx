@@ -1,12 +1,21 @@
-// import { supabase } from '@/utils/supabase/client';
+// 'use client';
 
-// const handleLogout = async () => {
-//     // const supabase = createClient();
-//     try {
-//         const { error } = await supabase.auth.signOut()
-//         if (error) throw error
-//         // Redirect to login page or update UI state
-//     } catch (error) {
-//         alert((error as Error).message)
-//     }
-// }
+// import { supabase } from '@/utils/supabase/client';
+// import { useRouter } from 'next/navigation';
+
+
+// const Logout = async () => {
+//     const router = useRouter();
+
+
+
+//     return (
+//         <button
+//             className='bg-red-500 text-white hover:bg-red-600 w-max px-4 py-2 rounded-lg m-2'
+//             onClick={handleLogout}
+//         >
+//             Logout
+//         </button>
+//     );
+// };
+// export default Logout;

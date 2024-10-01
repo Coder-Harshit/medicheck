@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase/client'
-import { User, Session } from '@supabase/supabase-js'
+import { User } from '@supabase/supabase-js'
 
 interface UserRole {
   id: string;
@@ -12,6 +12,7 @@ export function useUser() {
   const [user, setUser] = useState<User | null>(null)
   const [userRole, setUserRole] = useState<UserRole | null>(null)
   const [loading, setLoading] = useState(true)
+  const [userID, setUserID] = useState<string>('');
 
   useEffect(() => {
     async function getInitialSession() {
@@ -19,8 +20,10 @@ export function useUser() {
       setUser(session?.user ?? null)
       if (session?.user) {
         fetchUserRole(session.user.id)
+        setUserID(session.user.id);
       } else {
         setLoading(false)
+        setUserID('');
       }
     }
 
@@ -58,5 +61,5 @@ export function useUser() {
     }
   }
 
-  return { user, userRole, loading }
+  return { user, userRole, loading, userID }
 }

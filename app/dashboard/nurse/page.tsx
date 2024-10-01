@@ -3,6 +3,7 @@
 import { useUser } from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import SSISurveillanceForm from '@/app/ssiForm/page';
 
 const NurseDashboard = () => {
   const { userRole, loading } = useUser();
@@ -11,7 +12,11 @@ const NurseDashboard = () => {
   if (loading) return <div>Loading...</div>;
 
   if (userRole?.role === 'nurse') {
-    return <div>NurseDashboard</div>;
+    return (
+      <div>
+        <SSISurveillanceForm />
+      </div>
+    );
   } else {
     // Redirect to the appropriate dashboard based on role
     if (userRole) {

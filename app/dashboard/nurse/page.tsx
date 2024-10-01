@@ -6,8 +6,6 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
 import OngoingSSITable from '@/components/ssiForms/OngoingSSITable';
 import { FormData } from '@/app/ssiForm/page';
-import { UUID } from 'crypto';
-// import handleLogout from '@/app/logout';
 
 const NurseDashboard = () => {
   const { user, userRole, loading } = useUser();

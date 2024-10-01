@@ -1,15 +1,17 @@
+import { FormData } from '@/app/ssiForm/page';
 import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 
 interface OngoingSSITableProps {
-  data: any[];
+  // data: any[];
+  data: FormData[];
 }
 
 const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
-  const columns = [
+  const columns: { Header: string; accessor: keyof FormData }[] = [
     {
       Header: 'Patient Name',
       accessor: 'patientName'
@@ -52,7 +54,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
             <tr key={rowIndex} className="hover:bg-gray-50">
               {columns.map((column, colIndex) => (
                 <td key={colIndex} className="px-6 py-4 border-b border-gray-200 text-black">
-                  {row[column.accessor]}
+                  {row[column.accessor].toString()}
                 </td>
               ))}
             </tr>

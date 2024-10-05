@@ -43,6 +43,9 @@ const DoctorDashboard = () => {
           case 'nurse':
             router.push('/dashboard/nurse');
             break;
+          case 'admin':
+            router.push('/dashboard/admin');
+            break;
           default:
             router.push('/dashboard'); // Default case: redirect to generic dashboard
         }

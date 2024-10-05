@@ -5,7 +5,7 @@ import { User } from '@supabase/supabase-js'
 interface UserRole {
   id: string;
   email: string;
-  role: 'doctor' | 'nurse';
+  role: 'doctor' | 'nurse' | 'admin';
 }
 
 export function useUser() {
@@ -42,7 +42,7 @@ export function useUser() {
     return () => {
       authListener.subscription.unsubscribe()
     }
-  }, [])
+  }, [])  
 
   const fetchUserRole = async (userId: string) => {
     try {

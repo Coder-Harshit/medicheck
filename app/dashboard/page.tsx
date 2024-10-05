@@ -49,6 +49,9 @@ export default function DashBoard() {
             console.log(userRole?.role)
             router.push('/dashboard/nurse')
             break
+          case 'admin':
+            router.push('/dashboard/admin');
+            break;
           default:
             // Handle unknown role
             console.error('Unknown user role')

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { FormData } from '@/app/ssiForm/page';
 import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
@@ -10,6 +11,7 @@ interface OngoingSSITableProps {
 const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const router = useRouter();
 
   const columns: { Header: string; accessor: keyof FormData }[] = [
     {
@@ -35,6 +37,10 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
     setCurrentPage(0); // Reset to the first page when page size changes
   };
 
+  const handleRowClick = (id: string) => {
+    router.push(`/ssiForm/${id}`);
+  };
+
   const paginatedData = data.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
 
   return (
@@ -51,7 +57,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
         </thead>
         <tbody>
           {paginatedData.map((row, rowIndex) => (
-            <tr key={rowIndex} className="hover:bg-gray-50">
+            <tr key={rowIndex} className="hover:bg-gray-50 cursor-pointer" onClick={() => handleRowClick(row.patientId)}>
               {columns.map((column, colIndex) => (
                 <td key={colIndex} className="px-6 py-4 border-b border-gray-200 text-black">
                   {row[column.accessor].toString()}

@@ -1,17 +1,15 @@
-// FILE: app/ssiForm/draft/[id].tsx
+// FILE: app/ssiForm/[id]/page.tsx
 
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
 import { FormData } from '@/app/ssiForm/page';
 
 const SSIDetail = () => {
-  const router = useRouter();
   const { id } = useParams(); // Get the dynamic id from the URL
-  // console.log('ID:', id);
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -40,9 +38,9 @@ const SSIDetail = () => {
 
   if (!formData) return <div>No data found</div>;
 
-  // const handleEditDraft = () => {
-  //   router.push(`/ssiForm/edit/${id}`);
-  // };
+  const handleEditDraft = () => {
+    router.push(`/ssiForm/edit/${id}`);
+  };
 
   const handleBackToDashboard = () => {
     router.push('/dashboard');
@@ -56,12 +54,12 @@ const SSIDetail = () => {
       <p><strong>Status:</strong> {formData.status}</p>
       {/* Add more fields as necessary */}
       <div className="mt-4">
-        {/* <button
+        <button
           onClick={handleEditDraft}
           className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
         >
           Edit Draft
-        </button> */}
+        </button>
         <button
           onClick={handleBackToDashboard}
           className="px-4 py-2 bg-gray-500 text-white rounded-md"

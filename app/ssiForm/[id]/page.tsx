@@ -40,9 +40,9 @@ const SSIDetail = () => {
 
   if (!formData) return <div>No data found</div>;
 
-  const handleEditDraft = () => {
-    router.push(`/ssiForm/edit/${id}`);
-  };
+  // const handleEditDraft = () => {
+  //   router.push(`/ssiForm/edit/${id}`);
+  // };
 
   const handleBackToDashboard = () => {
     router.push('/dashboard');

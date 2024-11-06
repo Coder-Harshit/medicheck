@@ -56,13 +56,13 @@ const SSIDetail = () => {
       <div className="mt-4">
         <button
           onClick={handleEditDraft}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
+          className="btn-primary mr-2"
         >
           Edit Draft
         </button>
         <button
           onClick={handleBackToDashboard}
-          className="px-4 py-2 bg-gray-500 text-white rounded-md"
+          className="btn-secondary"
         >
           Back to Dashboard
         </button>

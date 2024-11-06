@@ -59,9 +59,6 @@ const NurseDashboard = () => {
     fetchSSIForms();
   }, [user]);
 
-  const handleSSIForm = () => {
-    router.push('/ssiForm');
-  };
 
   const handleLogout = async () => {
     try {
@@ -81,19 +78,21 @@ const NurseDashboard = () => {
     return (
       <div>
         <OngoingSSITable data={ssiForms} />
-        <div className='flex flex-row'>
-          <button
-            className='bg-red-500 text-white hover:bg-red-600 w-max px-4 py-2 rounded-lg m-2'
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-          <button
+        <div className='flex flex-row py-10'>
+            <div className='flex justify-center w-full'>
+            <button
+              className='bg-red-500 text-white hover:bg-red-600 w-max px-4 py-2 rounded-lg m-2'
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+            </div>
+          {/* <button
             className='bg-indigo-500 text-white hover:bg-indigo-600 w-max px-4 py-2 rounded-lg m-2'
             onClick={handleSSIForm}
           >
             Click to Add SSI Form
-          </button>
+          </button> */}
         </div>
       </div>
     );

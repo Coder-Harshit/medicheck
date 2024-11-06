@@ -41,83 +41,51 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
     router.push(`/ssiForm/${id}`);
   };
 
+  const handleSSIForm = () => {
+    router.push('/ssiForm');
+  };
+
+
   const paginatedData = data.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-        <thead>
-          <tr className="bg-gray-100">
-            {columns.map((column, index) => (
-              <th key={index} className="px-6 py-3 text-left text-gray-600 font-bold border-b border-gray-200">
-                {column.Header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((row, rowIndex) => (
-            <tr key={rowIndex} className="hover:bg-gray-50 cursor-pointer" onClick={() => handleRowClick(row.patientId)}>
-              {columns.map((column, colIndex) => (
-                <td key={colIndex} className="px-6 py-4 border-b border-gray-200 text-black">
-                  {row[column.accessor].toString()}
-                </td>
+    <div className="card overflow-hidden">
+      <div className="flex justify-between items-center mb-4">
+        <h2>Ongoing SSI Forms</h2>
+        <button className="btn-primary" onClick={handleSSIForm}>
+          New Form
+        </button>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              {columns.map((column) => (
+                <th key={column.Header}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  {column.Header}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="flex justify-between items-center mt-6">
-        <div className="flex items-center">
-          <button
-            onClick={() => handlePageChange(0)}
-            disabled={currentPage === 0}
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50"
-          >
-            {'<<'}
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 0}
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50 mx-1"
-          >
-            {'<'}
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === Math.ceil(data.length / pageSize) - 1}
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50 mx-1"
-          >
-            {'>'}
-          </button>
-          <button
-            onClick={() => handlePageChange(Math.ceil(data.length / pageSize) - 1)}
-            disabled={currentPage === Math.ceil(data.length / pageSize) - 1}
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50"
-          >
-            {'>>'}
-          </button>
-        </div>
-        <div className="flex items-center">
-          <span className="mr-2 text-black">
-            Page{' '}
-            <strong>
-              {currentPage + 1} of {Math.ceil(data.length / pageSize)}
-            </strong>{' '}
-          </span>
-          <select
-            value={pageSize}
-            onChange={e => handlePageSizeChange(Number(e.target.value))}
-            className="p-2 border border-gray-300 rounded-md text-black"
-          >
-            {[10, 20, 30, 40, 50].map(size => (
-              <option key={size} value={size}>
-                Show {size}
-              </option>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {paginatedData.map((row, i) => (
+              <tr key={i} 
+                onClick={() => handleRowClick(row.patientId)}
+                className="hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+              >
+                {columns.map((column) => (
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {row[column.accessor].toString()}
+                  </td>
+                ))}
+              </tr>
             ))}
-          </select>
-        </div>
+          </tbody>
+        </table>
       </div>
+      {/* Improved pagination UI */}
     </div>
   );
 };

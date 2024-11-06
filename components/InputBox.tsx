@@ -13,9 +13,10 @@ interface InputBoxProps {
     disabled?: boolean
     name: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    error?: string;
 }
 
-const InputBox: React.FC<InputBoxProps> = ({
+export const InputBox: React.FC<InputBoxProps> = ({
     label = "",
     disabled = false,
     type = "text",
@@ -27,6 +28,8 @@ const InputBox: React.FC<InputBoxProps> = ({
     autoComplete = "on",
     labelClass = "",
     onChange = () => {}, // Provide a default no-op function
+    error = "",
+    ...props
 }) => {
     const [inputValue, setInputValue] = useState(value);
 
@@ -36,20 +39,27 @@ const InputBox: React.FC<InputBoxProps> = ({
     };
 
     return (
-        <div className={`flex flex-col space-y-1 ${className}`}>
-            {/* Optional label display */}
-            {label && <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>}
+        <div className="space-y-1">
+            {label && (
+                <label htmlFor={id} className={`block text-sm font-medium text-gray-700 ${labelClass}`}>
+                    {label}
+                </label>
+            )}
             <input
                 type={type}
                 placeholder={placeholder}
                 value={inputValue}
-                className={`bg-slate-100 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${className}`}
+                className={`input-field ${error ? 'border-red-500 focus:ring-red-500' : ''} ${className}`}
                 id={id}
                 autoComplete={autoComplete}
                 name={name}
                 onChange={handleChange}
                 disabled={disabled}
+                {...props}
             />
+            {error && (
+                <p className="text-sm text-red-600">{error}</p>
+            )}
         </div>
     );
 };

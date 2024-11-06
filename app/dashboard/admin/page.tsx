@@ -95,6 +95,7 @@ const AdminPage = () => {
           contentLabel="Create New User"
           className="fixed inset-0 flex items-center justify-center"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+          ariaHideApp={false}
         >
           <div className="bg-white p-6 rounded-md w-96">
             <h2 className="text-xl font-bold text-black mb-4">Create New User</h2>

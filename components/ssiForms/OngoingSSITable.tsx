@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 
 interface OngoingSSITableProps {
-  // data: any[];
   data: FormData[];
 }
 
@@ -45,7 +44,6 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
     router.push('/ssiForm');
   };
 
-
   const paginatedData = data.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
 
   return (
@@ -70,13 +68,13 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedData.map((row, i) => (
-              <tr key={i} 
+            {paginatedData.map((row) => (
+              <tr key={row.patientId} // Ensure each row has a unique key
                 onClick={() => handleRowClick(row.patientId)}
                 className="hover:bg-gray-50 cursor-pointer transition-colors duration-150"
               >
                 {columns.map((column) => (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td key={column.accessor} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {row[column.accessor].toString()}
                   </td>
                 ))}

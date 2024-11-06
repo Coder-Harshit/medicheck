@@ -15,8 +15,8 @@ const config: Config = {
           50: 'rgb(var(--primary) / 0.05)',
           100: 'rgb(var(--primary) / 0.1)',
           500: 'rgb(var(--primary) / 1)',
-          600: 'rgb(var(--primary) / 0.9)',
-          700: 'rgb(var(--primary) / 0.8)',
+          600: 'rgb(var(--primary) / 0.8)',
+          700: 'rgb(var(--primary) / 0.9)',
         },
         secondary: {
           50: 'rgb(var(--secondary) / 0.05)',

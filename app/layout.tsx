@@ -29,9 +29,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      {/* <Head>
-        <link rel="preload" href="./fonts/Ge" />
-      </Head> */}
       <body className={`${inter.className} h-full`}>
         <div className="min-h-full">
           {children}

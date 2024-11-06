@@ -455,7 +455,8 @@ const SSISurveillanceForm: React.FC = () => {
       <div className="flex justify-center mb-6">
         {steps.map((step, index) => (
           <div key={step.id}
-            className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
+            // className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
+            className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-700'} rounded`}
           >
             {step.title}
           </div>
@@ -489,7 +490,7 @@ const SSISurveillanceForm: React.FC = () => {
           {currentStep < steps.length - 1 ? (
             <button
               type="button"
-              className="bg-indigo-500 text-white hover:bg-indigo-600 w-max
+              className="bg-primary-600 text-white hover:bg-primary-500 w-max
                       px-4 py-2 rounded"
               onClick={handleNextStep}
             >

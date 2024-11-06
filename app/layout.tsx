@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Inter } from 'next/font/google'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -12,6 +13,7 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "MediCheck",
@@ -24,11 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} h-full`}>
+        <div className="min-h-full">
+          {children}
+        </div>
       </body>
     </html>
   );

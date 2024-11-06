@@ -1,28 +1,35 @@
 // FILE: tailwind.config.ts
 
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        primary: '#007BFF',
-        'primary-dark': '#0056b3',
-        secondary: '#28a745',
-        'secondary-dark': '#218838', // Add this line
-        background: '#f8f9fa',
-        foreground: '#343a40',
-        error: '#dc3545',
-        success: '#28a745',
+        primary: {
+          50: 'rgb(var(--primary) / 0.05)',
+          100: 'rgb(var(--primary) / 0.1)',
+          500: 'rgb(var(--primary) / 1)',
+          600: 'rgb(var(--primary) / 0.9)',
+          700: 'rgb(var(--primary) / 0.8)',
+        },
+        secondary: {
+          50: 'rgb(var(--secondary) / 0.05)',
+          100: 'rgb(var(--secondary) / 0.1)',
+          500: 'rgb(var(--secondary) / 1)',
+          600: 'rgb(var(--secondary) / 0.9)',
+          700: 'rgb(var(--secondary) / 0.8)',
+        },
+        background: 'rgb(var(--background) / 1)',
       },
     },
   },
   plugins: [],
-};
+}
 
-export default config;
+export default config

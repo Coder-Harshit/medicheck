@@ -8,8 +8,10 @@ interface OngoingSSITableProps {
 }
 
 const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  // const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage] = useState(0);
+  // const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const router = useRouter();
 
   const columns: { Header: string; accessor: keyof FormData }[] = [
@@ -27,14 +29,14 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
     },
   ];
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  // const handlePageChange = (page: number) => {
+  //   setCurrentPage(page);
+  // };
 
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setCurrentPage(0); // Reset to the first page when page size changes
-  };
+  // const handlePageSizeChange = (size: number) => {
+  //   setPageSize(size);
+  //   setCurrentPage(0); // Reset to the first page when page size changes
+  // };
 
   const handleRowClick = (id: string) => {
     router.push(`/ssiForm/${id}`);

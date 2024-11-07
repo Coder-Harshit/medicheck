@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormData } from './page';
 import DropdownBox from '../../components/DropdownBox';
-import InputBox from '../../components/InputBox';
+// import InputBox from '../../components/InputBox';
 
 interface MicrobiologyDataProps {
   formData: FormData;

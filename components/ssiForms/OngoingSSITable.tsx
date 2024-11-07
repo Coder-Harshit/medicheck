@@ -49,7 +49,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
   return (
     <div className="card overflow-hidden">
       <div className="flex justify-between items-center mb-4">
-        <h2>Ongoing SSI Forms</h2>
+        <h2><b>Ongoing SSI Forms</b></h2>
         <button className="btn-primary" onClick={handleSSIForm}>
           New Form
         </button>
@@ -71,7 +71,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
             {paginatedData.map((row) => (
               <tr key={row.patientId} // Ensure each row has a unique key
                 onClick={() => handleRowClick(row.patientId)}
-                className="hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                className="hover:bg-gray-100 cursor-pointer transition-colors duration-150"
               >
                 {columns.map((column) => (
                   <td key={column.accessor} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

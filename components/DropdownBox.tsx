@@ -36,11 +36,25 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
   };
 
   return (
-    <div className={`flex flex-col space-y-1 ${className}`}>  {/* Apply optional class(es) */}
-      <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>
+    <div className="space-y-1">
+            {label && (
+                <label
+                    htmlFor={id}
+                    className={`block text-sm font-medium text-gray-700 truncate ${labelClass}`}
+                    style={{
+                        width: '150px', // Fixed width
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                    }}
+                    title={label} // Tooltip with full label text
+                >
+                    {label}
+                </label>
+            )}
       <select
         id={id}
-        className={`bg-slate-100 text-black p-3 py-3.5 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''} ${className}`}
+        className={`bg-slate-200 ${isDisabled ? 'disabled cursor-not-allowed' : ''} h-10 ${className}`}
         disabled={isDisabled} // Set disabled state based on the prop
         value={value}          // Set selected value from the prop
         name={name}

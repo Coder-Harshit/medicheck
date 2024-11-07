@@ -220,7 +220,12 @@ const SSISurveillanceForm: React.FC = () => {
   const handleYesNoChange = (index: number, value: boolean) => {
     const newChecklist = [...formData.SSIEvalCheckList];
     newChecklist[index].yesNo = value;
+    if (!value) {
+      newChecklist[index].remark = '';
+    }
     setFormData({ ...formData, SSIEvalCheckList: newChecklist });
+    console.log('Checklist:', newChecklist);
+    
   };
 
   const handleRemarkChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {

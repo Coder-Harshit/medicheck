@@ -10,135 +10,159 @@ interface AntibioticPrescriptionProps {
   handleAntibioticChange: (index: number, name: string, value: string) => void;
   addAntibiotic: () => void;
   removeAntibiotic: () => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
 }
 
-const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({ formData, handleAntibioticChange, addAntibiotic, removeAntibiotic, handleChange }) => {
+const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
+  formData,
+  handleAntibioticChange,
+  addAntibiotic,
+  removeAntibiotic,
+  handleChange
+}) => {
   return (
-    <div className="container mx-auto p-4 rounded-lg section_box">
-      <h3 className="text-2xl font-bold mt-4 mb-6 text-cente capitalizer">Antibiotic Prescription</h3>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h3 className="text-2xl font-bold mb-6 text-center text-primary">
+        Antibiotic Prescription
+      </h3>
+
       {formData.antibiotics.map((antibiotic, index: number) => (
-        <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 p-4 border rounded-lg shadow-md">
-          <div className="flex flex-col">
+        <div
+          key={index}
+          className="border border-gray-200 rounded-lg p-4 mb-6">
+          <h4 className="text-lg font-semibold mb-4 text-primary">
+            Antibiotic {index + 1}
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Stage */}
             <DropdownBox
               label='Stage'
-              labelClass='font-semibold'
+              id={`stage_${index}`}
+              name="abop_stage"
               value={antibiotic.abop_stage}
-              onChange={(e) => handleAntibioticChange(index, 'abop_stage', e.target.value)}
-              className="input rounded"
-              id={'stage'}
-              name={'stage'}
               options={[
+                { value: '', label: 'Select Stage' },
                 { value: 'prior', label: 'PRIOR to Operation' },
                 { value: 'pre_peri', label: 'PRE/PERI Operatively' },
                 { value: 'after', label: 'AFTER PeriOperatively' },
               ]}
+              className="input-field"
+              onChange={(e) =>
+                handleAntibioticChange(index, 'abop_stage', e.target.value)
+              }
             />
-          </div>
-          <div className="flex flex-col">
+
+            {/* Antibiotic Name */}
             <InputBox
-              label='Antibiotic Given Prior to Operation'
-              labelClass='font-semibold'
+              label="Antibiotic Name"
+              type="text"
+              id={`antibiotic_${index}`}
+              name="antibiotic"
+              className="input-field"
               value={antibiotic.antibiotic}
-              onChange={(e) => handleAntibioticChange(index, 'antibiotic', e.target.value)}
-              className="input rounded"
-              id={'abprior'}
-              name={'abprior'}
+              onChange={(e) =>
+                handleAntibioticChange(index, 'antibiotic', e.target.value)
+              }
             />
-          </div>
-          <div className="flex flex-col">
+
+            {/* Route of Administration */}
             <DropdownBox
-              label='Route of Administration'
-              labelClass={'font-semibold'}
+              label="Route of Administration"
+              id={`route_${index}`}
+              name="route"
+              className="input-field"
               value={antibiotic.route}
-              onChange={(e) => handleAntibioticChange(index, 'route', e.target.value)}
-              className="select rounded"
               options={[
                 { value: '', label: 'Select Route' },
                 { value: 'IV', label: 'IV' },
                 { value: 'Oral', label: 'Oral' },
                 { value: 'IM', label: 'IM' },
               ]}
-              id={'route'}
-              name={'route'}
+              onChange={(e) =>
+                handleAntibioticChange(index, 'route', e.target.value)
+              }
             />
-          </div>
-          <div className="flex flex-col">
+
+            {/* Duration (mins) */}
             <InputBox
-              label='Duration (mins)'
-              labelClass='font-semibold'
+              label="Duration (mins)"
               type="number"
+              className="input-field"
+              id={`duration_${index}`}
+              name="duration"
               value={antibiotic.duration}
-              id={'duration'}
-              name={'duration'}
-              onChange={(e) => handleAntibioticChange(index, 'duration', e.target.value)}
-              className="input rounded"
+              onChange={(e) =>
+                handleAntibioticChange(index, 'duration', e.target.value)
+              }
+              nonnegative={true}
             />
-          </div>
-          <div className="flex flex-col">
+
+            {/* No. of Doses */}
             <InputBox
-              label='No. of Doses'
-              labelClass='font-semibold'
+              label="No. of Doses"
               type="number"
+              id={`doses_${index}`}
+              className="input-field"
+              name="doses"
               value={antibiotic.doses}
-              onChange={(e) => handleAntibioticChange(index, 'doses', e.target.value)}
-              className="input rounded"
-              id={'doses'}
-              name={'doses'}
+              onChange={(e) =>
+                handleAntibioticChange(index, 'doses', e.target.value)
+              }
+              nonnegative={true}
             />
           </div>
         </div>
       ))}
+
       <div className="flex justify-between mt-4">
         <button
-          type='button'
+          type="button"
           onClick={removeAntibiotic}
-          className="bg-red-500 text-white p-2 rounded"
+          className="btn-secondary"
         >
           Remove Antibiotic
         </button>
-        <button
-          type='button'
-          onClick={addAntibiotic}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
+        <button type="button" onClick={addAntibiotic} className="btn-primary">
           Add Antibiotic
         </button>
       </div>
-      <div className="flex">
-        <div className="p-3 m-2 w-full">
-          <DateTimePickerBox
-            label="Time of Induction"
-            id="timeOfInduction"
-            name="timeOfInduction"
-            value={formData.timeOfInduction}
-            onChange={handleChange}
-            className="input p-3 rounded-md"
-            type='time'
-          />
-        </div>
-        <div className="p-3 m-2 w-full">
-          <DateTimePickerBox
-            label="Time of Incision"
-            id="timeOfSkinIncision"
-            name="timeOfSkinIncision"
-            value={formData.timeOfSkinIncision}
-            onChange={handleChange}
-            className="input p-3 rounded-md"
-            type='time'
-          />
-        </div>
-        <div className="p-3 m-2 w-full">
-          <DateTimePickerBox
-            label="End time of Surgery"
-            id="timeOfEndSurgery"
-            name="timeOfEndSurgery"
-            value={formData.timeOfEndSurgery}
-            onChange={handleChange}
-            className="input p-3 rounded-md"
-            type='time'
-          />
-        </div>
+
+      {/* Timing Information */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        {/* Time of Induction */}
+        <DateTimePickerBox
+          label="Time of Induction"
+          id="timeOfInduction"
+          className="input-field"
+          name="timeOfInduction"
+          value={formData.timeOfInduction}
+          onChange={handleChange}
+          type="time"
+        />
+
+        {/* Time of Incision */}
+        <DateTimePickerBox
+          label="Time of Incision"
+          id="timeOfSkinIncision"
+          name="timeOfSkinIncision"
+          className="input-field"
+          value={formData.timeOfSkinIncision}
+          onChange={handleChange}
+          type="time"
+        />
+
+        {/* End Time of Surgery */}
+        <DateTimePickerBox
+          label="End Time of Surgery"
+          id="timeOfEndSurgery"
+          className="input-field"
+          name="timeOfEndSurgery"
+          value={formData.timeOfEndSurgery}
+          onChange={handleChange}
+          type="time"
+        />
       </div>
     </div>
   );

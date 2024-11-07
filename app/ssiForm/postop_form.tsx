@@ -1,46 +1,64 @@
 import React from 'react';
-import DropdownBox from '../../components/DropdownBox';
-import {FormData} from './page';
+import ToggleSwitch from '../../components/ToggleSwitch';
+import { FormData } from './page';
 import { days, symptoms } from './constants';
+
 interface PostOpProps {
   formData: FormData;
-  handlePostOpChange: (symptom: string, day: number | string, value: boolean) => void;
+  handlePostOpChange: (
+    symptom: string,
+    day: number | string,
+    value: boolean
+  ) => void;
 }
 
-const PostOpForm: React.FC<PostOpProps> = ({ formData, handlePostOpChange }) => {
-  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>, symptom: string, day: string) => {
-    handlePostOpChange(symptom, day, e.target.value === 'true');
+const PostOpForm: React.FC<PostOpProps> = ({
+  formData,
+  handlePostOpChange,
+}) => {
+  const handleToggleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    symptom: string,
+    day: string
+  ) => {
+    handlePostOpChange(symptom, day, e.target.checked);
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6 text-center capitalize">Post-op Monitoring Form</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center text-primary">
+        Post-op Monitoring Form
+      </h2>
       <div className="overflow-x-auto">
-        <table className="table-auto border-collapse w-full text-center">
-          <thead>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="border p-2">Symptom</th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Symptom
+              </th>
               {days.map((day, index) => (
-                <th key={index} className="border p-2">Day {day}</th>
+                <th
+                  key={index}
+                  className="px-4 py-2 text-center text-sm font-medium text-gray-700"
+                >
+                  Day {day}
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-white divide-y divide-gray-200">
             {symptoms.map((symptom, symptomIndex) => (
               <tr key={symptomIndex}>
-                <td className="border p-2 text-left font-semibold">{symptom}</td>
+                <td className="px-4 py-2 text-sm font-semibold text-gray-800">
+                  {symptom}
+                </td>
                 {days.map((day, dayIndex) => (
-                  <td key={dayIndex} className="border p-2">
-                    <DropdownBox
-                      id={`${dayIndex}-${symptomIndex}`}
-                      name={`${dayIndex}-${symptomIndex}`}
-                      className='select p-1 rounded-md'
-                      value={formData.symptomsDict[symptom][day] ? 'true' : 'false'}
-                      options={[
-                        { value: 'true', label: 'Yes' },
-                        { value: 'false', label: 'No' },
-                      ]}
-                      onChange={(e) => handleDropdownChange(e, symptom, day)}
+                  <td key={dayIndex} className="px-4 py-2 text-center">
+                    <ToggleSwitch
+                      id={`symptom_${symptomIndex}_day_${dayIndex}`}
+                      name={`symptom_${symptomIndex}_day_${dayIndex}`}
+                      checked={!!formData.symptomsDict[symptom][day]}
+                      onChange={(e) => handleToggleChange(e, symptom, day)}
                     />
                   </td>
                 ))}

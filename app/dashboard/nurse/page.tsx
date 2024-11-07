@@ -77,7 +77,9 @@ const NurseDashboard = () => {
   if (user && userRole?.role === 'nurse') {
     return (
       <div>
+        
         <OngoingSSITable data={ssiForms}/>
+
         <div className='flex flex-row py-10'>
             <div className='flex justify-center w-full'>
             <button

@@ -41,14 +41,29 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
   };
 
   return (
-    <div className={`flex flex-col space-y-1 ${className}`}>
-      {label && <label htmlFor={id} className={`text-white ${labelClass}`}>{label}</label>}
+    <div className={``}>
+      {label && (
+        <label 
+          htmlFor={id}
+          className={`block text-sm font-medium text-gray-700 truncate ${labelClass}`}
+          style={{
+            width: '150px', // Fixed width
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+        }}
+        title={label} // Tooltip with full label text
+    >
+        {label}
+    </label>
+  )}
       {type === 'datetime' ? (
-        <div className="flex space-x-2">
+        // <div className="flex space-x-2">
+        <div className="space-y-1">
           <input
             type="date"
             id={`${id}-date`}
-            className={`${className} bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
+            className={`${className} bg-slate-200 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
             disabled={isDisabled}
             value={value?.split('T')[0] || ''}
             name={`${name}-date`}
@@ -57,7 +72,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
           <input
             type="time"
             id={`${id}-time`}
-            className={`${className} bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
+            className={`${className} bg-slate-200 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
             disabled={isDisabled}
             value={value?.split('T')[1] || ''}
             name={`${name}-time`}
@@ -67,7 +82,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
       ) : type === 'time' && upperLimitMins !== undefined ? (
         <select
           id={id}
-          className={`${className} bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
+          className={`${className} bg-slate-200 h-10 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
           disabled={isDisabled}
           value={value}
           name={name}
@@ -81,7 +96,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
         <input
           type={type}
           id={id}
-          className={`${className} bg-gray-300 text-black p-3 focus:outline-none focus:ring-2 focus:ring-gray-500 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
+          className={`${className} bg-slate-200 ${isDisabled ? 'disabled cursor-not-allowed' : ''}`}
           disabled={isDisabled}
           value={value}
           name={name}

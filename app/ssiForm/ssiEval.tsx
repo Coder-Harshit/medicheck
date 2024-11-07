@@ -1,113 +1,207 @@
+// FILE: ssiEval.tsx
+
 import React from 'react';
 import { SSIEvalCheckListItem } from './page';
 import { FormData } from './page';
+import InputBox from '../../components/InputBox';
+import ToggleSwitch from '../../components/ToggleSwitch';
 
 interface SSIEvalProps {
-    formData: FormData;
-    handleYesNoChange: (index: number, value: boolean) => void;
-    handleRemarkChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
+  formData: FormData;
+  handleYesNoChange: (index: number, value: boolean) => void;
+  handleRemarkChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SSIEval: React.FC<SSIEvalProps> = ({ formData, handleYesNoChange, handleRemarkChange }) => {
-    return (
-        <div className="container mx-auto p-4 rounded-lg section_box">
-            <h3 className="text-2xl font-bold mt-4 mb-6 text-center">SSI EVALUATION</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6 pb-4">
+const SSIEval: React.FC<SSIEvalProps> = ({
+  formData,
+  handleYesNoChange,
+  handleRemarkChange,
+}) => {
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h3 className="text-2xl font-bold mb-6 text-center text-primary">
+        SSI Evaluation
+      </h3>
 
-                <div className="flex flex-col">
-                    <label htmlFor="patient_name" className="p-2 font-semibold text-center">Patient Name</label>
-                    <div id="patient_name" className="input rounded bg-transparent text-red-300 text-center">
-                        {formData.patientName}
-                    </div>
-                </div>
-
-                <div className="flex flex-col">
-                    <label htmlFor="patientId" className="p-2 font-semibold text-center">Patient ID</label>
-                    <div id="patientId" className="input rounded bg-transparent text-red-300 text-center">
-                        {formData.patientId}
-                    </div>
-                </div>
-
-                <div className="flex flex-col">
-                    <label htmlFor="age" className="p-2 font-semibold text-center">Age</label>
-                    <div id="age" className="input rounded bg-transparent text-red-300 text-center">
-                        {formData.age}
-                    </div>
-                </div>
-
-                <div className="flex flex-col">
-                    <label htmlFor="gender" className="p-2 font-semibold text-center">Gender</label>
-                    <div id="gender" className="input rounded bg-transparent text-red-300 text-center">
-                        {formData.gender}
-                    </div>
-                </div>
-
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-
-                <div className="flex flex-col">
-                    {/* default value not being handled */}
-                    <label htmlFor="procName" className="p-2 font-semibold text-center">Procedure Name</label>
-                    <div id="procedureName" className="input rounded bg-transparent text-red-300 text-center">
-                        {formData.procedureName}
-                    </div>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="dop" className="p-2 font-semibold text-center">Date Of Procedure</label>
-                    <div id="dateOfProcedure" className="input rounded bg-transparent text-red-300 text-center">
-                        {formData.dateOfProcedure}
-                    </div>
-                </div>
-
-            </div>
-
-            {/* Checklist Table */}
-            <table className="w-full border-collapse border border-gray-400 mt-6">
-                <thead>
-                    <tr className="bg-transparent">
-                        <th className="border border-gray-400 p-2">S.No</th>
-                        <th className="border border-gray-400 p-2">ITEMS</th>
-                        <th className="border border-gray-400 p-2">YES</th>
-                        <th className="border border-gray-400 p-2">NO</th>
-                        <th className="border border-gray-400 p-2">REMARKS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {formData.SSIEvalCheckList.map((item: SSIEvalCheckListItem, index: number) => (
-                        <tr key={index} className="hover:bg-gray-700">
-                            <td className="border border-gray-400 p-2 text-center">{index + 1}</td>
-                            <td className="border border-gray-400 p-2">{item.item}</td>
-                            <td className="border border-gray-400 p-2 text-center">
-                                <input
-                                    type="radio"
-                                    name={`yesNo-${index}`}
-                                    checked={item.yesNo === true}
-                                    onChange={() => handleYesNoChange(index, true)}
-                                />
-                            </td>
-                            <td className="border border-gray-400 p-2 text-center">
-                                <input
-                                    type="radio"
-                                    name={`yesNo-${index}`}
-                                    checked={item.yesNo === false}
-                                    onChange={() => handleYesNoChange(index, false)}
-                                />
-                            </td>
-                            <td className="border border-gray-400 p-2">
-                                <input
-                                    type="text"
-                                    value={item.remark}
-                                    onChange={(e) => handleRemarkChange(index, e)}
-                                    className="w-full p-2 border border-gray-300 rounded text-black"
-                                />
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+      {/* Patient Information */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div>
+          <label
+            htmlFor="patient_name"
+            className="block text-sm font-medium text-gray-700"
+            title="Patient Name"
+          >
+            Patient Name
+          </label>
+          <div
+            id="patient_name"
+            className="input-field bg-gray-100 text-gray-800"
+          >
+            {formData.patientName}
+          </div>
         </div>
-    );
+
+        <div>
+          <label
+            htmlFor="patientId"
+            className="block text-sm font-medium text-gray-700"
+            title="Patient ID"
+          >
+            Patient ID
+          </label>
+          <div
+            id="patientId"
+            className="input-field bg-gray-100 text-gray-800"
+          >
+            {formData.patientId}
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="age"
+            className="block text-sm font-medium text-gray-700"
+            title="Age"
+          >
+            Age
+          </label>
+          <div id="age" className="input-field bg-gray-100 text-gray-800">
+            {formData.age}
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="gender"
+            className="block text-sm font-medium text-gray-700"
+            title="Gender"
+          >
+            Gender
+          </label>
+          <div
+            id="gender"
+            className="input-field bg-gray-100 text-gray-800"
+          >
+            {formData.gender}
+          </div>
+        </div>
+      </div>
+
+      {/* Procedure Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label
+            htmlFor="procedureName"
+            className="block text-sm font-medium text-gray-700"
+            title="Procedure Name"
+          >
+            Procedure Name
+          </label>
+          <div
+            id="procedureName"
+            className="input-field bg-gray-100 text-gray-800"
+          >
+            {formData.procedureName}
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="dateOfProcedure"
+            className="block text-sm font-medium text-gray-700"
+            title="Date of Procedure"
+          >
+            Date of Procedure
+          </label>
+          <div
+            id="dateOfProcedure"
+            className="input-field bg-gray-100 text-gray-800"
+          >
+            {formData.dateOfProcedure}
+          </div>
+        </div>
+      </div>
+
+      {/* Checklist Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
+                S.No
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Items
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
+                Yes/No
+              </th>
+              {/* <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
+                Yes
+              </th> */}
+              {/* <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
+                No
+              </th> */}
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Remarks
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {formData.SSIEvalCheckList.map(
+              (item: SSIEvalCheckListItem, index: number) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="px-4 py-2 text-center text-sm text-gray-800">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-800">
+                    {item.item}
+                  </td>
+                  {/* <td className="px-4 py-2 text-center">
+                    <input
+                      type="radio"
+                      id={`yes-${index}`}
+                      name={`yesNo-${index}`}
+                      checked={item.yesNo === true}
+                      onChange={() => handleYesNoChange(index, true)}
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                    />
+                  </td> */}
+                  <td className="px-4 py-2 text-center">
+                  <ToggleSwitch
+                      id={`yesNo-${index}`}
+                      name={`yesNo-${index}`}
+                      checked={!!item.yesNo}
+                      onChange={(e) => handleYesNoChange(index, e.target.checked)}
+                    />
+                    {/* <input
+                      type="radio"
+                      id={`no-${index}`}
+                      name={`yesNo-${index}`}
+                      checked={item.yesNo === false}
+                      onChange={() => handleYesNoChange(index, false)}
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                    /> */}
+                  </td>
+                  <td className="px-4 py-2">
+                    <InputBox
+                      id={`remark-${index}`}
+                      name={`remark-${index}`}
+                      value={item.remark}
+                      onChange={(e) => handleRemarkChange(index, e)}
+                      placeholder="Enter remarks"
+                      className="input-field"
+                      disabled={!item.yesNo}
+                    />
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default SSIEval;

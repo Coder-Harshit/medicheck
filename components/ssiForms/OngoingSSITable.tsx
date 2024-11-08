@@ -40,6 +40,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
 
   const handleRowClick = (id: string) => {
     router.push(`/ssiForm/${id}`);
+    // router.push(`/ssiForm/edit/${id}`);
   };
 
   const handleSSIForm = () => {

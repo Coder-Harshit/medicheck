@@ -1,7 +1,7 @@
 'use client';
 
 import './style.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import PatientData from './patient_data';
 import MicrobiologyData from './microbiology_data';
 import AntibioticPrescription from './antibiotic_prescription';
@@ -581,4 +581,10 @@ const SSISurveillanceForm: React.FC = () => {
     );
 };
 
-export default SSISurveillanceForm;
+const SSISurveillanceFormPage: React.FC = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <SSISurveillanceForm />
+    </Suspense>
+);
+
+export default SSISurveillanceFormPage;

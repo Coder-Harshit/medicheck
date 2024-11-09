@@ -228,13 +228,12 @@ const SSISurveillanceForm: React.FC = () => {
     // Improved form field change handler
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-
+        console.log(e.target.name);
         setFormData(prevData => ({
             ...prevData,
-            [name]: type === 'number' ? Number(value) :
-                type === 'checkbox' ? (e.target as HTMLInputElement).checked :
-                    value
+            [name]: type === 'number' ? Number(value) : value
         }));
+
     };
 
     // Improved antibiotic change handler

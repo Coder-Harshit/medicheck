@@ -34,7 +34,8 @@ const AdminPage = () => {
       // Insert user role
       const { error: roleError } = await supabase
         .from('user_roles')
-        .insert([{ 'id': newUser?.id,
+        .insert([{ 
+          'id': newUser?.id,
           email,
           role,
         }
@@ -164,11 +165,10 @@ const AdminPage = () => {
         {/* Add more admin functionalities here */}
       </div>
     );
-  } else {
-    // Redirect non-admin users to login
-    router.push('/login');
-    return null;
   }
+
+  // Show loading state while redirect happens
+  return <div>Loading...</div>;
 };
 
 export default AdminPage;

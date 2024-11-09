@@ -20,7 +20,7 @@
 
 // export default DashBoard
 import { useUser } from '@/hooks/useUser'
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -32,10 +32,10 @@ export default function DashBoard() {
     if (!loading) {
       if (!user) {
         // If not logged in, redirect to login page
-        <Link href="/login">
-          <h1>User Not Logged in ... click to go back to Login Page</h1>
-        </Link>
-        // router.push('/login')
+        // <Link href="/login">
+        //   <h1>User Not Logged in ... click to go back to Login Page</h1>
+        // </Link>
+        router.push('/login')
       } else if (userRole) {
         // If role is available, redirect to appropriate dashboard
         switch (userRole.role) {

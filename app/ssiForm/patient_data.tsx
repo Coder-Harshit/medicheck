@@ -10,6 +10,7 @@ interface PatientDataProps {
 }
 
 const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => {
+  
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h3 className="text-2xl font-bold mb-6 text-center text-primary">Basic Details</h3>
@@ -36,6 +37,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           nonnegative={true}
           className="input-field"
+          disabled={true}
         />
         {/* Age */}
         <InputBox
@@ -214,8 +216,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="papGiven"
           value={formData.papGiven ? 'Yes' : 'No'}
           options={[
-            { value: 'Yes', label: 'Yes' },
-            { value: 'No', label: 'No' },
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
           className="input-field"
@@ -242,8 +244,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="outpatientProcedure"
           value={formData.outpatientProcedure ? 'Yes' : 'No'}
           options={[
-            { value: 'Yes', label: 'Yes' },
-            { value: 'No', label: 'No' },
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
           className="input-field"
@@ -271,8 +273,8 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="ssiEventOccurred"
           value={formData.ssiEventOccurred ? 'Yes' : 'No'}
           options={[
-            { value: 'Yes', label: 'Yes' },
-            { value: 'No', label: 'No' },
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
           className="input-field"

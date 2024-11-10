@@ -117,7 +117,7 @@ const SSISurveillanceForm: React.FC = () => {
     // Initialize form data with default values in a separate function
     const getInitialFormData = (): FormData => ({
         patientName: '',
-        patientId: '',
+        patientId: formId || '',
         age: 0,
         gender: 'M',
         dateOfAdmission: formatDate(new Date()),
@@ -215,8 +215,8 @@ const SSISurveillanceForm: React.FC = () => {
                     setFormData(sanitizedData);
                 }
             } catch (err) {
-                console.error('Error fetching SSI form:', err);
-                setError(err instanceof Error ? err.message : 'Error loading form data');
+                // console.error('Error fetching SSI form:', err);
+                // setError(err instanceof Error ? err.message : 'Error loading form data');
             } finally {
                 setLoading(false);
             }
@@ -228,12 +228,19 @@ const SSISurveillanceForm: React.FC = () => {
     // Improved form field change handler
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-        console.log(e.target.name);
+        console.log('Change event:', { name, value, type });
         setFormData(prevData => ({
             ...prevData,
-            [name]: type === 'number' ? Number(value) : value
+            // [name]: type === 'number' ? Number(value) : value
+            
+            [name]: name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred'
+                ? value === "true" ? 'true' : 'false'
+                    : type === 'number'
+                ? Number(value) // Convert numeric string to a number
+                    : value // Default to string for other types
         }));
-
+        console.log(value)
+            
     };
 
     // Improved antibiotic change handler
@@ -367,91 +374,168 @@ const SSISurveillanceForm: React.FC = () => {
     //     }
     // };
 
+    // const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
+    //     e.preventDefault();
+    //     setError(null);
+
+    //     // FORM VALIDATION
+    //     if (!isDraft) {
+    //         for (const key in formData) {
+    //             // Use Object.prototype.hasOwnProperty to avoid inherited properties
+    //             if (Object.prototype.hasOwnProperty.call(formData, key)) {
+    //                 const value = formData[key as keyof FormData];
+
+    //                 if (!value) {
+    //                     alert(`Please fill out the ${key} field.`);
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     const status = isDraft ? 'ongoing' : 'to-be-reviewed';// Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
+
+    //     const sanitizedData = {
+    //         ...formData,
+    //         nuid: userID,
+    //         status: status,  // Set the status based on whether it's a draft or final submission
+    //     };
+
+    //     console.log('Form Data:', sanitizedData);
+    //     // Check if a draft already exists
+    //     const { data: existingDraft, error: fetchError } = await supabase
+    //         .from('SSI_Form')
+    //         .select('*')
+    //         .eq('patientId', formData.patientId)
+    //         .eq('nuid', userID)
+    //         .eq('status', 'ongoing')
+    //         .single();
+
+    //     if (fetchError && fetchError.code !== 'PGRST116') {
+    //         console.error('Error fetching existing draft:', fetchError);
+    //         return;
+    //     }
+
+    //     if (existingDraft) {
+    //         // Update existing draft
+    //         const { data, error } = await supabase
+    //             .from('SSI_Form')
+    //             .update(sanitizedData)
+    //             .eq('patientId', existingDraft.patientId)
+
+    //         if (error) {
+    //             console.error('Error updating draft:', error);
+    //         } else {
+    //             console.log('Draft updated successfully!', data);
+    //             // if (!isDraft) {
+    //             //   router.push('/dashboard');
+    //             // } else {
+    //             //   alert('Draft saved successfully.');
+    //             // }
+    //             if (isDraft) {
+    //                 alert('Draft saved successfully.');
+    //             }
+    //             router.push('/dashboard');
+    //         }
+    //     } else {
+    //         // Insert new row
+    //         const { data, error } = await supabase
+    //             .from('SSI_Form')
+    //             .insert([sanitizedData]);
+
+    //         if (error) {
+    //             console.error('Error inserting data:', error);
+    //         } else {
+    //             console.log('Data insertion successful!', data);
+    //             // if (!isDraft) {
+    //             //   router.push('/dashboard');
+    //             // } else {
+    //             //   alert('Draft saved successfully.');
+    //             // }
+    //             if (isDraft) {
+    //                 alert('Draft saved successfully.');
+    //             }
+    //             router.push('/dashboard');
+    //         }
+    //     }
+    // };
+    
     const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
         e.preventDefault();
         setError(null);
-
+      
         // FORM VALIDATION
         if (!isDraft) {
-            for (const key in formData) {
-                // Use Object.prototype.hasOwnProperty to avoid inherited properties
-                if (Object.prototype.hasOwnProperty.call(formData, key)) {
-                    const value = formData[key as keyof FormData];
-
-                    if (!value) {
-                        alert(`Please fill out the ${key} field.`);
-                        return;
-                    }
-                }
+          for (const key in formData) {
+            // Use Object.prototype.hasOwnProperty to avoid inherited properties
+            if (Object.prototype.hasOwnProperty.call(formData, key)) {
+              const value = formData[key as keyof FormData];
+      
+              if (!value) {
+                alert(`Please fill out the ${key} field.`);
+                return;
+              }
             }
+          }
         }
-
-        const status = isDraft ? 'ongoing' : 'to-be-reviewed';// Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
-
+      
+        const status = isDraft ? 'ongoing' : 'to-be-reviewed'; // Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
+      
         const sanitizedData = {
-            ...formData,
-            nuid: userID,
-            status: status,  // Set the status based on whether it's a draft or final submission
+          ...formData,
+          nuid: userID,
+          status: status, // Set the status based on whether it's a draft or final submission
         };
-
+      
         console.log('Form Data:', sanitizedData);
         // Check if a draft already exists
         const { data: existingDraft, error: fetchError } = await supabase
-            .from('SSI_Form')
-            .select('*')
-            .eq('patientId', formData.patientId)
-            .eq('nuid', userID)
-            .eq('status', 'ongoing')
-            .single();
-
+          .from('SSI_Form')
+          .select('*')
+        //   .eq('formId', formId)
+          .eq('patientId', formId)
+          .eq('nuid', userID)
+          .eq('status', 'ongoing')
+          .single();
+      
         if (fetchError && fetchError.code !== 'PGRST116') {
-            console.error('Error fetching existing draft:', fetchError);
-            return;
+          console.error('Error fetching existing draft:', fetchError);
+          return;
         }
-
+      
         if (existingDraft) {
-            // Update existing draft
-            const { data, error } = await supabase
-                .from('SSI_Form')
-                .update(sanitizedData)
-                .eq('patientId', existingDraft.patientId)
-
-            if (error) {
-                console.error('Error updating draft:', error);
-            } else {
-                console.log('Draft updated successfully!', data);
-                // if (!isDraft) {
-                //   router.push('/dashboard');
-                // } else {
-                //   alert('Draft saved successfully.');
-                // }
-                if (isDraft) {
-                    alert('Draft saved successfully.');
-                }
-                router.push('/dashboard');
+          // Update existing draft
+          const { data, error } = await supabase
+            .from('SSI_Form')
+            .update(sanitizedData)
+            .eq('patientId', existingDraft.patientId);
+      
+          if (error) {
+            console.error('Error updating draft:', error);
+          } else {
+            console.log('Draft updated successfully!', data);
+            if (isDraft) {
+              alert('Draft saved successfully.');
             }
+            router.push('/dashboard');
+          }
         } else {
-            // Insert new row
-            const { data, error } = await supabase
-                .from('SSI_Form')
-                .insert([sanitizedData]);
-
-            if (error) {
-                console.error('Error inserting data:', error);
-            } else {
-                console.log('Data insertion successful!', data);
-                // if (!isDraft) {
-                //   router.push('/dashboard');
-                // } else {
-                //   alert('Draft saved successfully.');
-                // }
-                if (isDraft) {
-                    alert('Draft saved successfully.');
-                }
-                router.push('/dashboard');
+          // Insert new row
+          const { data, error } = await supabase
+            .from('SSI_Form')
+            .insert([sanitizedData]);
+      
+          if (error) {
+            console.error('Error inserting data:', error);
+          } else {
+            console.log('Data insertion successful!', data);
+            if (isDraft) {
+              alert('Draft saved successfully.');
             }
+            router.push('/dashboard');
+          }
         }
-    };
+      };
 
 
     if (loading) {

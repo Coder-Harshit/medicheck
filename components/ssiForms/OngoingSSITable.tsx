@@ -44,7 +44,10 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
   };
 
   const handleSSIForm = () => {
-    router.push('/ssiForm');
+    const lastId = data.length > 0 ? Math.max(...data.map(item => parseInt(item.patientId))) : 100;
+    const newId = lastId + 1;
+    // router.push(`/ssiForm/${newId}`);
+    router.push(`/ssiForm?formId=${newId}`);
   };
 
   const paginatedData = data.slice(currentPage * pageSize, (currentPage + 1) * pageSize);

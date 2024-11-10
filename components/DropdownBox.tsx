@@ -15,6 +15,7 @@ interface DropdownBoxProps {
   name: string;              // Name for the form element
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void; // Function for handling value changes
   isDisabled?: boolean;     // Optional flag to disable the dropdown
+  yesnoType?: boolean;          // Optional flag to display Yes/No options
 }
 
 const DropdownBox: React.FC<DropdownBoxProps> = ({

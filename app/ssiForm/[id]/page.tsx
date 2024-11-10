@@ -37,6 +37,29 @@ const SSIDetail = () => {
   if (loading) return <div>Loading...</div>;
 
   if (!formData) return <div>No data found</div>;
+  // if (!formData)
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+  //     <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+  //       <h2 className="text-2xl font-bold mb-4">No SSI Form Found</h2>
+  //       <p className="mb-6 text-gray-600">Would you like to create a new SSI Form?</p>
+  //       <div className="space-x-4">
+  //         <button
+  //           onClick={() => router.push(`/ssiForm?formId=${id}`)}
+  //           className="bg-primary-600 text-white px-6 py-2 rounded hover:bg-primary-700"
+  //         >
+  //           Create New Form
+  //         </button>
+  //         {/* <button
+  //           onClick={handleBackToDashboard}
+  //           className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+  //         >
+  //           Back to Dashboard
+  //         </button> */}
+  //       </div>
+  //     </div>
+  //   </div>
+  //   );
 
   const handleEditDraft = () => {
     router.push(`/ssiForm/edit/${id}`);

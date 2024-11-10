@@ -228,18 +228,18 @@ const SSISurveillanceForm: React.FC = () => {
     // Improved form field change handler
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-        console.log('Change event:', { name, value, type });
+        // console.log('Change event:', { name, value, type });
         setFormData(prevData => ({
             ...prevData,
             // [name]: type === 'number' ? Number(value) : value
             
-            [name]: name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred'
-                ? value === "true" ? 'true' : 'false'
+            [name]: (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred')
+                ? value === "true" 
                     : type === 'number'
                 ? Number(value) // Convert numeric string to a number
                     : value // Default to string for other types
         }));
-        console.log(value)
+        // console.log(value)
             
     };
 
@@ -487,7 +487,7 @@ const SSISurveillanceForm: React.FC = () => {
           status: status, // Set the status based on whether it's a draft or final submission
         };
       
-        console.log('Form Data:', sanitizedData);
+        // console.log('Form Data:', sanitizedData);
         // Check if a draft already exists
         const { data: existingDraft, error: fetchError } = await supabase
           .from('SSI_Form')
@@ -513,7 +513,7 @@ const SSISurveillanceForm: React.FC = () => {
           if (error) {
             console.error('Error updating draft:', error);
           } else {
-            console.log('Draft updated successfully!', data);
+            // console.log('Draft updated successfully!', data);
             if (isDraft) {
               alert('Draft saved successfully.');
             }
@@ -528,7 +528,7 @@ const SSISurveillanceForm: React.FC = () => {
           if (error) {
             console.error('Error inserting data:', error);
           } else {
-            console.log('Data insertion successful!', data);
+            // console.log('Data insertion successful!', data);
             if (isDraft) {
               alert('Draft saved successfully.');
             }

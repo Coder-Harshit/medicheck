@@ -40,13 +40,13 @@ export default function DashBoard() {
         // If role is available, redirect to appropriate dashboard
         switch (userRole.role) {
           case 'doctor':
-            console.log('Welcome %s', user.email)
-            console.log(userRole?.role)
+            // console.log('Welcome %s', user.email)
+            // console.log(userRole?.role)
             router.push('/dashboard/doctor')
             break
           case 'nurse':
-            console.log('Welcome %s', user.email)
-            console.log(userRole?.role)
+            // console.log('Welcome %s', user.email)
+            // console.log(userRole?.role)
             router.push('/dashboard/nurse')
             break
           case 'admin':

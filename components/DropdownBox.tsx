@@ -59,7 +59,10 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
         disabled={isDisabled} // Set disabled state based on the prop
         value={value}          // Set selected value from the prop
         name={name}
-        onChange={handleChange}
+        // onChange={handleChange}
+        onChange={(e) => {
+          onChange(e);
+        }}
       >
         {options.map((option, index) => (
           <option key={index} value={option.value}>{option.label}</option>

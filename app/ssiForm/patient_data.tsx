@@ -214,7 +214,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           labelClass="truncate"
           id="papGiven"
           name="papGiven"
-          value={formData.papGiven ? 'Yes' : 'No'}
+          value={formData.papGiven ? 'true' : 'false'}
           options={[
             { value: 'true', label: 'Yes' },
             { value: 'false', label: 'No' },
@@ -242,7 +242,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           labelClass="truncate"
           id="outpatientProcedure"
           name="outpatientProcedure"
-          value={formData.outpatientProcedure ? 'Yes' : 'No'}
+          value={formData.outpatientProcedure ? 'true' : 'false'}
           options={[
             { value: 'true', label: 'Yes' },
             { value: 'false', label: 'No' },
@@ -271,7 +271,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           labelClass="truncate"
           id="ssiEventOccurred"
           name="ssiEventOccurred"
-          value={formData.ssiEventOccurred ? 'Yes' : 'No'}
+          value={formData.ssiEventOccurred ? 'true' : 'false'}
           options={[
             { value: 'true', label: 'Yes' },
             { value: 'false', label: 'No' },

@@ -214,7 +214,7 @@ const SSISurveillanceForm: React.FC = () => {
                     };
                     setFormData(sanitizedData);
                 }
-            } catch (err) {
+            // } catch (err) {
                 // console.error('Error fetching SSI form:', err);
                 // setError(err instanceof Error ? err.message : 'Error loading form data');
             } finally {
@@ -505,7 +505,7 @@ const SSISurveillanceForm: React.FC = () => {
       
         if (existingDraft) {
           // Update existing draft
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from('SSI_Form')
             .update(sanitizedData)
             .eq('patientId', existingDraft.patientId);
@@ -521,7 +521,7 @@ const SSISurveillanceForm: React.FC = () => {
           }
         } else {
           // Insert new row
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from('SSI_Form')
             .insert([sanitizedData]);
       

@@ -107,6 +107,37 @@ export interface FormData {
     status: 'ongoing' | 'to-be-reviewed' | 'reviewed';
 }
 
+const requiredFields = [
+    'patientName',
+    'patientId',
+    'dateOfProcedure',
+    'admittingDepartment',
+    'departmentPrimarySurgeon',
+    'primarySurgeonName',
+    'procedureName',
+    'diagnosis',
+    'otno',
+    'scenarioOfProcedure',
+    'woundClass',
+    'papGiven',
+    'papDuration',
+    'ssiEventOccurred',
+    'dateOfSSIEvent',
+    'antibiotics',
+    'timeOfInduction',
+    'timeOfSkinIncision',
+    'timeOfEndSurgery',
+    'isolate1',
+    'isolate2',
+    'symptomsDict',
+    'SSIEvalCheckList',
+    'specificEvent',
+    // 'organSpace',
+    'detected',
+    'status',
+];
+
+
 const SSISurveillanceForm: React.FC = () => {
     const { userID } = useUser();
     const router = useRouter();
@@ -466,20 +497,56 @@ const SSISurveillanceForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
         e.preventDefault();
+        // If not a draft and not on the last step, prevent submission
+        if (!isDraft && currentStep !== steps.length - 1) {
+            alert("Please complete all steps before submitting");
+            return;
+        }
+
         setError(null);
 
         // FORM VALIDATION
-        if (!isDraft) {
-            for (const key in formData) {
-                // Use Object.prototype.hasOwnProperty to avoid inherited properties
-                if (Object.prototype.hasOwnProperty.call(formData, key)) {
-                    const value = formData[key as keyof FormData];
+        // if (!isDraft) {
+        // for (const key in formData) {
+        //     // Use Object.prototype.hasOwnProperty to avoid inherited properties
+        //     if (Object.prototype.hasOwnProperty.call(formData, key)) {
+        //         const value = formData[key as keyof FormData];
 
-                    if (!value) {
-                        alert(`Please fill out the ${key} field.`);
-                        return;
-                    }
+        //         if (!value) {
+        //             alert(`Please fill out the ${key} field.`);
+        //             return;
+        //         }
+        //     }
+        // }
+        
+        if (!isDraft) {
+            for (const field of requiredFields) {
+                if (!formData[field as keyof FormData]) {
+                    alert(`Please fill out the ${field} field.`);
+                    return;
                 }
+            }
+
+            // if (formData.antibiotics.some(antibiotic => !antibiotic.antibiotic)) {
+            //     alert('Please fill out the antibiotic name field.');
+            //     return;
+            // }
+
+            if (formData.specificEvent === 'organSpace' && !formData.organSpace) {
+                alert('Please specify the organ/space.');
+                return;
+            }
+
+            // Validate arrays and objects if needed
+            if (!formData.antibiotics || formData.antibiotics.length === 0) {
+                alert('Please add at least one antibiotic.');
+                return;
+            }
+
+            // Validate SSIEvalCheckList
+            if (!formData.SSIEvalCheckList || formData.SSIEvalCheckList.length === 0) {
+                alert('Please complete the SSI evaluation checklist.');
+                return;
             }
         }
 
@@ -628,8 +695,8 @@ const SSISurveillanceForm: React.FC = () => {
                     <div
                         key={step.id}
                         className={`shrink-0 mx-1 py-1.5 px-3 text-sm md:text-base md:mx-2 md:py-2 md:px-4 ${index === currentStep
-                                ? 'bg-primary-500 text-white'
-                                : 'bg-gray-200 text-gray-700'
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-gray-200 text-gray-700'
                             } rounded cursor-pointer`}
                         onClick={() => setCurrentStep(index)}
                     >
@@ -637,8 +704,9 @@ const SSISurveillanceForm: React.FC = () => {
                     </div>
                 ))}
             </div>
-            
-            <form onSubmit={(e) => handleSubmit(e, false)}>
+
+            {/* <form onSubmit={(e) => handleSubmit(e, false)}> */}
+            <form onSubmit={(e) => e.preventDefault()}>
                 {steps[currentStep].component}
 
                 <div className="flex justify-between mt-6">
@@ -672,6 +740,7 @@ const SSISurveillanceForm: React.FC = () => {
                         <button
                             type="submit"
                             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                            onClick={(e) => handleSubmit(e, false)}
                         >
                             Submit
                         </button>

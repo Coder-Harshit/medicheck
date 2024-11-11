@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { FormData } from '@/app/ssiForm/page';
 import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
+import { supabase } from '@/utils/supabase/client';
 
 interface OngoingSSITableProps {
   data: FormData[];
@@ -43,8 +44,22 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
     // router.push(`/ssiForm/edit/${id}`);
   };
 
-  const handleSSIForm = () => {
-    const lastId = data.length > 0 ? Math.max(...data.map(item => parseInt(item.patientId))) : 100;
+  const handleSSIForm = async () => {
+    // Fetch the last patientId from the database
+    const { data, error } = await supabase
+        .from('your_table_name') // replace 'your_table_name' with the actual name of your table
+        .select('patientId')
+        .order('patientId', { ascending: false })
+        .limit(1);
+
+    if (error) {
+        console.error('Error fetching patientId:', error);
+        alert('Failed to fetch the last patient ID.');
+        return;
+    }
+
+    // Determine the newId based on the last patientId in the database
+    const lastId = data && data.length > 0 ? parseInt(data[0].patientId) : 1;
     const newId = lastId + 1;
     // router.push(`/ssiForm/${newId}`);
     router.push(`/ssiForm?formId=${newId}`);

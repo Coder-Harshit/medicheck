@@ -48,6 +48,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
                 { value: 'pre_peri', label: 'PRE/PERI Operatively' },
                 { value: 'after', label: 'AFTER PeriOperatively' },
               ]}
+              required={true}
               className="input-field"
               onChange={(e) =>
                 handleAntibioticChange(index, 'abop_stage', e.target.value)
@@ -61,6 +62,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               id={`antibiotic_${index}`}
               name="antibiotic"
               className="input-field"
+              required={true}
               value={antibiotic.antibiotic}
               onChange={(e) =>
                 handleAntibioticChange(index, 'antibiotic', e.target.value)
@@ -80,6 +82,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
                 { value: 'Oral', label: 'Oral' },
                 { value: 'IM', label: 'IM' },
               ]}
+              required={true}
               onChange={(e) =>
                 handleAntibioticChange(index, 'route', e.target.value)
               }
@@ -93,6 +96,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               id={`duration_${index}`}
               name="duration"
               value={antibiotic.duration}
+              required={true}
               onChange={(e) =>
                 handleAntibioticChange(index, 'duration', e.target.value)
               }
@@ -107,6 +111,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               className="input-field"
               name="doses"
               value={antibiotic.doses}
+              required={true}
               onChange={(e) =>
                 handleAntibioticChange(index, 'doses', e.target.value)
               }
@@ -138,6 +143,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
           className="input-field"
           name="timeOfInduction"
           value={formData.timeOfInduction}
+          required={true}
           onChange={handleChange}
           type="time"
         />
@@ -149,6 +155,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
           name="timeOfSkinIncision"
           className="input-field"
           value={formData.timeOfSkinIncision}
+          required={true}
           onChange={handleChange}
           type="time"
         />
@@ -160,6 +167,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
           className="input-field"
           name="timeOfEndSurgery"
           value={formData.timeOfEndSurgery}
+          required={true}
           onChange={handleChange}
           type="time"
         />

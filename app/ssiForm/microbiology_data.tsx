@@ -202,6 +202,7 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({
               options={microorganisms}
               onChange={handleChange}
               className='input-field'
+              required={true}
             />
             <DropdownBox
               id="microorganism2"
@@ -210,6 +211,7 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({
               value={formData.microorganism2 || ''}
               options={microorganisms}
               onChange={handleChange}
+              required={true}
               className='input-field'
             />
           </div>
@@ -292,6 +294,7 @@ const IsolateForm: React.FC<IsolateFormProps> = ({
             })),
           ]}
           onChange={(e) => handleSelectChange('sensitive', e.target.value)}
+          required={true}
           className='input-field'
         />
       </div>
@@ -310,6 +313,7 @@ const IsolateForm: React.FC<IsolateFormProps> = ({
             })),
           ]}
           onChange={(e) => handleSelectChange('resistant', e.target.value)}
+          required={true}
           className='input-field'
         />
       </div>
@@ -328,6 +332,7 @@ const IsolateForm: React.FC<IsolateFormProps> = ({
             })),
           ]}
           onChange={(e) => handleSelectChange('intermediate', e.target.value)}
+          required={true}
           className='input-field'
         />
       </div>

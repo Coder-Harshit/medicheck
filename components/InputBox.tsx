@@ -9,6 +9,7 @@ interface InputBoxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
   nonnegative?: boolean;
   value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
 }
 
 export const InputBox: React.FC<InputBoxProps> = ({

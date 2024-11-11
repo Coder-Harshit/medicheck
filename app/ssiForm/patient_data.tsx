@@ -25,6 +25,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="patientName"
           onChange={handleChange}
           className="input-field"
+          required={true}
         />
         {/* Patient ID */}
         <InputBox
@@ -38,6 +39,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           nonnegative={true}
           className="input-field"
           disabled={true}
+          required={true}
         />
         {/* Age */}
         <InputBox
@@ -50,6 +52,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           nonnegative={true}
           className="input-field"
+          required={true}
         />
         {/* Gender */}
         <DropdownBox
@@ -63,6 +66,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'F', label: 'Female' },
           ]}
           onChange={handleChange}
+          required={true}
           className="input-field"
         />
         {/* Date of Admission */}
@@ -74,6 +78,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           value={formData.dateOfAdmission}
           onChange={handleChange}
           type="date"
+          required={true}
           className="input-field"
         />
         {/* Date of Operative Procedure */}
@@ -85,6 +90,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           value={formData.dateOfProcedure}
           onChange={handleChange}
           type="date"
+          required={true}
           className="input-field"
         />
         {/* Admitting Department */}
@@ -103,6 +109,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Neurology', label: 'Neurology' },
             { value: 'Others', label: 'Others' },
           ]}
+          required={true}
           onChange={handleChange}
           className="input-field"
         />
@@ -119,6 +126,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Dr. C', label: 'Dr. C' },
             { value: 'Dr. D', label: 'Dr. D' },
           ]}
+          required={true}
           onChange={handleChange}
           className="input-field"
         />
@@ -138,12 +146,14 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Neurology', label: 'Neurology' },
             { value: 'Others', label: 'Others' },
           ]}
+          required={true}
           onChange={handleChange}
           className="input-field"
         />
         {/* Procedure Name */}
         <DropdownBox
           label="Procedure Name"
+          required={true}
           labelClass="truncate"
           id="procedureName"
           name="procedureName"
@@ -171,6 +181,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Elective', label: 'Elective' },
             { value: 'Emergency', label: 'Emergency' },
           ]}
+          required={true}
           onChange={handleChange}
           className="input-field"
         />
@@ -190,6 +201,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Others', label: 'Others' },
           ]}
           onChange={handleChange}
+          required={true}
           className="input-field"
         />
         {/* Wound Class */}
@@ -220,6 +232,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
+          required={true}
           className="input-field"
         />
         {/* PAP Duration */}
@@ -248,6 +261,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
+          required={true}
           className="input-field"
         />
         {/* Operation Theatre Number */}
@@ -262,6 +276,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: '2', label: 'Operation Theatre 2' },
             { value: '3', label: 'Operation Theatre 3' },
           ]}
+          required={true}
           onChange={handleChange}
           className="input-field"
         />
@@ -277,6 +292,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
+          required={true}
           className="input-field"
         />
       </div>

@@ -27,6 +27,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
       <div className="space-y-4">
         <h4 className="text-lg font-semibold mb-4 text-primary">
           Specific Event
+          <span className="text-red-500 ml-1">*</span>
         </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,6 +127,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
       <div className="mt-8 space-y-4">
         <h4 className="text-lg font-semibold mb-4 text-primary">
           Detected
+          <span className="text-red-500 ml-1">*</span>
         </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

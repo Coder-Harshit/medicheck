@@ -14,6 +14,8 @@ import SSIEvent from './ssiEvent';
 import { useUser } from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
+
+
 interface Antibiotic {
     abop_stage: 'prior' | 'pre_peri' | 'after';
     antibiotic: string;
@@ -64,8 +66,8 @@ export interface FormData {
     dateOfAdmission: string;
     dateOfProcedure: string;
     admittingDepartment: string;
-    departmentPrimarySurgeon: string;
     primarySurgeonName: string;
+    departmentPrimarySurgeon: string;
     procedureName: string;
     diagnosis: string;
     otno: number;
@@ -506,48 +508,60 @@ const SSISurveillanceForm: React.FC = () => {
         setError(null);
 
         // FORM VALIDATION
-        // if (!isDraft) {
-        // for (const key in formData) {
-        //     // Use Object.prototype.hasOwnProperty to avoid inherited properties
-        //     if (Object.prototype.hasOwnProperty.call(formData, key)) {
-        //         const value = formData[key as keyof FormData];
-
-        //         if (!value) {
-        //             alert(`Please fill out the ${key} field.`);
-        //             return;
-        //         }
-        //     }
-        // }
-        
         if (!isDraft) {
-            for (const field of requiredFields) {
-                if (!formData[field as keyof FormData]) {
-                    alert(`Please fill out the ${field} field.`);
-                    return;
+            for (const key in formData) {
+                // Use Object.prototype.hasOwnProperty to avoid inherited properties
+                if (Object.prototype.hasOwnProperty.call(formData, key)) {
+                    const value = formData[key as keyof FormData];
+
+                    // Skip validation for `organSpace` unless specificEvent is 'organSpace'
+                    if (key === 'organSpace' && formData.specificEvent !== 'organSpace') {
+                        continue;
+                    }
+                    if (!value) {
+                        alert(`Please fill out the ${key} field.`);
+                        return;
+                    }
                 }
             }
 
-            // if (formData.antibiotics.some(antibiotic => !antibiotic.antibiotic)) {
-            //     alert('Please fill out the antibiotic name field.');
-            //     return;
-            // }
+            // if (!isDraft) {
+            //     // for (const field of requiredFields) {
+            //     //     if (!formData[field as keyof FormData]) {
+            //     //         alert(`Please fill out the ${field} field.`);
+            //     //         return;
+            //     //     }
+            //     // }
+            //     const form = e.target as HTMLFormElement;
 
-            if (formData.specificEvent === 'organSpace' && !formData.organSpace) {
-                alert('Please specify the organ/space.');
-                return;
-            }
+            //     // Check if the form is valid
+            //     if (!form.checkValidity()) {
+            //         form.reportValidity(); // This will show the validation messages
+            //         return;
+            //     }
 
-            // Validate arrays and objects if needed
-            if (!formData.antibiotics || formData.antibiotics.length === 0) {
-                alert('Please add at least one antibiotic.');
-                return;
-            }
 
-            // Validate SSIEvalCheckList
-            if (!formData.SSIEvalCheckList || formData.SSIEvalCheckList.length === 0) {
-                alert('Please complete the SSI evaluation checklist.');
-                return;
-            }
+            //     // if (formData.antibiotics.some(antibiotic => !antibiotic.antibiotic)) {
+            //     //     alert('Please fill out the antibiotic name field.');
+            //     //     return;
+            //     // }
+
+            //     if (formData.specificEvent === 'organSpace' && !formData.organSpace) {
+            //         alert('Please specify the organ/space.');
+            //         return;
+            //     }
+
+            //     // Validate arrays and objects if needed
+            //     if (!formData.antibiotics || formData.antibiotics.length === 0) {
+            //         alert('Please add at least one antibiotic.');
+            //         return;
+            //     }
+
+            //     // Validate SSIEvalCheckList
+            //     if (!formData.SSIEvalCheckList || formData.SSIEvalCheckList.length === 0) {
+            //         alert('Please complete the SSI evaluation checklist.');
+            //         return;
+            //     }
         }
 
         const status = isDraft ? 'ongoing' : 'to-be-reviewed'; // Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
@@ -607,6 +621,8 @@ const SSISurveillanceForm: React.FC = () => {
             }
         }
     };
+
+
 
 
     if (loading) {

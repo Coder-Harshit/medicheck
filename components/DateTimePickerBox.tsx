@@ -11,6 +11,7 @@ interface DateTimePickerBoxProps {
   isDisabled?: boolean;
   type: 'date' | 'time' | 'datetime'; // Specify whether it's a date, time, or both
   upperLimitMins?: number; // Optional upper limit in minutes for the time selection
+  required?: boolean;
 }
 
 const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
@@ -24,6 +25,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
   isDisabled = false,
   type,
   upperLimitMins,
+  required=false,
 }) => {
   const generateTimeOptions = (limitMins: number) => {
     const options = [];
@@ -54,7 +56,8 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
         }}
         title={label} // Tooltip with full label text
     >
-        {label}
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
     </label>
   )}
       {type === 'datetime' ? (
@@ -68,6 +71,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
             value={value?.split('T')[0] || ''}
             name={`${name}-date`}
             onChange={handleChange}
+            required={required}
           />
           <input
             type="time"
@@ -77,6 +81,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
             value={value?.split('T')[1] || ''}
             name={`${name}-time`}
             onChange={handleChange}
+            required={required}
           />
         </div>
       ) : type === 'time' && upperLimitMins !== undefined ? (
@@ -86,6 +91,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
           disabled={isDisabled}
           value={value}
           name={name}
+          required={required}
           onChange={handleChange}
         >
           {generateTimeOptions(upperLimitMins).map((time) => (
@@ -100,6 +106,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
           disabled={isDisabled}
           value={value}
           name={name}
+          required={required}
           onChange={handleChange}
         />
       )}

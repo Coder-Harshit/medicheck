@@ -43,7 +43,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               name="abop_stage"
               value={antibiotic.abop_stage}
               options={[
-                { value: '', label: 'Select Stage' },
+                // { value: '', label: 'Select Stage' },
                 { value: 'prior', label: 'PRIOR to Operation' },
                 { value: 'pre_peri', label: 'PRE/PERI Operatively' },
                 { value: 'after', label: 'AFTER PeriOperatively' },
@@ -75,7 +75,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               className="input-field"
               value={antibiotic.route}
               options={[
-                { value: '', label: 'Select Route' },
+                // { value: '', label: 'Select Route' },
                 { value: 'IV', label: 'IV' },
                 { value: 'Oral', label: 'Oral' },
                 { value: 'IM', label: 'IM' },

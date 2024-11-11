@@ -355,12 +355,12 @@ const SSIDetail = () => {
               <td className='table-cell border'>{formData.papGiven ? 'Given' : 'Not Given'}</td>
             </tr>
           )}
-          {formData.antibioticsGiven && (
+          {/* {formData.antibioticsGiven && (
             <tr>
               <td className="table-cell border font-bold">Antibiotics Given:</td>
               <td className='table-cell border'>{formData.antibioticsGiven}</td>
             </tr>
-          )}
+          )} */}
           {formData.papDuration && (
             <tr>
               <td className="table-cell border font-bold">PAP Duration:</td>
@@ -379,24 +379,30 @@ const SSIDetail = () => {
               <td className='table-cell border'>{formData.dateOfSSIEvent}</td>
             </tr>
           )}
-          {formData.eventDetails && (
+          {/* {formData.eventDetails && (
             <tr>
               <td className="table-cell border font-bold">Event Details:</td>
               <td className='table-cell border'>{formData.eventDetails}</td>
             </tr>
-          )}
-          {formData.microorganisms && formData.microorganisms.length > 0 && (
+          )} */}
+          {/* {formData.microorganisms && formData.microorganisms.length > 0 && (
             <tr>
               <td className="table-cell border font-bold">Microorganisms:</td>
               <td className='table-cell border'>{formData.microorganisms.join(', ')}</td>
             </tr>
+          )} */}
+          {formData.microorganism1 || formData.microorganism2 && (
+            <tr>
+              <td className="table-cell border font-bold">Microorganisms:</td>
+              <td className='table-cell border'>{formData.microorganism1}, {formData.microorganism2}</td>
+            </tr>
           )}
-          {formData.secondaryBSI !== undefined && (
+          {/* {formData.secondaryBSI !== undefined && (
             <tr>
               <td className="table-cell border font-bold">Secondary BSI:</td>
               <td className='table-cell border'>{formData.secondaryBSI ? 'Yes' : 'No'}</td>
             </tr>
-          )}
+          )} */}
           {formData.antibiotics && formData.antibiotics.filter(antibiotic => antibiotic.doses > 0).length > 0 && (
             <tr>
               <td className="table-cell border font-bold">Antibiotics:</td>

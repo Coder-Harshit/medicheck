@@ -26,7 +26,7 @@ const antibioticOptions = [
 
 
 const microorganisms = [
-  { label: '----', value: '' },
+  // { label: '----', value: '' },
   { label: 'Bacteria', value: 'bacteria' },
   { label: 'Virus', value: 'virus' },
   // Add more microorganisms as needed
@@ -197,7 +197,8 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({
             <DropdownBox
               id="microorganism1"
               name="microorganism1"
-              value={formData.microorganisms[0] || ''}
+              // value={formData.microorganisms[0] || ''}
+              value={formData.microorganism1 || ''}
               options={microorganisms}
               onChange={handleChange}
               className='input-field'
@@ -205,7 +206,8 @@ const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({
             <DropdownBox
               id="microorganism2"
               name="microorganism2"
-              value={formData.microorganisms[1] || ''}
+              // value={formData.microorganisms[1] || ''}
+              value={formData.microorganism2 || ''}
               options={microorganisms}
               onChange={handleChange}
               className='input-field'
@@ -283,7 +285,7 @@ const IsolateForm: React.FC<IsolateFormProps> = ({
           name={`${isolate}_sensitive`}
           value={formData.sensitive}
           options={[
-            { value: '', label: 'Select' },
+            // { value: '', label: 'Select' },
             ...antibioticOptions.map((option) => ({
               ...option,
               disabled: isOptionDisabled(option.value, 'sensitive'),
@@ -301,7 +303,7 @@ const IsolateForm: React.FC<IsolateFormProps> = ({
           name={`${isolate}_resistant`}
           value={formData.resistant}
           options={[
-            { value: '', label: 'Select' },
+            // { value: '', label: 'Select' },
             ...antibioticOptions.map((option) => ({
               ...option,
               disabled: isOptionDisabled(option.value, 'resistant'),
@@ -319,7 +321,7 @@ const IsolateForm: React.FC<IsolateFormProps> = ({
           name={`${isolate}_intermediate`}
           value={formData.intermediate}
           options={[
-            { value: '', label: 'Select' },
+            // { value: '', label: 'Select' },
             ...antibioticOptions.map((option) => ({
               ...option,
               disabled: isOptionDisabled(option.value, 'intermediate'),

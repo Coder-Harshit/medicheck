@@ -75,12 +75,14 @@ export interface FormData {
     woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
     papGiven: boolean;
     papDuration: string;
-    antibioticsGiven: string;
+    // antibioticsGiven: string;
     ssiEventOccurred: boolean;
     dateOfSSIEvent: string;
-    eventDetails: string;
-    microorganisms: string[];
-    secondaryBSI: boolean;
+    // eventDetails: string;
+    // microorganisms: string[];
+    microorganism1: string;
+    microorganism2: string;
+    // secondaryBSI: boolean;
     antibiotics: Antibiotic[];
     timeOfInduction: string;
     timeOfSkinIncision: string;
@@ -133,13 +135,15 @@ const SSISurveillanceForm: React.FC = () => {
         scenarioOfProcedure: 'Elective',
         woundClass: 'Clean',
         papGiven: true,
-        antibioticsGiven: '',
+        // antibioticsGiven: '',
         papDuration: '',
         ssiEventOccurred: true,
         dateOfSSIEvent: formatDate(new Date()),
-        eventDetails: '',
-        microorganisms: [],
-        secondaryBSI: false,
+        // eventDetails: '',
+        // microorganisms: [],
+        microorganism1: '',
+        microorganism2: '',
+        // secondaryBSI: false,
         antibiotics: [{
             abop_stage: 'prior',
             antibiotic: '',
@@ -228,7 +232,7 @@ const SSISurveillanceForm: React.FC = () => {
     // Improved form field change handler
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-        // console.log('Change event:', { name, value, type });
+        console.log('Change event:', { name, value, type });
         setFormData(prevData => ({
             ...prevData,
             // [name]: type === 'number' ? Number(value) : value
@@ -312,7 +316,7 @@ const SSISurveillanceForm: React.FC = () => {
             ...prevData,
             antibiotics: prevData.antibiotics.length > 1
                 ? prevData.antibiotics.slice(0, -1)
-                : prevData.antibiotics
+                : [getInitialFormData().antibiotics[0]]
         }));
     };
 

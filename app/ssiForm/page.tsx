@@ -69,7 +69,7 @@ export interface FormData {
     procedureName: string;
     diagnosis: string;
     otno: number;
-    procedureDoneBy: string;
+    // procedureDoneBy: string;
     outpatientProcedure: boolean;
     scenarioOfProcedure: 'Elective' | 'Emergency';
     woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
@@ -128,7 +128,7 @@ const SSISurveillanceForm: React.FC = () => {
         procedureName: '',
         diagnosis: '',
         otno: 1,
-        procedureDoneBy: '',
+        // procedureDoneBy: '',
         outpatientProcedure: true,
         scenarioOfProcedure: 'Elective',
         woundClass: 'Clean',

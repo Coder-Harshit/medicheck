@@ -325,12 +325,12 @@ const SSIDetail = () => {
               <td className='table-cell border'>OT-{formData.otno}</td>
             </tr>
           )}
-          {formData.procedureDoneBy && (
+          {/* {formData.procedureDoneBy && (
             <tr>
               <td className="table-cell border font-bold">Procedure Done By:</td>
               <td className='table-cell border'>{formData.procedureDoneBy}</td>
             </tr>
-          )}
+          )} */}
           {formData.outpatientProcedure == true && (
             <tr>
               <td className="table-cell border font-bold">Out Patient Procedure:</td>

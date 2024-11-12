@@ -10,7 +10,7 @@ interface PatientDataProps {
 }
 
 const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => {
-  
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h3 className="text-2xl font-bold mb-6 text-center text-primary">Basic Details</h3>
@@ -107,44 +107,26 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Gastroenterology', label: 'Gastroenterology' },
             { value: 'General Surgery', label: 'General Surgery' },
             { value: 'Neurology', label: 'Neurology' },
+            { value: 'GIS Hepatobiliary Surgery', label: 'GIS Hepatobiliary Surgery' },
             { value: 'Others', label: 'Others' },
           ]}
           required={true}
           onChange={handleChange}
           className="input-field"
         />
-        {/* Primary Surgeon Name */}
+        {/* Department's Primary Surgeon */}
         <DropdownBox
-          label="Primary Surgeon Name"
-          labelClass="truncate"
-          id="primarySurgeonName"
-          name="primarySurgeonName"
-          value={formData.primarySurgeonName}
-          options={[
-            { value: 'Dr. A', label: 'Dr. A' },
-            { value: 'Dr. B', label: 'Dr. B' },
-            { value: 'Dr. C', label: 'Dr. C' },
-            { value: 'Dr. D', label: 'Dr. D' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          className="input-field"
-        />
-        {/* Primary Surgeon's Department */}
-        <DropdownBox
-          label="Primary Surgeon's Department"
+          label="Department's Primary Surgeon"
           labelClass="truncate"
           id="departmentPrimarySurgeon"
           name="departmentPrimarySurgeon"
           value={formData.departmentPrimarySurgeon}
           options={[
-            { value: 'Cardiology', label: 'Cardiology' },
-            { value: 'Dermatology', label: 'Dermatology' },
-            { value: 'Endocrinology', label: 'Endocrinology' },
-            { value: 'Gastroenterology', label: 'Gastroenterology' },
-            { value: 'General Surgery', label: 'General Surgery' },
-            { value: 'Neurology', label: 'Neurology' },
-            { value: 'Others', label: 'Others' },
+            { value: 'Dr. A', label: 'Dr. A' },
+            { value: 'Dr. B', label: 'Dr. B' },
+            { value: 'Dr. C', label: 'Dr. C' },
+            { value: 'Dr. D', label: 'Dr. D' },
+            { value: 'Dr. Rajesh Kapoor', label: 'Dr. Rajesh Kapoor' },
           ]}
           required={true}
           onChange={handleChange}
@@ -170,21 +152,6 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input-field"
         />
-        {/* Scenario of Procedure */}
-        <DropdownBox
-          label="Scenario of Procedure"
-          labelClass="truncate"
-          id="scenarioOfProcedure"
-          name="scenarioOfProcedure"
-          value={formData.scenarioOfProcedure}
-          options={[
-            { value: 'Elective', label: 'Elective' },
-            { value: 'Emergency', label: 'Emergency' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          className="input-field"
-        />
         {/* Diagnosis */}
         <DropdownBox
           label="Diagnosis"
@@ -198,10 +165,75 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Hernia', label: 'Hernia' },
             { value: 'Malignancy', label: 'Malignancy' },
             { value: 'Thyroid Disease', label: 'Thyroid Disease' },
+            { value: 'Acute Intestinal Obstruction, COPD', label: 'Acute Intestinal Obstruction, COPD' },
             { value: 'Others', label: 'Others' },
           ]}
           onChange={handleChange}
           required={true}
+          className="input-field"
+        />
+        {/* Procedure Done By */}
+        <DropdownBox
+          label="Procedure Done By"
+          labelClass="truncate"
+          id="procedureDoneBy"
+          name="procedureDoneBy"
+          value={formData.procedureDoneBy}
+          options={[
+            { value: 'Dr. A', label: 'Dr. A' },
+            { value: 'Dr. B', label: 'Dr. B' },
+            { value: 'Dr. C', label: 'Dr. C' },
+            { value: 'Dr. D', label: 'Dr. D' },
+            { value: 'Dr. Rajesh Kapoor', label: 'Dr. Rajesh Kapoor' },
+          ]}
+          required={true}
+          onChange={handleChange}
+          className="input-field"
+        />
+        {/* Operation Theatre Number */}
+        <DropdownBox
+          label="Operation Theatre Number"
+          labelClass="truncate"
+          id="otno"
+          name="otno"
+          value={formData.otno?.toString() || ''}
+          options={[
+            { value: '1', label: 'Operation Theatre 1' },
+            { value: '2', label: 'Operation Theatre 2' },
+            { value: '3', label: 'Operation Theatre 3' },
+          ]}
+          required={true}
+          onChange={handleChange}
+          className="input-field"
+        />
+        {/* Outpatient Procedure */}
+        <DropdownBox
+          label="Outpatient Procedure"
+          labelClass="truncate"
+          id="outpatientProcedure"
+          name="outpatientProcedure"
+          value={formData.outpatientProcedure ? 'true' : 'false'}
+          options={[
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' },
+          ]}
+          onChange={handleChange}
+          required={true}
+          className="input-field"
+        />
+        {/* Scenario of Procedure */}
+        <DropdownBox
+          label="Scenario of Procedure"
+          labelClass="truncate"
+          id="scenarioOfProcedure"
+          name="scenarioOfProcedure"
+          value={formData.scenarioOfProcedure}
+          options={[
+            { value: 'Elective', label: 'Elective' },
+            { value: 'Emergency', label: 'Emergency' },
+          ]}
+          required={true}
+          onChange={handleChange}
           className="input-field"
         />
         {/* Wound Class */}
@@ -246,40 +278,22 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             onChange={handleChange}
             type="time"
             upperLimitMins={60}
-          className="input-field"
-        />
+            className="input-field"
+          />
         )}
-        {/* Outpatient Procedure */}
-        <DropdownBox
-          label="Outpatient Procedure"
-          labelClass="truncate"
-          id="outpatientProcedure"
-          name="outpatientProcedure"
-          value={formData.outpatientProcedure ? 'true' : 'false'}
-          options={[
-            { value: 'true', label: 'Yes' },
-            { value: 'false', label: 'No' },
-          ]}
-          onChange={handleChange}
-          required={true}
-          className="input-field"
-        />
-        {/* Operation Theatre Number */}
-        <DropdownBox
-          label="Operation Theatre Number"
-          labelClass="truncate"
-          id="otno"
-          name="otno"
-          value={formData.otno?.toString() || ''}
-          options={[
-            { value: '1', label: 'Operation Theatre 1' },
-            { value: '2', label: 'Operation Theatre 2' },
-            { value: '3', label: 'Operation Theatre 3' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          className="input-field"
-        />
+        {/* Antibiotic Given */}
+        {formData.papGiven && (
+          <InputBox
+            label="Antibiotic Given"
+            labelClass="truncate"
+            id="antibioticGiven"
+            name="antibioticGiven"
+            value={formData.antibioticGiven}
+            onChange={handleChange}
+            className="input-field"
+            required={true}
+          />
+        )}
         {/* SSI Event Occurred */}
         <DropdownBox
           label="SSI Event Occurred"
@@ -295,6 +309,20 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           required={true}
           className="input-field"
         />
+        {/* Date of SSI-Event */}
+        {formData.ssiEventOccurred && (
+          <DateTimePickerBox
+            label="Date of SSI Event"
+            labelClass="truncate"
+            id="dateOfSSIEvent"
+            name="dateOfSSIEvent"
+            value={formData.dateOfSSIEvent}
+            onChange={handleChange}
+            type="date"
+            required={true}
+            className="input-field"
+          />
+        )}
       </div>
     </div>
   );

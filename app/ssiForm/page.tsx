@@ -66,7 +66,8 @@ export interface FormData {
     dateOfAdmission: string;
     dateOfProcedure: string;
     admittingDepartment: string;
-    primarySurgeonName: string;
+    procedureDoneBy: string;
+    // primarySurgeonName: string;
     departmentPrimarySurgeon: string;
     procedureName: string;
     diagnosis: string;
@@ -77,7 +78,7 @@ export interface FormData {
     woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
     papGiven: boolean;
     papDuration: string;
-    // antibioticsGiven: string;
+    antibioticGiven: string;
     ssiEventOccurred: boolean;
     dateOfSSIEvent: string;
     // eventDetails: string;
@@ -159,7 +160,8 @@ const SSISurveillanceForm: React.FC = () => {
         dateOfProcedure: formatDate(new Date()),
         admittingDepartment: '',
         departmentPrimarySurgeon: '',
-        primarySurgeonName: '',
+        // primarySurgeonName: '',
+        procedureDoneBy: '',
         procedureName: '',
         diagnosis: '',
         otno: 1,
@@ -168,7 +170,7 @@ const SSISurveillanceForm: React.FC = () => {
         scenarioOfProcedure: 'Elective',
         woundClass: 'Clean',
         papGiven: true,
-        // antibioticsGiven: '',
+        antibioticGiven: '',
         papDuration: '',
         ssiEventOccurred: true,
         dateOfSSIEvent: formatDate(new Date()),
@@ -518,6 +520,8 @@ const SSISurveillanceForm: React.FC = () => {
                     if (key === 'organSpace' && formData.specificEvent !== 'organSpace') {
                         continue;
                     }
+                    // non-required fields
+                    if (key === ''){continue;}
                     if (!value) {
                         alert(`Please fill out the ${key} field.`);
                         return;

@@ -72,6 +72,7 @@ const SSIDetail = () => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg text-black">
       <h1 className="text-2xl font-bold mb-4">SSI Form Details</h1>
+
       {/* Display the form data */}
       {/* {formData.patientName && (
         <p><strong>Patient Name:</strong> {formData.patientName}</p>
@@ -254,7 +255,9 @@ const SSIDetail = () => {
       {formData.detected && (
         <p><strong>Detected:</strong> {formData.detected}</p>
       )
-      } */}
+      } 
+      */}
+      
       <div className="mt-6"></div>
       <h2 className="text-xl font-semibold mb-2">Patient Information</h2>
       <table className="table-auto w-full mb-4">
@@ -301,10 +304,10 @@ const SSIDetail = () => {
               <td className='table-cell border'>{formData.departmentPrimarySurgeon}</td>
             </tr>
           )}
-          {formData.primarySurgeonName && (
+          {formData.departmentPrimarySurgeon && (
             <tr>
               <td className="table-cell border font-bold">Primary Surgeon:</td>
-              <td className='table-cell border'>{formData.primarySurgeonName}</td>
+              <td className='table-cell border'>{formData.departmentPrimarySurgeon}</td>
             </tr>
           )}
           {formData.procedureName && (
@@ -325,12 +328,12 @@ const SSIDetail = () => {
               <td className='table-cell border'>OT-{formData.otno}</td>
             </tr>
           )}
-          {/* {formData.procedureDoneBy && (
+          {formData.procedureDoneBy && (
             <tr>
               <td className="table-cell border font-bold">Procedure Done By:</td>
               <td className='table-cell border'>{formData.procedureDoneBy}</td>
             </tr>
-          )} */}
+          )}
           {formData.outpatientProcedure == true && (
             <tr>
               <td className="table-cell border font-bold">Out Patient Procedure:</td>
@@ -355,12 +358,12 @@ const SSIDetail = () => {
               <td className='table-cell border'>{formData.papGiven ? 'Given' : 'Not Given'}</td>
             </tr>
           )}
-          {/* {formData.antibioticsGiven && (
+          {formData.antibioticGiven && (
             <tr>
               <td className="table-cell border font-bold">Antibiotics Given:</td>
-              <td className='table-cell border'>{formData.antibioticsGiven}</td>
+              <td className='table-cell border'>{formData.antibioticGiven}</td>
             </tr>
-          )} */}
+          )}
           {formData.papDuration && (
             <tr>
               <td className="table-cell border font-bold">PAP Duration:</td>

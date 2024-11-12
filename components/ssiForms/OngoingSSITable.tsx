@@ -47,7 +47,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
   const handleSSIForm = async () => {
     // Fetch the last patientId from the database
     const { data, error } = await supabase
-        .from('your_table_name') // replace 'your_table_name' with the actual name of your table
+        .from('ssi_Form') // replace 'your_table_name' with the actual name of your table
         .select('patientId')
         .order('patientId', { ascending: false })
         .limit(1);

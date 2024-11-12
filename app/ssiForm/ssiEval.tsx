@@ -191,7 +191,7 @@ const SSIEval: React.FC<SSIEvalProps> = ({
                       onChange={(e) => handleRemarkChange(index, e)}
                       placeholder="Enter remarks"
                       className="input-field"
-                      disabled={!item.yesNo}
+                      // disabled={!item.yesNo}
                     />
                   </td>
                 </tr>

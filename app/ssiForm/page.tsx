@@ -85,7 +85,7 @@ export interface FormData {
     // microorganisms: string[];
     microorganism1: string;
     microorganism2: string;
-    // secondaryBSI: boolean;
+    secondaryBSIdeath: boolean;
     antibiotics: Antibiotic[];
     timeOfInduction: string;
     timeOfSkinIncision: string;
@@ -178,7 +178,7 @@ const SSISurveillanceForm: React.FC = () => {
         // microorganisms: [],
         microorganism1: '',
         microorganism2: '',
-        // secondaryBSI: false,
+        secondaryBSIdeath: false,
         antibiotics: [{
             abop_stage: 'prior',
             antibiotic: '',
@@ -272,7 +272,7 @@ const SSISurveillanceForm: React.FC = () => {
             ...prevData,
             // [name]: type === 'number' ? Number(value) : value
 
-            [name]: (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred')
+            [name]: (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred' || name === 'secondaryBSIdeath')
                 ? value === "true"
                 : type === 'number'
                     ? Number(value) // Convert numeric string to a number
@@ -521,7 +521,7 @@ const SSISurveillanceForm: React.FC = () => {
                         continue;
                     }
                     // non-required fields
-                    if (key === ''){continue;}
+                    if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2'){continue;}
                     if (!value) {
                         alert(`Please fill out the ${key} field.`);
                         return;

@@ -20,7 +20,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
   handleAntibioticChange,
   addAntibiotic,
   removeAntibiotic,
-  handleChange
+  handleChange,
 }) => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -36,6 +36,21 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
             Antibiotic {index + 1}
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Secondary BSI contributed to Death ? */}
+            <DropdownBox
+              label="Secondary BSI contributed to Death ?"
+              labelClass="truncate"
+              id="secondaryBSIdeath"
+              name="secondaryBSIdeath"
+              value={formData.secondaryBSIdeath ? 'true' : 'false'}
+              options={[
+                { value: 'true', label: 'Yes' },
+                { value: 'false', label: 'No' },
+              ]}
+              onChange={handleChange}
+              required={true}
+              className="input-field"
+            />
             {/* Stage */}
             <DropdownBox
               label='Stage'

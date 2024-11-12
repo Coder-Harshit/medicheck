@@ -49,7 +49,7 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
           htmlFor={id}
           className={`block text-sm font-medium text-gray-700 truncate ${labelClass}`}
           style={{
-            width: '150px',
+            width: '250px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',

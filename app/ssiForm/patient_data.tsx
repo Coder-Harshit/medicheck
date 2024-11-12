@@ -71,7 +71,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         />
         {/* Date of Admission */}
         <DateTimePickerBox
-          label="Date of Admission"
+          label="Date of Admission (MM/DD/YYYY)"
           labelClass="truncate"
           id="dateOfAdmission"
           name="dateOfAdmission"
@@ -83,7 +83,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         />
         {/* Date of Operative Procedure */}
         <DateTimePickerBox
-          label="Date of Operative Procedure"
+          label="Date of Operative Procedure (MM/DD/YYYY)"
           labelClass="truncate"
           id="dateOfProcedure"
           name="dateOfProcedure"
@@ -147,6 +147,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Hysterectomy', label: 'Hysterectomy' },
             { value: 'Mastectomy', label: 'Mastectomy' },
             { value: 'Thyroidectomy', label: 'Thyroidectomy' },
+            { value: 'Exploratory Laprotomy', label: 'Exploratory Laprotomy' },
             { value: 'Others', label: 'Others' },
           ]}
           onChange={handleChange}
@@ -244,10 +245,10 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           name="woundClass"
           value={formData.woundClass}
           options={[
-            { value: 'clean', label: 'Clean' },
-            { value: 'clean_contaminated', label: 'Clean Contaminated' },
-            { value: 'contaminated', label: 'Contaminated' },
-            { value: 'dirty_infected', label: 'Dirty/Infected' },
+            { value: 'Clean', label: 'Clean' },
+            { value: 'Clean Contaminated', label: 'Clean Contaminated' },
+            { value: 'Contaminated', label: 'Contaminated' },
+            { value: 'Dirty Infected', label: 'Dirty/Infected' },
           ]}
           onChange={handleChange}
           className="input-field"
@@ -270,7 +271,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         {/* PAP Duration */}
         {formData.papGiven && (
           <DateTimePickerBox
-            label="PAP Duration"
+            label="PAP Duration (HH:MM)"
             labelClass="truncate"
             id="papDuration"
             name="papDuration"
@@ -312,7 +313,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
         {/* Date of SSI-Event */}
         {formData.ssiEventOccurred && (
           <DateTimePickerBox
-            label="Date of SSI Event"
+            label="Date of SSI Event (MM/DD/YYYY)"
             labelClass="truncate"
             id="dateOfSSIEvent"
             name="dateOfSSIEvent"

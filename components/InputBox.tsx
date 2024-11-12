@@ -131,7 +131,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
             text-sm 
             font-medium 
             text-gray-700
-            max-w-[150px]
+            max-w-[250px]
             truncate
             ${labelClass}
           `.trim()}

@@ -49,7 +49,7 @@ const DateTimePickerBox: React.FC<DateTimePickerBoxProps> = ({
           htmlFor={id}
           className={`block text-sm font-medium text-gray-700 truncate ${labelClass}`}
           style={{
-            width: '150px', // Fixed width
+            width: '250px', // Fixed width
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',

@@ -710,7 +710,7 @@ const SSISurveillanceForm: React.FC = () => {
                     </div>
                 ))}
             </div> */}
-            <div className="w-full max-w-4xl mx-auto px-4 py-6">
+            <div className="w-full mx-auto px-4 py-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {steps.map((step, index) => (
                         <div

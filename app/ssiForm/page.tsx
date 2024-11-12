@@ -706,19 +706,25 @@ const SSISurveillanceForm: React.FC = () => {
                     </div>
                 ))}
             </div> */}
-            <div className="flex justify-start mb-6 overflow-x-auto pb-2 -mx-4 px-4 md:justify-center md:overflow-visible md:px-0 md:mx-0">
-                {steps.map((step, index) => (
-                    <div
-                        key={step.id}
-                        className={`shrink-0 mx-1 py-1.5 px-3 text-sm md:text-base md:mx-2 md:py-2 md:px-4 ${index === currentStep
-                            ? 'bg-primary-500 text-white'
-                            : 'bg-gray-200 text-gray-700'
-                            } rounded cursor-pointer`}
-                        onClick={() => setCurrentStep(index)}
-                    >
-                        {step.title}
-                    </div>
-                ))}
+            <div className="w-full max-w-4xl mx-auto px-4 py-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {steps.map((step, index) => (
+                        <div
+                            key={step.id}
+                            onClick={() => setCurrentStep(index)}
+                            className={`
+          flex items-center justify-center text-center
+          px-4 py-4 rounded-lg cursor-pointer transition duration-300
+          ${index === currentStep
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+                                }
+        `}
+                        >
+                            <span className="font-medium">{step.title}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* <form onSubmit={(e) => handleSubmit(e, false)}> */}

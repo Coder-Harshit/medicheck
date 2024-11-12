@@ -59,7 +59,7 @@ const OngoingSSITable: React.FC<OngoingSSITableProps> = ({ data }) => {
     }
 
     // Determine the newId based on the last patientId in the database
-    const lastId = data && data.length > 0 ? parseInt(data[0].patientId) : 1;
+    const lastId = data && data.length > 0 ? parseInt(data[0].patientId) : 0;
     const newId = lastId + 1;
     // router.push(`/ssiForm/${newId}`);
     router.push(`/ssiForm?formId=${newId}`);

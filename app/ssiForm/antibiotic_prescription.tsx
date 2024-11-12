@@ -27,30 +27,29 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
       <h3 className="text-2xl font-bold mb-6 text-center text-primary">
         Antibiotic Prescription
       </h3>
-
+      {/* Secondary BSI contributed to Death ? */}
+      <DropdownBox
+        label="Secondary BSI contributed to Death ?"
+        labelClass="truncate"
+        id="secondaryBSIdeath"
+        name="secondaryBSIdeath"
+        value={formData.secondaryBSIdeath ? 'true' : 'false'}
+        options={[
+          { value: 'true', label: 'Yes' },
+          { value: 'false', label: 'No' },
+        ]}
+        onChange={handleChange}
+        required={true}
+        className="input-field"
+      />
       {formData.antibiotics.map((antibiotic, index: number) => (
         <div
           key={index}
-          className="border border-gray-200 rounded-lg p-4 mb-6">
+          className="border border-gray-200 rounded-lg p-4 my-6">
           <h4 className="text-lg font-semibold mb-4 text-primary">
             Antibiotic {index + 1}
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Secondary BSI contributed to Death ? */}
-            <DropdownBox
-              label="Secondary BSI contributed to Death ?"
-              labelClass="truncate"
-              id="secondaryBSIdeath"
-              name="secondaryBSIdeath"
-              value={formData.secondaryBSIdeath ? 'true' : 'false'}
-              options={[
-                { value: 'true', label: 'Yes' },
-                { value: 'false', label: 'No' },
-              ]}
-              onChange={handleChange}
-              required={true}
-              className="input-field"
-            />
             {/* Stage */}
             <DropdownBox
               label='Stage'

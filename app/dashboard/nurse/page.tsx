@@ -1,107 +1,128 @@
-// FILE: app/dashboard/nurse/page.tsx
+"use client"
 
-"use client";
+import * as React from "react"
+import { useUser } from '@/hooks/useUser'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/utils/supabase/client'
+import OngoingSSITable from '@/components/ssiForms/OngoingSSITable'
+import { FormData } from '@/app/ssiForm/page'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Loader2, LogOut, Plus } from 'lucide-react'
+import { useToast } from "@/hooks/use-toast"
 
-import { useUser } from '@/hooks/useUser';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/utils/supabase/client';
-import OngoingSSITable from '@/components/ssiForms/OngoingSSITable';
-import { FormData } from '@/app/ssiForm/page';
+export default function NurseDashboard() {
+  const { user, userRole, loading } = useUser()
+  const router = useRouter()
+  const [ssiForms, setSsiForms] = React.useState<FormData[]>([])
+  const [isLoading, setIsLoading] = React.useState(true)
+  const { toast } = useToast()
 
-const NurseDashboard = () => {
-  const { user, userRole, loading } = useUser();
-  const router = useRouter();
-  const [ssiForms, setSsiForms] = useState<FormData[]>([]);
-
-  // Handle authentication and role-based routing
-  useEffect(() => {
+  React.useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.push('/login');
-        return;
-      }
-
-      if (user && userRole && userRole.role !== 'nurse') {
-        switch (userRole.role) {
-          case 'doctor':
-            router.push('/dashboard/doctor');
-            break;
-          case 'admin':
-            router.push('/dashboard/admin');
-            break;
-          default:
-            router.push('/dashboard');
-            break;
-        }
+        router.push('/login')
+      } else if (user && userRole && userRole.role !== 'nurse') {
+        router.push(`/dashboard/${userRole.role}`)
+      } else {
+        fetchSSIForms()
       }
     }
-  }, [user, userRole, loading, router]);
+  }, [user, userRole, loading, router])
 
-  // Fetch SSI forms
-  useEffect(() => {
-    const fetchSSIForms = async () => {
-      if (!user) return;
+  async function fetchSSIForms() {
+    if (!user) return
 
+    try {
       const { data, error } = await supabase
         .from('SSI_Form')
         .select('*')
         .eq('nuid', user.id)
-        .eq('status', 'ongoing');
-        
-      if (error) {
-        console.error('Error fetching SSI forms:', error);
-      } else {
-        setSsiForms(data);
-      }
-    };
-
-    fetchSSIForms();
-  }, [user]);
-
+        .eq('status', 'ongoing')
+      
+      if (error) throw error
+      
+      setSsiForms(data || [])
+    } catch (error) {
+      console.error('Error fetching SSI forms:', error)
+      toast({
+        title: "Error",
+        description: "Failed to fetch SSI forms. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      router.push('/login');
+      await supabase.auth.signOut()
+      router.push('/login')
     } catch (error) {
-      alert((error as Error).message);
+      console.error('Error signing out:', error)
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      })
     }
-  };
-
-  // Show loading state
-  if (loading) return <div>Loading...</div>;
-
-  // Show nurse dashboard only if user is authenticated and has nurse role
-  if (user && userRole?.role === 'nurse') {
-    return (
-      <div>
-        
-        <OngoingSSITable data={ssiForms}/>
-
-        <div className='flex flex-row py-10'>
-            <div className='flex justify-center w-full'>
-            <button
-              className='bg-red-500 text-white hover:bg-red-600 w-max px-4 py-2 rounded-lg m-2'
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-            </div>
-          {/* <button
-            className='bg-indigo-500 text-white hover:bg-indigo-600 w-max px-4 py-2 rounded-lg m-2'
-            onClick={handleSSIForm}
-          >
-            Click to Add SSI Form
-          </button> */}
-        </div>
-      </div>
-    );
   }
 
-  // Show loading state while redirect happens
-  return <div>Loading...</div>;
-};
+  const handleNewForm = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('SSI_Form')
+        .select('patientId')
+        .order('patientId', { ascending: false })
+        .limit(1)
 
-export default NurseDashboard;
+      if (error) throw error
+
+      const lastId = data && data.length > 0 ? parseInt(data[0].patientId) : 0
+      const newId = lastId + 1
+      router.push(`/ssiForm?formId=${newId}`)
+    } catch (error) {
+      console.error('Error creating new form:', error)
+      toast({
+        title: "Error",
+        description: "Failed to create a new form. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  if (loading || isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="container mx-auto py-10">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <div>
+            <CardTitle className="text-2xl font-bold">Nurse Dashboard</CardTitle>
+            <CardDescription>Manage your ongoing SSI surveillance forms</CardDescription>
+          </div>
+          <Button variant="outline" onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-end mb-4">
+            <Button onClick={handleNewForm} className="bg-black hover:bg-gray-800">
+              <Plus className="mr-2 h-4 w-4" />
+              New SSI Form
+            </Button>
+          </div>
+          <OngoingSSITable data={ssiForms} />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

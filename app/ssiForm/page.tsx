@@ -67,12 +67,10 @@ export interface FormData {
     dateOfProcedure: string;
     admittingDepartment: string;
     procedureDoneBy: string;
-    // primarySurgeonName: string;
     departmentPrimarySurgeon: string;
     procedureName: string;
     diagnosis: string;
     otno: number;
-    // procedureDoneBy: string;
     outpatientProcedure: boolean;
     scenarioOfProcedure: 'Elective' | 'Emergency';
     woundClass: 'Clean' | 'Clean Contaminated' | 'Contaminated' | 'Dirty/Infected';
@@ -81,8 +79,6 @@ export interface FormData {
     antibioticGiven: string;
     ssiEventOccurred: boolean;
     dateOfSSIEvent: string;
-    // eventDetails: string;
-    // microorganisms: string[];
     microorganism1: string;
     microorganism2: string;
     secondaryBSIdeath: boolean;
@@ -110,37 +106,6 @@ export interface FormData {
     status: 'ongoing' | 'to-be-reviewed' | 'reviewed';
 }
 
-// const requiredFields = [
-//     'patientName',
-//     'patientId',
-//     'dateOfProcedure',
-//     'admittingDepartment',
-//     'departmentPrimarySurgeon',
-//     'primarySurgeonName',
-//     'procedureName',
-//     'diagnosis',
-//     'otno',
-//     'scenarioOfProcedure',
-//     'woundClass',
-//     'papGiven',
-//     'papDuration',
-//     'ssiEventOccurred',
-//     'dateOfSSIEvent',
-//     'antibiotics',
-//     'timeOfInduction',
-//     'timeOfSkinIncision',
-//     'timeOfEndSurgery',
-//     'isolate1',
-//     'isolate2',
-//     'symptomsDict',
-//     'SSIEvalCheckList',
-//     'specificEvent',
-//     // 'organSpace',
-//     'detected',
-//     'status',
-// ];
-
-
 const SSISurveillanceForm: React.FC = () => {
     const { userID } = useUser();
     const router = useRouter();
@@ -160,12 +125,10 @@ const SSISurveillanceForm: React.FC = () => {
         dateOfProcedure: formatDate(new Date()),
         admittingDepartment: '',
         departmentPrimarySurgeon: '',
-        // primarySurgeonName: '',
         procedureDoneBy: '',
         procedureName: '',
         diagnosis: '',
         otno: 1,
-        // procedureDoneBy: '',
         outpatientProcedure: true,
         scenarioOfProcedure: 'Elective',
         woundClass: 'Clean',
@@ -174,8 +137,6 @@ const SSISurveillanceForm: React.FC = () => {
         papDuration: '',
         ssiEventOccurred: true,
         dateOfSSIEvent: formatDate(new Date()),
-        // eventDetails: '',
-        // microorganisms: [],
         microorganism1: '',
         microorganism2: '',
         secondaryBSIdeath: false,
@@ -253,9 +214,6 @@ const SSISurveillanceForm: React.FC = () => {
                     };
                     setFormData(sanitizedData);
                 }
-                // } catch (err) {
-                // console.error('Error fetching SSI form:', err);
-                // setError(err instanceof Error ? err.message : 'Error loading form data');
             } finally {
                 setLoading(false);
             }
@@ -270,8 +228,6 @@ const SSISurveillanceForm: React.FC = () => {
         console.log('Change event:', { name, value, type });
         setFormData(prevData => ({
             ...prevData,
-            // [name]: type === 'number' ? Number(value) : value
-
             [name]: (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred' || name === 'secondaryBSIdeath')
                 ? value === "true"
                 : type === 'number'
@@ -369,136 +325,6 @@ const SSISurveillanceForm: React.FC = () => {
         }));
     };
 
-    // // Improved form submission handler
-    // const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
-    //     e.preventDefault();
-    //     setError(null);
-
-    //     try {
-    //         if (!isDraft) {
-    //             // Validate required fields
-    //             const requiredFields = ['patientName', 'patientId', 'dateOfProcedure'];
-    //             for (const field of requiredFields) {
-    //                 if (!formData[field as keyof FormData]) {
-    //                     throw new Error(`Please fill out the ${field} field.`);
-    //                 }
-    //             }
-    //         }
-
-    //         const sanitizedData = {
-    //             ...formData,
-    //             nuid: userID,
-    //             status: isDraft ? 'ongoing' : 'to-be-reviewed',
-    //             lastModified: new Date().toISOString()
-    //         };
-
-    //         const { error: upsertError } = await supabase
-    //             .from('SSI_Form')
-    //             .upsert([sanitizedData], {
-    //                 onConflict: 'patientId',
-    //                 ignoreDuplicates: false
-    //             });
-
-    //         if (upsertError) throw upsertError;
-
-    //         if (!isDraft) {
-    //             router.push('/dashboard');
-    //         } else {
-    //             alert('Draft saved successfully.');
-    //         }
-    //     } catch (err) {
-    //         console.error('Error saving form:', err);
-    //         setError(err instanceof Error ? err.message : 'Error saving form');
-    //         alert(err instanceof Error ? err.message : 'Error saving form');
-    //     }
-    // };
-
-    // const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
-    //     e.preventDefault();
-    //     setError(null);
-
-    //     // FORM VALIDATION
-    //     if (!isDraft) {
-    //         for (const key in formData) {
-    //             // Use Object.prototype.hasOwnProperty to avoid inherited properties
-    //             if (Object.prototype.hasOwnProperty.call(formData, key)) {
-    //                 const value = formData[key as keyof FormData];
-
-    //                 if (!value) {
-    //                     alert(`Please fill out the ${key} field.`);
-    //                     return;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     const status = isDraft ? 'ongoing' : 'to-be-reviewed';// Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
-
-    //     const sanitizedData = {
-    //         ...formData,
-    //         nuid: userID,
-    //         status: status,  // Set the status based on whether it's a draft or final submission
-    //     };
-
-    //     console.log('Form Data:', sanitizedData);
-    //     // Check if a draft already exists
-    //     const { data: existingDraft, error: fetchError } = await supabase
-    //         .from('SSI_Form')
-    //         .select('*')
-    //         .eq('patientId', formData.patientId)
-    //         .eq('nuid', userID)
-    //         .eq('status', 'ongoing')
-    //         .single();
-
-    //     if (fetchError && fetchError.code !== 'PGRST116') {
-    //         console.error('Error fetching existing draft:', fetchError);
-    //         return;
-    //     }
-
-    //     if (existingDraft) {
-    //         // Update existing draft
-    //         const { data, error } = await supabase
-    //             .from('SSI_Form')
-    //             .update(sanitizedData)
-    //             .eq('patientId', existingDraft.patientId)
-
-    //         if (error) {
-    //             console.error('Error updating draft:', error);
-    //         } else {
-    //             console.log('Draft updated successfully!', data);
-    //             // if (!isDraft) {
-    //             //   router.push('/dashboard');
-    //             // } else {
-    //             //   alert('Draft saved successfully.');
-    //             // }
-    //             if (isDraft) {
-    //                 alert('Draft saved successfully.');
-    //             }
-    //             router.push('/dashboard');
-    //         }
-    //     } else {
-    //         // Insert new row
-    //         const { data, error } = await supabase
-    //             .from('SSI_Form')
-    //             .insert([sanitizedData]);
-
-    //         if (error) {
-    //             console.error('Error inserting data:', error);
-    //         } else {
-    //             console.log('Data insertion successful!', data);
-    //             // if (!isDraft) {
-    //             //   router.push('/dashboard');
-    //             // } else {
-    //             //   alert('Draft saved successfully.');
-    //             // }
-    //             if (isDraft) {
-    //                 alert('Draft saved successfully.');
-    //             }
-    //             router.push('/dashboard');
-    //         }
-    //     }
-    // };
-
     const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
         e.preventDefault();
         console.log('Form Data:', formData);
@@ -525,55 +351,13 @@ const SSISurveillanceForm: React.FC = () => {
                         continue;
                     }
                     // non-required fields
-                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2'){continue;}
-                    // if (!value) {
-                    //     alert(`Please fill out the ${key} field.`);
-                    //     return;
-                    // }
-                    else if (value===null || value===undefined || value==="") {
+                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2') { continue; }
+                    else if (value === null || value === undefined || value === "") {
                         alert(`Please fill out the ${key} field.`);
                         return;
                     }
                 }
             }
-
-            // if (!isDraft) {
-            //     // for (const field of requiredFields) {
-            //     //     if (!formData[field as keyof FormData]) {
-            //     //         alert(`Please fill out the ${field} field.`);
-            //     //         return;
-            //     //     }
-            //     // }
-            //     const form = e.target as HTMLFormElement;
-
-            //     // Check if the form is valid
-            //     if (!form.checkValidity()) {
-            //         form.reportValidity(); // This will show the validation messages
-            //         return;
-            //     }
-
-
-            //     // if (formData.antibiotics.some(antibiotic => !antibiotic.antibiotic)) {
-            //     //     alert('Please fill out the antibiotic name field.');
-            //     //     return;
-            //     // }
-
-            //     if (formData.specificEvent === 'organSpace' && !formData.organSpace) {
-            //         alert('Please specify the organ/space.');
-            //         return;
-            //     }
-
-            //     // Validate arrays and objects if needed
-            //     if (!formData.antibiotics || formData.antibiotics.length === 0) {
-            //         alert('Please add at least one antibiotic.');
-            //         return;
-            //     }
-
-            //     // Validate SSIEvalCheckList
-            //     if (!formData.SSIEvalCheckList || formData.SSIEvalCheckList.length === 0) {
-            //         alert('Please complete the SSI evaluation checklist.');
-            //         return;
-            //     }
         }
 
         const status = isDraft ? 'ongoing' : 'to-be-reviewed'; // Set form status as 'ongoing' if it's a draft, otherwise 'to-be-reviewed'
@@ -584,12 +368,10 @@ const SSISurveillanceForm: React.FC = () => {
             status: status, // Set the status based on whether it's a draft or final submission
         };
 
-        // console.log('Form Data:', sanitizedData);
         // Check if a draft already exists
         const { data: existingDraft, error: fetchError } = await supabase
             .from('SSI_Form')
             .select('*')
-            //   .eq('formId', formId)
             .eq('patientId', formId)
             .eq('nuid', userID)
             .eq('status', 'ongoing')
@@ -610,7 +392,6 @@ const SSISurveillanceForm: React.FC = () => {
             if (error) {
                 console.error('Error updating draft:', error);
             } else {
-                // console.log('Draft updated successfully!', data);
                 if (isDraft) {
                     alert('Draft saved successfully.');
                 }
@@ -625,7 +406,6 @@ const SSISurveillanceForm: React.FC = () => {
             if (error) {
                 console.error('Error inserting data:', error);
             } else {
-                // console.log('Data insertion successful!', data);
                 if (isDraft) {
                     alert('Draft saved successfully.');
                 }
@@ -633,9 +413,6 @@ const SSISurveillanceForm: React.FC = () => {
             }
         }
     };
-
-
-
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
@@ -683,9 +460,7 @@ const SSISurveillanceForm: React.FC = () => {
                 <SSIEvent
                     formData={formData}
                     handleSpecificEventChange={handleSpecificEventChange}
-                    // handleDetectedChange={handleDetectedChange}
                     handleDetectedChange={handleChange}
-                    // handleInputChange={handleInputChange}
                     handleInputChange={handleChange}
                 />
         },
@@ -705,19 +480,6 @@ const SSISurveillanceForm: React.FC = () => {
     return (
         <div className="container mx-auto p-4">
             <h2 className="text-4xl font-bold mb-6 text-center">Surgical Site Infection Surveillance Form</h2>
-
-            {/* <div className="flex justify-center mb-6">
-                {steps.map((step, index) => (
-                    <div
-                        key={step.id}
-                        className={`mx-2 py-2 px-4 ${index === currentStep ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-700'
-                            } rounded cursor-pointer`}
-                        onClick={() => setCurrentStep(index)}
-                    >
-                        {step.title}
-                    </div>
-                ))}
-            </div> */}
             <div className="w-full mx-auto px-4 py-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {steps.map((step, index) => (
@@ -739,7 +501,6 @@ const SSISurveillanceForm: React.FC = () => {
                 </div>
             </div>
 
-            {/* <form onSubmit={(e) => handleSubmit(e, false)}> */}
             <form onSubmit={(e) => e.preventDefault()}>
                 {steps[currentStep].component}
 

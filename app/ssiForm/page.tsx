@@ -12,8 +12,7 @@ import { supabase } from '@/utils/supabase/client';
 import { formatDate } from '@/utils/dateHandling';
 import SSIEvent from './ssiEvent';
 import { useUser } from '@/hooks/useUser';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
+import { useRouter , useSearchParams } from 'next/navigation';
 
 
 interface Antibiotic {

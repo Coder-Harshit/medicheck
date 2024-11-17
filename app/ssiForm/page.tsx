@@ -134,21 +134,20 @@ export default function SSIForm() {
 
     React.useEffect(() => {
         if (!loading) {
-            console.log('Auth state:', {
-                user: user,
-                userRole: userRole,
-                loading: loading,
-                userID: userID
-            })
-            
+            // console.log('Auth state:', {
+            //     user: user,
+            //     userRole: userRole,
+            //     loading: loading,
+            //     userID: userID
+            // })            
             if (!user) {
-                console.log('No user found, redirecting to login')
+                // console.log('No user found, redirecting to login')
                 router.push('/login')
             } else if (userRole?.role !== 'nurse' && userRole?.role !== 'doctor') {
-                console.log('Invalid role, redirecting to dashboard')
+                // console.log('Invalid role, redirecting to dashboard')
                 router.push('/dashboard')
             } else {
-                console.log('User authorized, fetching form data')
+                // console.log('User authorized, fetching form data')
                 fetchFormData()
             }
         }
@@ -478,6 +477,7 @@ export default function SSIForm() {
                             variant="secondary"
                             onClick={() => handleSubmit(true)}
                             disabled={isSaving}
+                            // className="bg-green-500"
                         >
                             {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                             Save Draft
@@ -485,6 +485,7 @@ export default function SSIForm() {
                         <Button
                             onClick={() => handleSubmit(false)}
                             disabled={isSaving}
+                            className="bg-green-500"
                         >
                             {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
                             Submit

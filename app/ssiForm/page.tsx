@@ -110,7 +110,8 @@ const SSISurveillanceForm: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const formId = searchParams.get('formId');
-    const [dataLoading, setDataLoading] = useState(true);
+    // const [dataLoading, setDataLoading] = useState(true);
+    const [, setDataLoading] = useState(true);
     const [currentStep, setCurrentStep] = useState(0);
     const [error, setError] = useState<string | null>(null);
     // const [formData, setFormData] = useState<FormData | null>(null);

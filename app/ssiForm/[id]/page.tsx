@@ -13,7 +13,8 @@ const SSIDetail = () => {
   const { id } = useParams(); // Get the dynamic id from the URL
   const router = useRouter();
   const [formData, setFormData] = useState<FormData | null>(null);
-  const [dataLoading, setDataLoading] = useState(true);
+  // const [dataLoading, setDataLoading] = useState(true);
+  const [,setDataLoading] = useState(true);
 
   useEffect(() => {
     const fetchFormData = async () => {

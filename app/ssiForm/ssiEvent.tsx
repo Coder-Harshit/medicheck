@@ -1,22 +1,22 @@
 // FILE: ssiEvent.tsx
 
 import React from 'react';
-import { FormData } from './page';
+import {FormData}  from './page';
 import InputBox from '../../components/InputBox';
 
 interface SSIEventProps {
   formData: FormData;
   handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDetectedChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // handleDetectedChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isEditing?: boolean;
 }
 
 const SSIEvent: React.FC<SSIEventProps> = ({
   formData,
   handleSpecificEventChange,
-  handleInputChange,
-  handleDetectedChange,
+  handleChange,
   isEditing,
 }) => {
   return (
@@ -123,7 +123,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
                 id="organSpaceInput"
                 name="organSpace"
                 value={formData.organSpace}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 className="ml-4 input-field"
                 placeholder="Enter organ/space site"
                 disabled={isEditing}
@@ -149,7 +149,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               name="detected"
               value="A"
               checked={formData.detected === 'A'}
-              onChange={handleDetectedChange}
+              onChange={handleChange}
               className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
               disabled={isEditing}
             />
@@ -166,7 +166,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               name="detected"
               value="P"
               checked={formData.detected === 'P'}
-              onChange={handleDetectedChange}
+              onChange={handleChange}
               disabled={isEditing}
               className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
             />
@@ -183,7 +183,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               name="detected"
               value="RF"
               checked={formData.detected === 'RF'}
-              onChange={handleDetectedChange}
+              onChange={handleChange}
               disabled={isEditing}
               className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
             />

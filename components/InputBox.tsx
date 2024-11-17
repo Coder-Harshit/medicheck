@@ -115,7 +115,6 @@ export const InputBox: React.FC<InputBoxProps> = ({
     focus:ring-2
     focus:ring-primary-500
     focus:border-primary-500
-    disabled:bg-slate-100
     disabled:cursor-not-allowed
     ${error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300'}
     ${className}

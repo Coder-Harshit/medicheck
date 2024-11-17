@@ -118,12 +118,12 @@ const SSISurveillanceForm: React.FC = () => {
 
     // State to control editing sections
     const [isEditing, setIsEditing] = useState({
-        patientData: false,
-        microbiologyData: false,
-        antibioticData: false,
-        postOpData: false,
-        ssiEventData: false,
-        ssiEvalData: false, // Unlocked by default for doctors
+        patientData: true,
+        microbiologyData: true,
+        antibioticData: true,
+        postOpData: true,
+        ssiEventData: true,
+        ssiEvalData: true, // Unlocked by default for doctors   
     });
 
     useEffect(() => {
@@ -623,7 +623,7 @@ const SSISurveillanceForm: React.FC = () => {
                             onClick={() => toggleEdit('patientData')}
                             className="text-blue-500 underline"
                         >
-                            {isEditing.patientData ? 'Lock' : 'Unlock'}
+                            {isEditing.patientData ? 'Unlock' : 'Lock'}
                         </button>
                     </div>
                     <PatientData
@@ -641,7 +641,7 @@ const SSISurveillanceForm: React.FC = () => {
                             onClick={() => toggleEdit('microbiologyData')}
                             className="text-blue-500 underline"
                         >
-                            {isEditing.microbiologyData ? 'Lock' : 'Unlock'}
+                            {isEditing.microbiologyData ? 'Unlock' : 'Lock'}
                         </button>
                     </div>
                     <MicrobiologyData
@@ -659,7 +659,7 @@ const SSISurveillanceForm: React.FC = () => {
                             onClick={() => toggleEdit('antibioticData')}
                             className="text-blue-500 underline"
                         >
-                            {isEditing.antibioticData ? 'Lock' : 'Unlock'}
+                            {isEditing.antibioticData ? 'Unlock' : 'Lock'}
                         </button>
                     </div>
                     <AntibioticPrescription
@@ -680,7 +680,7 @@ const SSISurveillanceForm: React.FC = () => {
                             onClick={() => toggleEdit('postOpData')}
                             className="text-blue-500 underline"
                         >
-                            {isEditing.postOpData ? 'Lock' : 'Unlock'}
+                            {isEditing.postOpData ? 'Unlock' : 'Lock'}
                         </button>
                     </div>
                     <PostOp_Sheet
@@ -698,7 +698,7 @@ const SSISurveillanceForm: React.FC = () => {
                             onClick={() => toggleEdit('ssiEventData')}
                             className="text-blue-500 underline"
                         >
-                            {isEditing.ssiEventData ? 'Lock' : 'Unlock'}
+                            {isEditing.ssiEventData ? 'Unlock' : 'Lock'}
                         </button>
                     </div>
                     <SSIEvent
@@ -717,7 +717,7 @@ const SSISurveillanceForm: React.FC = () => {
                             onClick={() => toggleEdit('ssiEvalData')}
                             className="text-blue-500 underline"
                         >
-                            {isEditing.ssiEvalData ? 'Lock' : 'Unlock'}
+                            {isEditing.ssiEvalData ? 'Unlock' : 'Lock'}
                         </button>
                     </div>
                     <SSIEval

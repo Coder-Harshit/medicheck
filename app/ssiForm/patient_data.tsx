@@ -10,7 +10,7 @@ interface PatientDataProps {
   isEditing?: boolean;
 }
 
-const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => {
+const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange, isEditing }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -27,6 +27,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           className="input-field"
           required={true}
+          disabled={isEditing}
         />
         {/* Patient ID */}
         <InputBox
@@ -54,6 +55,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           nonnegative={true}
           className="input-field"
           required={true}
+          disabled={isEditing}
         />
         {/* Gender */}
         <DropdownBox
@@ -69,6 +71,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           required={true}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Date of Admission */}
         <DateTimePickerBox
@@ -81,6 +84,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           type="date"
           required={true}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Date of Operative Procedure */}
         <DateTimePickerBox
@@ -93,6 +97,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           type="date"
           required={true}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Admitting Department */}
         <DropdownBox
@@ -114,6 +119,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           required={true}
           onChange={handleChange}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Department's Primary Surgeon */}
         <DropdownBox
@@ -132,6 +138,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           required={true}
           onChange={handleChange}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Procedure Name */}
         <DropdownBox
@@ -153,6 +160,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           ]}
           onChange={handleChange}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Diagnosis */}
         <DropdownBox
@@ -173,6 +181,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           required={true}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Procedure Done By */}
         <DropdownBox
@@ -190,6 +199,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           ]}
           required={true}
           onChange={handleChange}
+          isDisabled={isEditing}
           className="input-field"
         />
         {/* Operation Theatre Number */}
@@ -206,6 +216,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           ]}
           required={true}
           onChange={handleChange}
+          isDisabled={isEditing}
           className="input-field"
         />
         {/* Outpatient Procedure */}
@@ -221,6 +232,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           ]}
           onChange={handleChange}
           required={true}
+          isDisabled={isEditing}
           className="input-field"
         />
         {/* Scenario of Procedure */}
@@ -236,6 +248,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           ]}
           required={true}
           onChange={handleChange}
+          isDisabled={isEditing}
           className="input-field"
         />
         {/* Wound Class */}
@@ -251,6 +264,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'Contaminated', label: 'Contaminated' },
             { value: 'Dirty Infected', label: 'Dirty/Infected' },
           ]}
+          isDisabled={isEditing}
           onChange={handleChange}
           className="input-field"
         />
@@ -266,6 +280,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             { value: 'false', label: 'No' },
           ]}
           onChange={handleChange}
+          isDisabled={isEditing}
           required={true}
           className="input-field"
         />
@@ -280,6 +295,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             onChange={handleChange}
             type="time"
             upperLimitMins={60}
+            isDisabled={isEditing}
             className="input-field"
           />
         )}
@@ -294,6 +310,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             onChange={handleChange}
             className="input-field"
             required={true}
+            disabled={isEditing}
           />
         )}
         {/* SSI Event Occurred */}
@@ -310,6 +327,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
           onChange={handleChange}
           required={true}
           className="input-field"
+          isDisabled={isEditing}
         />
         {/* Date of SSI-Event */}
         {formData.ssiEventOccurred && (
@@ -322,6 +340,7 @@ const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => 
             onChange={handleChange}
             type="date"
             required={true}
+            isDisabled={isEditing}
             className="input-field"
           />
         )}

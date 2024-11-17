@@ -15,6 +15,7 @@ interface SSIEvalProps {
 
 const SSIEval: React.FC<SSIEvalProps> = ({
   formData,
+  isEditing,
   handleYesNoChange,
   handleRemarkChange,
 }) => {
@@ -174,6 +175,7 @@ const SSIEval: React.FC<SSIEvalProps> = ({
                       name={`yesNo-${index}`}
                       checked={!!item.yesNo}
                       onChange={(e) => handleYesNoChange(index, e.target.checked)}
+                      disabled={isEditing}
                     />
                     {/* <input
                       type="radio"
@@ -192,6 +194,7 @@ const SSIEval: React.FC<SSIEvalProps> = ({
                       onChange={(e) => handleRemarkChange(index, e)}
                       placeholder="Enter remarks"
                       className="input-field"
+                      disabled={isEditing}
                       // disabled={!item.yesNo}
                     />
                   </td>

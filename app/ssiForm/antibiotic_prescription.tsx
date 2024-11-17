@@ -22,6 +22,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
   addAntibiotic,
   removeAntibiotic,
   handleChange,
+  isEditing,
 }) => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -42,6 +43,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
         onChange={handleChange}
         required={true}
         className="input-field"
+        isDisabled={isEditing}
       />
       {formData.antibiotics.map((antibiotic, index: number) => (
         <div
@@ -65,6 +67,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               ]}
               required={true}
               className="input-field"
+              isDisabled={isEditing}
               onChange={(e) =>
                 handleAntibioticChange(index, 'abop_stage', e.target.value)
               }
@@ -82,6 +85,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               onChange={(e) =>
                 handleAntibioticChange(index, 'antibiotic', e.target.value)
               }
+              disabled={isEditing}
             />
 
             {/* Route of Administration */}
@@ -101,6 +105,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
               onChange={(e) =>
                 handleAntibioticChange(index, 'route', e.target.value)
               }
+              isDisabled={isEditing}
             />
 
             {/* Duration (mins) */}
@@ -116,6 +121,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
                 handleAntibioticChange(index, 'duration', e.target.value)
               }
               nonnegative={true}
+              disabled={isEditing}
             />
 
             {/* No. of Doses */}
@@ -131,6 +137,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
                 handleAntibioticChange(index, 'doses', e.target.value)
               }
               nonnegative={true}
+              disabled={isEditing}
             />
           </div>
         </div>
@@ -161,6 +168,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
           required={true}
           onChange={handleChange}
           type="time"
+          isDisabled={isEditing}
         />
 
         {/* Time of Incision */}
@@ -173,6 +181,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
           required={true}
           onChange={handleChange}
           type="time"
+          isDisabled={isEditing}
         />
 
         {/* End Time of Surgery */}
@@ -185,6 +194,7 @@ const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
           required={true}
           onChange={handleChange}
           type="time"
+          isDisabled={isEditing}
         />
       </div>
     </div>

@@ -17,6 +17,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
   handleSpecificEventChange,
   handleInputChange,
   handleDetectedChange,
+  isEditing,
 }) => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -41,7 +42,9 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="sip"
               checked={formData.specificEvent === 'sip'}
               onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
+        disabled={isEditing}
+
             />
             <label htmlFor="sip" className="ml-2 block text-sm font-medium text-gray-700">
               Superficial Incisional Primary (SIP)
@@ -57,7 +60,8 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="sis"
               checked={formData.specificEvent === 'sis'}
               onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
+              disabled={isEditing}
             />
             <label htmlFor="sis" className="ml-2 block text-sm font-medium text-gray-700">
               Superficial Incisional Secondary (SIS)
@@ -73,9 +77,11 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="dip"
               checked={formData.specificEvent === 'dip'}
               onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
+              disabled={isEditing}
+
             />
-            <label htmlFor="dip" className="ml-2 block text-sm font-medium text-gray-700">
+            <label htmlFor="dip" className="ml-2 block text-sm font-medium text-gray-700 disabled:bg-slate-100 disabled:cursor-not-allowed">
               Deep Incisional Primary (DIP)
             </label>
           </div>
@@ -89,7 +95,8 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="dis"
               checked={formData.specificEvent === 'dis'}
               onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
+              disabled={isEditing}
             />
             <label htmlFor="dis" className="ml-2 block text-sm font-medium text-gray-700">
               Deep Incisional Secondary (DIS)
@@ -105,7 +112,8 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="organSpace"
               checked={formData.specificEvent === 'organSpace'}
               onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
+              disabled={isEditing}
             />
             <label htmlFor="organSpace" className="ml-2 block text-sm font-medium text-gray-700">
               Organ/Space (specify site):
@@ -118,6 +126,7 @@ const SSIEvent: React.FC<SSIEventProps> = ({
                 onChange={handleInputChange}
                 className="ml-4 input-field"
                 placeholder="Enter organ/space site"
+                disabled={isEditing}
               />
             )}
           </div>
@@ -141,7 +150,8 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="A"
               checked={formData.detected === 'A'}
               onChange={handleDetectedChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
+              disabled={isEditing}
             />
             <label htmlFor="duringAdmission" className="ml-2 block text-sm font-medium text-gray-700">
               A (During admission)
@@ -157,7 +167,8 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="P"
               checked={formData.detected === 'P'}
               onChange={handleDetectedChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              disabled={isEditing}
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
             />
             <label htmlFor="postDischarge" className="ml-2 block text-sm font-medium text-gray-700">
               P (Post-discharge surveillance)
@@ -173,7 +184,8 @@ const SSIEvent: React.FC<SSIEventProps> = ({
               value="RF"
               checked={formData.detected === 'RF'}
               onChange={handleDetectedChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+              disabled={isEditing}
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
             />
             <label htmlFor="readmissionFacility" className="ml-2 block text-sm font-medium text-gray-700">
               RF (Readmission to facility)

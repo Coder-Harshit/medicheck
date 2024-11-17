@@ -16,6 +16,7 @@ interface PostOpProps {
 const PostOpForm: React.FC<PostOpProps> = ({
   formData,
   handlePostOpChange,
+  isEditing,
 }) => {
   const handleToggleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -60,6 +61,7 @@ const PostOpForm: React.FC<PostOpProps> = ({
                       name={`symptom_${symptomIndex}_day_${dayIndex}`}
                       checked={!!formData.symptomsDict[symptom][day]}
                       onChange={(e) => handleToggleChange(e, symptom, day)}
+                      disabled={isEditing}
                     />
                   </td>
                 ))}

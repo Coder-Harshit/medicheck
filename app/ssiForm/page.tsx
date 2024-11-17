@@ -278,7 +278,7 @@ const SSISurveillanceForm: React.FC = () => {
                     ? Number(value) // Convert numeric string to a number
                     : value // Default to string for other types
         }));
-        // console.log(value)
+        console.log(value)
 
     };
 
@@ -501,6 +501,7 @@ const SSISurveillanceForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
         e.preventDefault();
+        console.log('Form Data:', formData);
         // If not a draft and not on the last step, prevent submission
         if (!isDraft && currentStep !== steps.length - 1) {
             alert("Please complete all steps before submitting");
@@ -520,9 +521,16 @@ const SSISurveillanceForm: React.FC = () => {
                     if (key === 'organSpace' && formData.specificEvent !== 'organSpace') {
                         continue;
                     }
+                    if ((key === 'antibioticGiven' || key === 'papDuration') && formData.papGiven == false) {
+                        continue;
+                    }
                     // non-required fields
-                    if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2'){continue;}
-                    if (!value) {
+                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2'){continue;}
+                    // if (!value) {
+                    //     alert(`Please fill out the ${key} field.`);
+                    //     return;
+                    // }
+                    else if (value===null || value===undefined || value==="") {
                         alert(`Please fill out the ${key} field.`);
                         return;
                     }

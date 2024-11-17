@@ -7,6 +7,7 @@ import { FormData } from './page';
 interface PatientDataProps {
   formData: FormData;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  isEditing?: boolean;
 }
 
 const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange }) => {

@@ -13,6 +13,7 @@ interface AntibioticPrescriptionProps {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
+  isEditing?: boolean;
 }
 
 const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({

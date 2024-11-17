@@ -11,6 +11,7 @@ interface MicrobiologyDataProps {
     category: 'sensitive' | 'resistant' | 'intermediate',
     value: string
   ) => void;
+  isEditing?: boolean;
 }
 
 

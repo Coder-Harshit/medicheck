@@ -10,6 +10,7 @@ interface PostOpProps {
     day: number | string,
     value: boolean
   ) => void;
+  isEditing?: boolean;
 }
 
 const PostOpForm: React.FC<PostOpProps> = ({

@@ -10,6 +10,7 @@ interface SSIEvalProps {
   formData: FormData;
   handleYesNoChange: (index: number, value: boolean) => void;
   handleRemarkChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
+  isEditing?: boolean;
 }
 
 const SSIEval: React.FC<SSIEvalProps> = ({

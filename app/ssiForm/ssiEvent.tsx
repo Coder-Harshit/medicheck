@@ -9,6 +9,7 @@ interface SSIEventProps {
   handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleDetectedChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isEditing?: boolean;
 }
 
 const SSIEvent: React.FC<SSIEventProps> = ({

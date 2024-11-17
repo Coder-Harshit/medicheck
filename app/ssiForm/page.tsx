@@ -12,7 +12,7 @@ import { supabase } from '@/utils/supabase/client';
 import { formatDate } from '@/utils/dateHandling';
 import SSIEvent from './ssiEvent';
 import { useUser } from '@/hooks/useUser';
-import { useRouter , useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 
 interface Antibiotic {
@@ -106,13 +106,34 @@ export interface FormData {
 }
 
 const SSISurveillanceForm: React.FC = () => {
-    const { userID } = useUser();
+    const { user, userID, userRole, loading } = useUser();
     const router = useRouter();
     const searchParams = useSearchParams();
     const formId = searchParams.get('formId');
-    const [loading, setLoading] = useState(true);
+    const [dataLoading, setDataLoading] = useState(true);
     const [currentStep, setCurrentStep] = useState(0);
     const [error, setError] = useState<string | null>(null);
+    // const [formData, setFormData] = useState<FormData | null>(null);
+
+
+    // State to control editing sections
+    const [isEditing, setIsEditing] = useState({
+        patientData: false,
+        microbiologyData: false,
+        antibioticData: false,
+        postOpData: false,
+        ssiEventData: false,
+        ssiEvalData: false, // Unlocked by default for doctors
+    });
+
+    useEffect(() => {
+        if (!loading && !user) {
+            router.push('/login');
+        } else if (userRole?.role === 'doctor') {
+            // Unlock SSI Evaluation section by default for doctors
+            setIsEditing((prev) => ({ ...prev, ssiEvalData: false }));
+        }
+    }, [user, loading, userRole, router]);
 
     // Initialize form data with default values in a separate function
     const getInitialFormData = (): FormData => ({
@@ -178,7 +199,7 @@ const SSISurveillanceForm: React.FC = () => {
         const fetchFormData = async () => {
             if (!formId || !userID) return;
 
-            setLoading(true);
+            setDataLoading(true);
             setError(null);
 
             try {
@@ -214,12 +235,19 @@ const SSISurveillanceForm: React.FC = () => {
                     setFormData(sanitizedData);
                 }
             } finally {
-                setLoading(false);
+                setDataLoading(false);
             }
         };
 
         fetchFormData();
-    }, [formId, userID]);
+    }, [formId, user]);
+
+    const toggleEdit = (section: keyof typeof isEditing) => {
+        setIsEditing((prev) => ({
+            ...prev,
+            [section]: !prev[section],
+        }));
+    };
 
     // Improved form field change handler
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -328,7 +356,8 @@ const SSISurveillanceForm: React.FC = () => {
         e.preventDefault();
         console.log('Form Data:', formData);
         // If not a draft and not on the last step, prevent submission
-        if (!isDraft && currentStep !== steps.length - 1) {
+        // if (!isDraft && currentStep !== steps.length - 1) {
+        if (!isDraft) {
             alert("Please complete all steps before submitting");
             return;
         }
@@ -364,6 +393,7 @@ const SSISurveillanceForm: React.FC = () => {
         const sanitizedData = {
             ...formData,
             nuid: userID,
+            // nuid: user,
             status: status, // Set the status based on whether it's a draft or final submission
         };
 
@@ -375,7 +405,6 @@ const SSISurveillanceForm: React.FC = () => {
             .eq('nuid', userID)
             .eq('status', 'ongoing')
             .single();
-
         if (fetchError && fetchError.code !== 'PGRST116') {
             console.error('Error fetching existing draft:', fetchError);
             return;
@@ -413,6 +442,27 @@ const SSISurveillanceForm: React.FC = () => {
         }
     };
 
+    const handleReviewSubmit = async () => {
+        try {
+            const { error } = await supabase
+                .from('SSI_Form')
+                .update({
+                    status: 'reviewed',
+                    reviewedBy: user?.id,
+                    reviewedAt: new Date().toISOString(),
+                    // Include any updated formData fields if necessary
+                })
+                .eq('patientId', formData?.patientId);
+
+            if (error) throw error;
+
+            router.push('/dashboard/doctor');
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('Failed to submit review');
+        }
+    };
+
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
@@ -421,128 +471,275 @@ const SSISurveillanceForm: React.FC = () => {
         return <div className="text-red-500 text-center p-4">{error}</div>;
     }
 
-    const steps = [
-        {
-            id: 0, title: 'Patient Data', component:
-                <PatientData
-                    formData={formData}
-                    handleChange={handleChange}
-                />
-        },
-        {
-            id: 1, title: 'Microbiology Data', component:
-                <MicrobiologyData
-                    formData={formData}
-                    handleChange={handleChange}
-                    handleIsolateChange={handleIsolateChange}
-                />
-        },
-        {
-            id: 2, title: 'Antibiotic Prescription', component:
-                <AntibioticPrescription
-                    formData={formData}
-                    handleAntibioticChange={handleAntibioticChange}
-                    addAntibiotic={addAntibiotic}
-                    removeAntibiotic={removeAntibiotic}
-                    handleChange={handleChange}
-                />
-        },
-        {
-            id: 3, title: 'Post-Op Sheet', component:
-                <PostOp_Sheet
-                    formData={formData}
-                    handlePostOpChange={handlePostOpChange}
-                />
-        },
-        {
-            id: 4, title: 'SSI Event Details', component:
-                <SSIEvent
-                    formData={formData}
-                    handleSpecificEventChange={handleSpecificEventChange}
-                    handleDetectedChange={handleChange}
-                    handleInputChange={handleChange}
-                />
-        },
-
-        {
-            id: 5, title: 'SSI Evaluation', component:
-                <SSIEval
-                    formData={formData}
-                    handleYesNoChange={handleYesNoChange}
-                    handleRemarkChange={handleRemarkChange}
-                />
-        },
-
-    ]
-
-
-    return (
-        <div className="container mx-auto p-4">
-            <h2 className="text-4xl font-bold mb-6 text-center">Surgical Site Infection Surveillance Form</h2>
-            <div className="w-full mx-auto px-4 py-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {steps.map((step, index) => (
-                        <div
-                            key={step.id}
-                            onClick={() => setCurrentStep(index)}
-                            className={`
+    // **Nurse View**
+    if (userRole?.role === 'nurse') {
+        // Existing nurse form steps
+        const steps = [
+            {
+                id: 0,
+                title: 'Patient Data',
+                component: (
+                    <PatientData
+                        formData={formData}
+                        handleChange={handleChange}
+                    />
+                ),
+            },
+            {
+                id: 1,
+                title: 'Microbiology Data',
+                component: (
+                    <MicrobiologyData
+                        formData={formData}
+                        handleChange={handleChange}
+                        handleIsolateChange={handleIsolateChange}
+                    />
+                ),
+            },
+            {
+                id: 2,
+                title: 'Antibiotic Prescription',
+                component: (
+                    <AntibioticPrescription
+                        formData={formData}
+                        handleAntibioticChange={handleAntibioticChange}
+                        addAntibiotic={addAntibiotic}
+                        removeAntibiotic={removeAntibiotic}
+                        handleChange={handleChange}
+                    />
+                ),
+            },
+            {
+                id: 3,
+                title: 'Post-Op Sheet',
+                component: (
+                    <PostOp_Sheet
+                        formData={formData}
+                        handlePostOpChange={handlePostOpChange}
+                    />
+                ),
+            },
+            {
+                id: 4,
+                title: 'SSI Event Details',
+                component: (
+                    <SSIEvent
+                        formData={formData}
+                        handleSpecificEventChange={handleSpecificEventChange}
+                        handleDetectedChange={handleChange}
+                        handleInputChange={handleChange}
+                    />
+                ),
+            },
+            // {
+            //     id: 5, title: 'SSI Evaluation', component:
+            //         <SSIEval
+            //             formData={formData}
+            //             handleYesNoChange={handleYesNoChange}
+            //             handleRemarkChange={handleRemarkChange}
+            //         />
+            // },
+        ];
+        return (
+            <div className="container mx-auto p-4">
+                <h2 className="text-4xl font-bold mb-6 text-center">Surgical Site Infection Surveillance Form</h2>
+                <div className="w-full mx-auto px-4 py-6">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {steps.map((step, index) => (
+                            <div
+                                key={step.id}
+                                onClick={() => setCurrentStep(index)}
+                                className={`
           flex items-center justify-center text-center
           px-4 py-4 rounded-lg cursor-pointer transition duration-300
           ${index === currentStep
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
-                                }
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+                                    }
         `}
-                        >
-                            <span className="font-medium">{step.title}</span>
-                        </div>
-                    ))}
+                            >
+                                <span className="font-medium">{step.title}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            <form onSubmit={(e) => e.preventDefault()}>
-                {steps[currentStep].component}
+                <form onSubmit={(e) => e.preventDefault()}>
+                    {steps[currentStep].component}
 
-                <div className="flex justify-between mt-6">
-                    <button
-                        type="button"
-                        className={`px-4 py-2 bg-gray-500 text-white rounded ${currentStep === 0 ? 'opacity-50 cursor-not-allowed' : ''
-                            }`}
-                        onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
-                        disabled={currentStep === 0}
-                    >
-                        Previous
-                    </button>
-
-                    <button
-                        type="button"
-                        className="px-4 py-2 bg-gray-500 text-white rounded"
-                        onClick={(e) => handleSubmit(e, true)}
-                    >
-                        Save Draft
-                    </button>
-
-                    {currentStep < steps.length - 1 ? (
+                    <div className="flex justify-between mt-6">
                         <button
                             type="button"
-                            className="bg-primary-600 text-white hover:bg-primary-500 w-max px-4 py-2 rounded"
-                            onClick={() => setCurrentStep(prev => Math.min(steps.length - 1, prev + 1))}
+                            className={`px-4 py-2 bg-gray-500 text-white rounded ${currentStep === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                            onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
+                            disabled={currentStep === 0}
                         >
-                            Next
+                            Previous
                         </button>
-                    ) : (
+
                         <button
-                            type="submit"
-                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                            onClick={(e) => handleSubmit(e, false)}
+                            type="button"
+                            className="px-4 py-2 bg-gray-500 text-white rounded"
+                            onClick={(e) => handleSubmit(e, true)}
                         >
-                            Submit
+                            Save Draft
                         </button>
-                    )}
+
+                        {currentStep < steps.length - 1 ? (
+                            <button
+                                type="button"
+                                className="bg-primary-600 text-white hover:bg-primary-500 w-max px-4 py-2 rounded"
+                                onClick={() => setCurrentStep(prev => Math.min(steps.length - 1, prev + 1))}
+                            >
+                                Next
+                            </button>
+                        ) : (
+                            <button
+                                type="submit"
+                                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                onClick={(e) => handleSubmit(e, false)}
+                            >
+                                Submit
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </div>
+        );
+    }
+    // **Doctor View**
+    else if (userRole?.role === 'doctor') {
+        // Render form with lock/unlock toggles
+        return (
+            <div className="p-6 bg-white rounded-lg shadow-lg text-black">
+                <h1 className="text-2xl font-bold mb-4">SSI Form Review</h1>
+
+                {/* Patient Data Section */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold">Patient Data</h2>
+                        <button
+                            onClick={() => toggleEdit('patientData')}
+                            className="text-blue-500 underline"
+                        >
+                            {isEditing.patientData ? 'Lock' : 'Unlock'}
+                        </button>
+                    </div>
+                    <PatientData
+                        formData={formData}
+                        handleChange={handleChange}
+                        isEditing={isEditing.patientData}
+                    />
                 </div>
-            </form>
-        </div>
-    );
+
+                {/* Microbiology Data Section */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold">Microbiology Data</h2>
+                        <button
+                            onClick={() => toggleEdit('microbiologyData')}
+                            className="text-blue-500 underline"
+                        >
+                            {isEditing.microbiologyData ? 'Lock' : 'Unlock'}
+                        </button>
+                    </div>
+                    <MicrobiologyData
+                        formData={formData}
+                        handleChange={handleChange}
+                        handleIsolateChange={handleIsolateChange}
+                        isEditing={isEditing.microbiologyData}
+                    />
+                </div>
+                {/* Antibiotic Prescription Section */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold">Antibiotic Prescription</h2>
+                        <button
+                            onClick={() => toggleEdit('antibioticData')}
+                            className="text-blue-500 underline"
+                        >
+                            {isEditing.antibioticData ? 'Lock' : 'Unlock'}
+                        </button>
+                    </div>
+                    <AntibioticPrescription
+                        formData={formData}
+                        handleAntibioticChange={handleAntibioticChange}
+                        addAntibiotic={addAntibiotic}
+                        removeAntibiotic={removeAntibiotic}
+                        handleChange={handleChange}
+                        isEditing={isEditing.antibioticData}
+                    />
+                </div>
+
+                {/* Post-Op Sheet Section */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold">Post-Op Sheet</h2>
+                        <button
+                            onClick={() => toggleEdit('postOpData')}
+                            className="text-blue-500 underline"
+                        >
+                            {isEditing.postOpData ? 'Lock' : 'Unlock'}
+                        </button>
+                    </div>
+                    <PostOp_Sheet
+                        formData={formData}
+                        handlePostOpChange={handlePostOpChange}
+                        isEditing={isEditing.postOpData}
+                    />
+                </div>
+
+                {/* SSI Event Section */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold">SSI Event Details</h2>
+                        <button
+                            onClick={() => toggleEdit('ssiEventData')}
+                            className="text-blue-500 underline"
+                        >
+                            {isEditing.ssiEventData ? 'Lock' : 'Unlock'}
+                        </button>
+                    </div>
+                    <SSIEvent
+                        formData={formData}
+                        handleSpecificEventChange={handleSpecificEventChange}
+                        handleDetectedChange={handleChange}
+                        handleInputChange={handleChange}
+                        isEditing={isEditing.ssiEventData}
+                    />
+                </div>
+                {/* SSI Evaluation Section (Unlocked by default) */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold">SSI Evaluation</h2>
+                        <button
+                            onClick={() => toggleEdit('ssiEvalData')}
+                            className="text-blue-500 underline"
+                        >
+                            {isEditing.ssiEvalData ? 'Lock' : 'Unlock'}
+                        </button>
+                    </div>
+                    <SSIEval
+                        formData={formData}
+                        handleYesNoChange={handleYesNoChange}
+                        handleRemarkChange={handleRemarkChange}
+                        isEditing={isEditing.ssiEvalData}
+                    />
+                </div>
+
+                {/* Submit Review Button */}
+                <button
+                    onClick={handleReviewSubmit}
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                >
+                    Submit Review
+                </button>
+            </div>
+        );
+    } else {
+        return <div className="text-center mt-20">Unauthorized Access</div>;
+    }
 };
 
 const SSISurveillanceFormPage: React.FC = () => (

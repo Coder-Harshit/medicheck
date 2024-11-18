@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { FormData } from "@/app/ssiForm/page"
+import { FormData } from "@/app/ssiForm/ssiFormContent"
 import { CalendarIcon } from 'lucide-react'
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
@@ -167,7 +167,7 @@ export default function PatientData({ formData, handleChange, isEditing }: Patie
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="departmentPrimarySurgeon">Department's Primary Surgeon</Label>
+            <Label htmlFor="departmentPrimarySurgeon">Department&#39;s Primary Surgeon</Label>
             <Select
               name="departmentPrimarySurgeon"
               value={formData.departmentPrimarySurgeon}

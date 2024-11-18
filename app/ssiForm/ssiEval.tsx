@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { FormData, SSIEvalCheckListItem } from "@/app/ssiForm/page"
+import { FormData, SSIEvalCheckListItem } from "@/app/ssiForm/ssiFormContent"
 
 interface SSIEvalProps {
   formData: FormData

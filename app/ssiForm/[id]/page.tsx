@@ -5,7 +5,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
-import { FormData } from '@/app/ssiForm/page';
+import { FormData } from '@/app/ssiForm/ssiFormContent';
 import { useUser } from '@/hooks/useUser';
 
 const SSIDetail = () => {
@@ -217,14 +217,14 @@ const SSIDetail = () => {
                 <td className='table-cell border'>{formData.secondaryBSIdeath ? 'Yes' : 'No'}</td>
               </tr>
             )}
-            {formData.antibiotics && formData.antibiotics.filter(antibiotic => antibiotic.doses > 0).length > 0 && (
+            {formData.antibioticPrescriptions && formData.antibioticPrescriptions.filter(antibiotic => antibiotic.dose > 0).length > 0 && (
               <tr>
                 <td className="table-cell border font-bold">Antibiotics:</td>
-                <td className='table-cell border'>{formData.antibiotics.map((antibiotic, index) => (
+                <td className='table-cell border'>{formData.antibioticPrescriptions.map((antibiotic, index) => (
                   <span key={index}>
-                    {antibiotic.doses > 0 && (
+                    {antibiotic.dose > 0 && (
                       <span>
-                        {antibiotic.abop_stage}: patient given {antibiotic.doses} doses of {antibiotic.antibiotic}{index < formData.antibiotics.length - 1 ? ', ' : ''}
+                        {antibiotic.stage}: patient given {antibiotic.dose} doses of {antibiotic.name}{index < formData.antibioticPrescriptions.length - 1 ? ', ' : ''}
                       </span>
                     )}
                   </span>

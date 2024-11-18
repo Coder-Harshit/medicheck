@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useRouter } from 'next/navigation'
-import { FormData } from '@/app/ssiForm/page'
+import { FormData } from '@/app/ssiForm/ssiFormContent'
 import {
   Table,
   TableBody,
@@ -14,7 +14,6 @@ import { Badge } from "@/components/ui/badge"
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,

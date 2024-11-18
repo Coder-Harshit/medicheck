@@ -4,13 +4,7 @@ import * as React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { FormData } from "@/app/ssiForm/page"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { Check, ChevronsUpDown, X } from 'lucide-react'
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
+import { FormData } from "@/app/ssiForm/ssiFormContent"
 import { MultiSelect } from "@/components/multi-select-dropdown"
 
 interface MicrobiologyDataProps {
@@ -33,8 +27,14 @@ const antibioticOptions = [
   { value: "ciprofloxacin", label: "Ciprofloxacin" },
   { value: "clindamycin", label: "Clindamycin" },
   { value: "doxycycline", label: "Doxycycline" },
-  // "Erythromycin", "Gentamicin", "Levofloxacin", "Metronidazole",
-  // "Penicillin", "Tetracycline", "Trimethoprim-Sulfamethoxazole", "Vancomycin"
+  { value: "erythromycin", label: "Erythromycin" },
+  { value: "gentamicin", label: "Gentamicin" },
+  { value: "levofloxacin", label: "Levofloxacin" },
+  { value: "metronidazole", label: "Metronidazole" },
+  { value: "penicillin", label: "Penicillin" },
+  { value: "tetracycline", label: "Tetracycline" },
+  { value: "trimethoprim_sulfamethoxazole", label: "Trimethoprim-Sulfamethoxazole" },
+  { value: "vancomycin", label: "Vancomycin" },
 ]
 
 const microorganisms = [
@@ -54,14 +54,6 @@ export default function MicrobiologyData({
   handleIsolateChange,
   isEditing,
 }: MicrobiologyDataProps) {
-  const handleIsolateDataChange = (
-    isolateKey: 'isolate1' | 'isolate2',
-    category: 'sensitive' | 'resistant' | 'intermediate',
-    values: string[]
-  ) => {
-    handleIsolateChange(isolateKey, category, values);
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -136,10 +128,8 @@ interface IsolateFormProps {
   title: string
 }
 
-function IsolateForm({ isolate, formData, handleIsolateChange, isEditing, title }: IsolateFormProps) {
+function IsolateForm({ isolate, handleIsolateChange, isEditing, title }: IsolateFormProps) {
   const categories = ['sensitive', 'resistant', 'intermediate'] as const;
-
-  const [selectedAntibiotic, setSelectedAntibiotic] = React.useState<string[]>([]);
 
   return (
     <div className="space-y-4">
@@ -155,7 +145,6 @@ function IsolateForm({ isolate, formData, handleIsolateChange, isEditing, title 
               onValueChange={(selectedValues) =>
                 handleIsolateChange(isolate, category, selectedValues)
               }
-              // defaultValue={formData[category]}
               placeholder={`Select ${category} antibiotics`}
               disabled={isEditing}
             />

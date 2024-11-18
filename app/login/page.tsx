@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/utils/supabase/client'
 import { motion } from "framer-motion"
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 export default function LoginPage() {
   return (
@@ -63,10 +63,10 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         duration: 3000,
       })
       router.push('/dashboard')
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred during login.",
+        description: (error instanceof Error ? error.message : "An error occurred during login."),
         variant: "destructive",
         duration: 5000,
       })

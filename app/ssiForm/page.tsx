@@ -16,7 +16,7 @@ import AntibioticPrescription from './antibiotic_prescription'
 import PostOpSheet from './postop_form'
 import SSIEvent from './ssiEvent'
 import SSIEval from './ssiEval'
-import { days, symptoms } from './constants';
+import { days, symptoms, SSIEvalChecklistItems } from './constants';
 
 
 
@@ -42,26 +42,6 @@ symptoms.forEach(symptom => {
         symptomsDict[symptom][day] = false;
     });
 });
-
-const SSIEvalChecklistItems = [
-    "Administer antimicrobial prophylaxis in accordance with evidence-based standards.",
-    "Administer antimicrobial prophylaxis within 1 hour prior to incision.",
-    "Select antimicrobial prophylaxis agents on basis of surgical procedure.",
-    "Select antimicrobial prophylaxis agents on basis of SSI pathogens.",
-    "Select antimicrobial prophylaxis agents on published recommendations.",
-    "Discontinue antibiotics within 24 hours after surgery end.",
-    "Redose antibiotic at 3-hour interval in procedures > 3 hours.",
-    "Adjust antimicrobial prophylaxis dose for obese patients (BMI>30).",
-    "Not remove hair at operative site unless it interferes with operation.",
-    "Use razors for hair removal at operative site.",
-    "Use clippers or depilatory agent for hair removal.",
-    "Use appropriate antiseptic agent for skin preparation.",
-    "Mechanically prepare the colon (enemas, cathartic agents).",
-    "Administer non-absorbable oral antimicrobial agents before operation.",
-    "Keep OR doors closed during surgery except as needed.",
-    "Maintain immediate post-op normothermia.",
-];
-
 
 export interface FormData {
     patientName: string;
@@ -92,14 +72,14 @@ export interface FormData {
     timeOfSkinIncision: string;
     timeOfEndSurgery: string;
     isolate1: {
-        sensitive: string;
-        resistant: string;
-        intermediate: string;
+        sensitive: string[];
+        resistant: string[];
+        intermediate: string[];
     };
     isolate2: {
-        sensitive: string;
-        resistant: string;
-        intermediate: string;
+        sensitive: string[];
+        resistant: string[];
+        intermediate: string[];
     };
     symptomsDict: {
         [key: string]: { [key: string]: boolean }
@@ -260,7 +240,11 @@ export default function SSIForm() {
         }))
       }
 
-    const handleIsolateChange = (isolate: 'isolate1' | 'isolate2', category: 'sensitive' | 'resistant' | 'intermediate', value: string) => {
+    const handleIsolateChange = (
+        isolate: 'isolate1' | 'isolate2',
+        category: 'sensitive' | 'resistant' | 'intermediate',
+        value: string[]
+    ) => {
         setFormData(prevData => ({
             ...prevData,
             [isolate]: {
@@ -557,14 +541,14 @@ function getInitialFormData(): FormData {
         timeOfSkinIncision: new Date().toLocaleTimeString(),
         timeOfEndSurgery: new Date().toLocaleTimeString(),
         isolate1: {
-            sensitive: '',
-            resistant: '',
-            intermediate: '',
+            sensitive: [],
+            resistant: [],
+            intermediate: [],
         },
         isolate2: {
-            sensitive: '',
-            resistant: '',
-            intermediate: '',
+            sensitive: [],
+            resistant: [],
+            intermediate: [],
         },
         symptomsDict: { ...symptomsDict },
         SSIEvalCheckList: SSIEvalChecklistItems.map((item) => ({

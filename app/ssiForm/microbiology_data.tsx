@@ -1,212 +1,227 @@
-import React from 'react';
-import { FormData } from './page';
-import DropdownBox from '../../components/DropdownBox';
+"use client"
+
+import * as React from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { FormData } from "@/app/ssiForm/page"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+import { Check, ChevronsUpDown, X } from 'lucide-react'
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
+import { MultiSelect } from "@/components/multi-select-dropdown"
 
 interface MicrobiologyDataProps {
-  formData: FormData;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  formData: FormData
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
   handleIsolateChange: (
     isolate: 'isolate1' | 'isolate2',
     category: 'sensitive' | 'resistant' | 'intermediate',
-    value: string
-  ) => void;
-  isEditing?: boolean;
+    values: string[]
+  ) => void
+  isEditing?: boolean
 }
 
-
 const antibioticOptions = [
-  { label: 'Antibiotic 1', value: 'antibiotic1' },
-  { label: 'Antibiotic 2', value: 'antibiotic2' },
-  { label: 'Antibiotic 3', value: 'antibiotic3' },
-  { label: 'Antibiotic 4', value: 'antibiotic4' },
-  { label: 'Antibiotic 5', value: 'antibiotic5' },
-  { label: 'Antibiotic 6', value: 'antibiotic6' },
-  // Add more antibiotics as needed
-];
-
+  { value: "amoxicillin", label: "Amoxicillin" },
+  { value: "ampicillin", label: "Ampicillin" },
+  { value: "azithromycin", label: "Azithromycin" },
+  { value: "cefazolin", label: "Cefazolin" },
+  { value: "ceftriaxone", label: "Ceftriaxone" },
+  { value: "ciprofloxacin", label: "Ciprofloxacin" },
+  { value: "clindamycin", label: "Clindamycin" },
+  { value: "doxycycline", label: "Doxycycline" },
+  // "Erythromycin", "Gentamicin", "Levofloxacin", "Metronidazole",
+  // "Penicillin", "Tetracycline", "Trimethoprim-Sulfamethoxazole", "Vancomycin"
+]
 
 const microorganisms = [
-  { label: 'Bacteria', value: 'bacteria' },
-  { label: 'Virus', value: 'virus' },
-  { label: 'Fungi', value: 'fungi' },
-  // Add more microorganisms as needed
-];
+  "Staphylococcus aureus",
+  "Escherichia coli",
+  "Pseudomonas aeruginosa",
+  "Klebsiella pneumoniae",
+  "Enterococcus faecalis",
+  "Proteus mirabilis",
+  "Candida albicans",
+  "Acinetobacter baumannii",
+]
 
-// Component for Microbiology Data section
-const MicrobiologyData: React.FC<MicrobiologyDataProps> = ({
+export default function MicrobiologyData({
   formData,
   handleChange,
   handleIsolateChange,
   isEditing,
-}) => {
-  return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-2xl font-bold mb-6 text-center text-primary">Microbiology Data</h3>
+}: MicrobiologyDataProps) {
+  const handleIsolateDataChange = (
+    isolateKey: 'isolate1' | 'isolate2',
+    category: 'sensitive' | 'resistant' | 'intermediate',
+    values: string[]
+  ) => {
+    handleIsolateChange(isolateKey, category, values);
+  };
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Micro-organisms Implicated in SSI */}
-        <div className="md:col-span-2">
-          <label
-            htmlFor="microorganisms"
-            className="block text-sm font-medium text-gray-700"
-            title="Micro-organisms Implicated in SSI"
-          >
-            Micro-organisms Implicated in SSI
-          </label>
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Microbiology Data</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">Micro-organisms Implicated in SSI</Label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DropdownBox
-              id="microorganism1"
+            <Select
               name="microorganism1"
-              // value={formData.microorganisms[0] || ''}
-              value={formData.microorganism1 || ''}
-              options={microorganisms}
-              onChange={handleChange}
-              className='input-field'
-              required={true}
-              isDisabled={isEditing}
-            />
-            <DropdownBox
-              id="microorganism2"
+              value={formData.microorganism1}
+              onValueChange={(value) => handleChange({ target: { name: "microorganism1", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select microorganism 1" />
+              </SelectTrigger>
+              <SelectContent>
+                {microorganisms.map((organism) => (
+                  <SelectItem key={organism} value={organism}>{organism}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
               name="microorganism2"
-              // value={formData.microorganisms[1] || ''}
-              value={formData.microorganism2 || ''}
-              options={microorganisms}
-              onChange={handleChange}
-              required={true}
-              isDisabled={isEditing}
-              className='input-field'
-            />
+              value={formData.microorganism2}
+              onValueChange={(value) => handleChange({ target: { name: "microorganism2", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select microorganism 2" />
+              </SelectTrigger>
+              <SelectContent>
+                {microorganisms.map((organism) => (
+                  <SelectItem key={organism} value={organism}>{organism}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
-        {/* Isolate 1 Antibiotic Susceptibility Pattern */}
-        <div className="md:col-span-2">
-          <h4 className="text-lg font-semibold mt-4 mb-2 text-primary">
-            Isolate-1 (Antibiotic Susceptibility Pattern)
-          </h4>
-          <IsolateForm
-            isolate="isolate1"
-            formData={formData.isolate1}
-            handleIsolateChange={handleIsolateChange}
-            isEditing={isEditing}
-          />
-        </div>
+        <IsolateForm
+          isolate="isolate1"
+          formData={formData.isolate1}
+          handleIsolateChange={handleIsolateChange}
+          isEditing={isEditing}
+          title="Isolate-1 (Antibiotic Susceptibility Pattern)"
+        />
 
-        {/* Isolate 2 Antibiotic Susceptibility Pattern */}
-        <div className="md:col-span-2">
-          <h4 className="text-lg font-semibold mt-4 mb-2 text-primary">
-            Isolate-2 (Antibiotic Susceptibility Pattern)
-          </h4>
-          <IsolateForm
-            isolate="isolate2"
-            formData={formData.isolate2}
-            handleIsolateChange={handleIsolateChange}
-            isEditing={isEditing}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
+        <IsolateForm
+          isolate="isolate2"
+          formData={formData.isolate2}
+          handleIsolateChange={handleIsolateChange}
+          isEditing={isEditing}
+          title="Isolate-2 (Antibiotic Susceptibility Pattern)"
+        />
+      </CardContent>
+    </Card>
+  )
+}
 
-// Component for each Isolate form section
 interface IsolateFormProps {
-  isolate: 'isolate1' | 'isolate2';
-  formData: { sensitive: string; resistant: string; intermediate: string };
+  isolate: 'isolate1' | 'isolate2'
+  formData: { sensitive: string; resistant: string; intermediate: string }
   handleIsolateChange: (
     isolate: 'isolate1' | 'isolate2',
     category: 'sensitive' | 'resistant' | 'intermediate',
-    value: string
-  ) => void;
-  isEditing?: boolean;
+    value: string[]
+  ) => void
+  isEditing?: boolean
+  title: string
 }
 
-const IsolateForm: React.FC<IsolateFormProps> = ({
-  isolate,
-  formData,
-  handleIsolateChange,
-  isEditing,
-}) => {
-  const handleSelectChange = (
-    category: 'sensitive' | 'resistant' | 'intermediate',
-    value: string
-  ) => {
-    handleIsolateChange(isolate, category, value);
-  };
+function IsolateForm({ isolate, formData, handleIsolateChange, isEditing, title }: IsolateFormProps) {
+  const categories = ['sensitive', 'resistant', 'intermediate'] as const;
 
-  // Helper function to determine if an antibiotic is already selected in other categories
-  const isOptionDisabled = (option: string, currentCategory: string) => {
-    return (
-      (formData.sensitive === option && currentCategory !== 'sensitive') ||
-      (formData.resistant === option && currentCategory !== 'resistant') ||
-      (formData.intermediate === option && currentCategory !== 'intermediate')
-    );
-  };
+  const [selectedAntibiotic, setSelectedAntibiotic] = React.useState<string[]>([]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* Sensitive */}
-      <div>
-        <DropdownBox
-          label="Sensitive"
-          id={`${isolate}_sensitive`}
-          name={`${isolate}_sensitive`}
-          value={formData.sensitive}
-          options={[
-            // { value: '', label: 'Select' },
-            ...antibioticOptions.map((option) => ({
-              ...option,
-              disabled: isOptionDisabled(option.value, 'sensitive'),
-            })),
-          ]}
-          onChange={(e) => handleSelectChange('sensitive', e.target.value)}
-          required={true}
-          className='input-field'
-          isDisabled={isEditing}
-        />
-      </div>
-      {/* Resistant */}
-      <div>
-        <DropdownBox
-          label="Resistant"
-          id={`${isolate}_resistant`}
-          name={`${isolate}_resistant`}
-          value={formData.resistant}
-          options={[
-            // { value: '', label: 'Select' },
-            ...antibioticOptions.map((option) => ({
-              ...option,
-              disabled: isOptionDisabled(option.value, 'resistant'),
-            })),
-          ]}
-          onChange={(e) => handleSelectChange('resistant', e.target.value)}
-          required={true}
-          isDisabled={isEditing}
-          className='input-field'
-        />
-      </div>
-      {/* Intermediate */}
-      <div>
-        <DropdownBox
-          label="Intermediate"
-          id={`${isolate}_intermediate`}
-          name={`${isolate}_intermediate`}
-          value={formData.intermediate}
-          options={[
-            // { value: '', label: 'Select' },
-            ...antibioticOptions.map((option) => ({
-              ...option,
-              disabled: isOptionDisabled(option.value, 'intermediate'),
-            })),
-          ]}
-          onChange={(e) => handleSelectChange('intermediate', e.target.value)}
-          required={true}
-          className='input-field'
-          isDisabled={isEditing}
-        />
+    <div className="space-y-4">
+      <Label className="text-base font-semibold">{title}</Label>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {categories.map((category) => (
+          <div key={category} className="space-y-2">
+            <Label htmlFor={`${isolate}_${category}`} className="capitalize">
+              {category}
+            </Label>
+            <MultiSelect
+              options={antibioticOptions}
+              onValueChange={(selectedValues) =>
+                handleIsolateChange(isolate, category, selectedValues)
+              }
+              defaultValue={formData[category]}
+              placeholder={`Select ${category} antibiotics`}
+              disabled={isEditing}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
-};
+}
 
-export default MicrobiologyData;
+// interface MultiSelectProps {
+//   options: string[]
+//   selected: string[]
+//   onChange: (value: string[]) => void
+//   placeholder: string
+//   disabled?: boolean
+// }
+
+// function MultiSelect({ options, selected, onChange, placeholder, disabled }: MultiSelectProps) {
+//   const [open, setOpen] = React.useState(false)
+
+//   const handleSelect = (option: string) => {
+//     const updatedSelected = selected.includes(option)
+//       ? selected.filter((item) => item !== option)
+//       : [...selected, option]
+//     onChange(updatedSelected)
+//   }
+
+//   return (
+//     <Popover open={open} onOpenChange={setOpen}>
+//       <PopoverTrigger asChild>
+//         <Button
+//           variant="outline"
+//           role="combobox"
+//           aria-expanded={open}
+//           className="w-full justify-between"
+//           disabled={disabled}
+//         >
+//           {selected.length > 0
+//             ? `${selected.length} selected`
+//             : placeholder}
+//           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+//         </Button>
+//       </PopoverTrigger>
+//       <PopoverContent className="w-full p-0">
+//         <Command>
+//           <CommandInput placeholder="Search antibiotics..." />
+//           <CommandEmpty>No antibiotic found.</CommandEmpty>
+//           <CommandGroup className="max-h-64 overflow-auto">
+//             {options.map((option) => (
+//               <CommandItem
+//                 key={option}
+//                 onSelect={() => handleSelect(option)}
+//               >
+//                 <Check
+//                   className={cn(
+//                     "mr-2 h-4 w-4",
+//                     selected.includes(option) ? "opacity-100" : "opacity-0"
+//                   )}
+//                 />
+//                 {option}
+//               </CommandItem>
+//             ))}
+//           </CommandGroup>
+//         </Command>
+//       </PopoverContent>
+//     </Popover>
+//   )
+// }

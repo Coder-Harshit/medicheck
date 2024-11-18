@@ -162,7 +162,6 @@ const AdminPage = () => {
           </div>
         </ReactModal>
 
-        {/* Add more admin functionalities here */}
       </div>
     );
   }

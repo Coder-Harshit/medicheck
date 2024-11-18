@@ -1,352 +1,414 @@
-import React from 'react';
-import InputBox from '../../components/InputBox';
-import DropdownBox from '../../components/DropdownBox';
-import DateTimePickerBox from '../../components/DateTimePickerBox';
-import { FormData } from './page';
+"use client"
+
+import * as React from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { FormData } from "@/app/ssiForm/page"
+import { CalendarIcon } from 'lucide-react'
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 interface PatientDataProps {
-  formData: FormData;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  isEditing?: boolean;
+  formData: FormData
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+  isEditing?: boolean
 }
 
-const PatientData: React.FC<PatientDataProps> = ({ formData, handleChange, isEditing }) => {
+export default function PatientData({ formData, handleChange, isEditing }: PatientDataProps) {
+  const [dateOfAdmission, setDateOfAdmission] = React.useState<Date | undefined>(
+    formData.dateOfAdmission ? new Date(formData.dateOfAdmission) : undefined
+  )
+  const [dateOfProcedure, setDateOfProcedure] = React.useState<Date | undefined>(
+    formData.dateOfProcedure ? new Date(formData.dateOfProcedure) : undefined
+  )
+
+  const handleDateChange = (date: Date | undefined, field: string) => {
+    if (date) {
+      const formattedDate = format(date, "yyyy-MM-dd")
+      handleChange({
+        target: { name: field, value: formattedDate }
+      } as React.ChangeEvent<HTMLInputElement>)
+      if (field === "dateOfAdmission") setDateOfAdmission(date)
+      if (field === "dateOfProcedure") setDateOfProcedure(date)
+    }
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-2xl font-bold mb-6 text-center text-primary">Basic Details</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Patient Name */}
-        <InputBox
-          label="Patient Name"
-          labelClass="truncate"
-          type="text"
-          value={formData.patientName}
-          id="patientName"
-          name="patientName"
-          onChange={handleChange}
-          className="input-field"
-          required={true}
-          disabled={isEditing}
-        />
-        {/* Patient ID */}
-        <InputBox
-          label="Patient ID"
-          labelClass="truncate"
-          type="number"
-          value={formData.patientId.toString()}
-          id="patientId"
-          name="patientId"
-          onChange={handleChange}
-          nonnegative={true}
-          className="input-field"
-          disabled={true}
-          required={true}
-        />
-        {/* Age */}
-        <InputBox
-          label="Age"
-          labelClass="truncate"
-          type="number"
-          value={formData.age.toString()}
-          id="age"
-          name="age"
-          onChange={handleChange}
-          nonnegative={true}
-          className="input-field"
-          required={true}
-          disabled={isEditing}
-        />
-        {/* Gender */}
-        <DropdownBox
-          label="Gender"
-          labelClass="truncate"
-          id="gender"
-          name="gender"
-          value={formData.gender}
-          options={[
-            { value: 'M', label: 'Male' },
-            { value: 'F', label: 'Female' },
-          ]}
-          onChange={handleChange}
-          required={true}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Date of Admission */}
-        <DateTimePickerBox
-          label="Date of Admission (MM/DD/YYYY)"
-          labelClass="truncate"
-          id="dateOfAdmission"
-          name="dateOfAdmission"
-          value={formData.dateOfAdmission}
-          onChange={handleChange}
-          type="date"
-          required={true}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Date of Operative Procedure */}
-        <DateTimePickerBox
-          label="Date of Operative Procedure (MM/DD/YYYY)"
-          labelClass="truncate"
-          id="dateOfProcedure"
-          name="dateOfProcedure"
-          value={formData.dateOfProcedure}
-          onChange={handleChange}
-          type="date"
-          required={true}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Admitting Department */}
-        <DropdownBox
-          label="Admitting Department"
-          labelClass="truncate"
-          id="admittingDepartment"
-          name="admittingDepartment"
-          value={formData.admittingDepartment}
-          options={[
-            { value: 'Cardiology', label: 'Cardiology' },
-            { value: 'Dermatology', label: 'Dermatology' },
-            { value: 'Endocrinology', label: 'Endocrinology' },
-            { value: 'Gastroenterology', label: 'Gastroenterology' },
-            { value: 'General Surgery', label: 'General Surgery' },
-            { value: 'Neurology', label: 'Neurology' },
-            { value: 'GIS Hepatobiliary Surgery', label: 'GIS Hepatobiliary Surgery' },
-            { value: 'Others', label: 'Others' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Department's Primary Surgeon */}
-        <DropdownBox
-          label="Department's Primary Surgeon"
-          labelClass="truncate"
-          id="departmentPrimarySurgeon"
-          name="departmentPrimarySurgeon"
-          value={formData.departmentPrimarySurgeon}
-          options={[
-            { value: 'Dr. A', label: 'Dr. A' },
-            { value: 'Dr. B', label: 'Dr. B' },
-            { value: 'Dr. C', label: 'Dr. C' },
-            { value: 'Dr. D', label: 'Dr. D' },
-            { value: 'Dr. Rajesh Kapoor', label: 'Dr. Rajesh Kapoor' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Procedure Name */}
-        <DropdownBox
-          label="Procedure Name"
-          required={true}
-          labelClass="truncate"
-          id="procedureName"
-          name="procedureName"
-          value={formData.procedureName}
-          options={[
-            { value: 'Appendectomy', label: 'Appendectomy' },
-            { value: 'Cholecystectomy', label: 'Cholecystectomy' },
-            { value: 'Hernioplasty', label: 'Hernioplasty' },
-            { value: 'Hysterectomy', label: 'Hysterectomy' },
-            { value: 'Mastectomy', label: 'Mastectomy' },
-            { value: 'Thyroidectomy', label: 'Thyroidectomy' },
-            { value: 'Exploratory Laprotomy', label: 'Exploratory Laprotomy' },
-            { value: 'Others', label: 'Others' },
-          ]}
-          onChange={handleChange}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Diagnosis */}
-        <DropdownBox
-          label="Diagnosis"
-          labelClass="truncate"
-          id="diagnosis"
-          name="diagnosis"
-          value={formData.diagnosis}
-          options={[
-            { value: 'Appendicitis', label: 'Appendicitis' },
-            { value: 'Cholecystitis', label: 'Cholecystitis' },
-            { value: 'Hernia', label: 'Hernia' },
-            { value: 'Malignancy', label: 'Malignancy' },
-            { value: 'Thyroid Disease', label: 'Thyroid Disease' },
-            { value: 'Acute Intestinal Obstruction, COPD', label: 'Acute Intestinal Obstruction, COPD' },
-            { value: 'Others', label: 'Others' },
-          ]}
-          onChange={handleChange}
-          required={true}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Procedure Done By */}
-        <DropdownBox
-          label="Procedure Done By"
-          labelClass="truncate"
-          id="procedureDoneBy"
-          name="procedureDoneBy"
-          value={formData.procedureDoneBy}
-          options={[
-            { value: 'Dr. A', label: 'Dr. A' },
-            { value: 'Dr. B', label: 'Dr. B' },
-            { value: 'Dr. C', label: 'Dr. C' },
-            { value: 'Dr. D', label: 'Dr. D' },
-            { value: 'Dr. Rajesh Kapoor', label: 'Dr. Rajesh Kapoor' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          isDisabled={isEditing}
-          className="input-field"
-        />
-        {/* Operation Theatre Number */}
-        <DropdownBox
-          label="Operation Theatre Number"
-          labelClass="truncate"
-          id="otno"
-          name="otno"
-          value={formData.otno?.toString() || ''}
-          options={[
-            { value: '1', label: 'Operation Theatre 1' },
-            { value: '2', label: 'Operation Theatre 2' },
-            { value: '3', label: 'Operation Theatre 3' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          isDisabled={isEditing}
-          className="input-field"
-        />
-        {/* Outpatient Procedure */}
-        <DropdownBox
-          label="Outpatient Procedure"
-          labelClass="truncate"
-          id="outpatientProcedure"
-          name="outpatientProcedure"
-          value={formData.outpatientProcedure ? 'true' : 'false'}
-          options={[
-            { value: 'true', label: 'Yes' },
-            { value: 'false', label: 'No' },
-          ]}
-          onChange={handleChange}
-          required={true}
-          isDisabled={isEditing}
-          className="input-field"
-        />
-        {/* Scenario of Procedure */}
-        <DropdownBox
-          label="Scenario of Procedure"
-          labelClass="truncate"
-          id="scenarioOfProcedure"
-          name="scenarioOfProcedure"
-          value={formData.scenarioOfProcedure}
-          options={[
-            { value: 'Elective', label: 'Elective' },
-            { value: 'Emergency', label: 'Emergency' },
-          ]}
-          required={true}
-          onChange={handleChange}
-          isDisabled={isEditing}
-          className="input-field"
-        />
-        {/* Wound Class */}
-        <DropdownBox
-          label="Wound Class"
-          labelClass="truncate"
-          id="woundClass"
-          name="woundClass"
-          value={formData.woundClass}
-          options={[
-            { value: 'Clean', label: 'Clean' },
-            { value: 'Clean Contaminated', label: 'Clean Contaminated' },
-            { value: 'Contaminated', label: 'Contaminated' },
-            { value: 'Dirty Infected', label: 'Dirty/Infected' },
-          ]}
-          isDisabled={isEditing}
-          onChange={handleChange}
-          className="input-field"
-        />
-        {/* PAP Given */}
-        <DropdownBox
-          label="PAP Given"
-          labelClass="truncate"
-          id="papGiven"
-          name="papGiven"
-          value={formData.papGiven ? 'true' : 'false'}
-          options={[
-            { value: 'true', label: 'Yes' },
-            { value: 'false', label: 'No' },
-          ]}
-          onChange={handleChange}
-          isDisabled={isEditing}
-          required={true}
-          className="input-field"
-        />
-        {/* PAP Duration */}
-        {formData.papGiven && (
-          <DateTimePickerBox
-            label="PAP Duration (HH:MM)"
-            labelClass="truncate"
-            id="papDuration"
-            name="papDuration"
-            value={formData.papDuration}
-            onChange={handleChange}
-            type="time"
-            upperLimitMins={60}
-            isDisabled={isEditing}
-            className="input-field"
-          />
-        )}
-        {/* Antibiotic Given */}
-        {formData.papGiven && (
-          <InputBox
-            label="Antibiotic Given"
-            labelClass="truncate"
-            id="antibioticGiven"
-            name="antibioticGiven"
-            value={formData.antibioticGiven}
-            onChange={handleChange}
-            className="input-field"
-            required={true}
-            disabled={isEditing}
-          />
-        )}
-        {/* SSI Event Occurred */}
-        <DropdownBox
-          label="SSI Event Occurred"
-          labelClass="truncate"
-          id="ssiEventOccurred"
-          name="ssiEventOccurred"
-          value={formData.ssiEventOccurred ? 'true' : 'false'}
-          options={[
-            { value: 'true', label: 'Yes' },
-            { value: 'false', label: 'No' },
-          ]}
-          onChange={handleChange}
-          required={true}
-          className="input-field"
-          isDisabled={isEditing}
-        />
-        {/* Date of SSI-Event */}
-        {formData.ssiEventOccurred && (
-          <DateTimePickerBox
-            label="Date of SSI Event (MM/DD/YYYY)"
-            labelClass="truncate"
-            id="dateOfSSIEvent"
-            name="dateOfSSIEvent"
-            value={formData.dateOfSSIEvent}
-            onChange={handleChange}
-            type="date"
-            required={true}
-            isDisabled={isEditing}
-            className="input-field"
-          />
-        )}
-      </div>
-    </div>
-  );
-};
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Patient Information</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="patientName">Patient Name</Label>
+            <Input
+              id="patientName"
+              name="patientName"
+              value={formData.patientName}
+              onChange={handleChange}
+              disabled={isEditing}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="patientId">Patient ID</Label>
+            <Input
+              id="patientId"
+              name="patientId"
+              value={formData.patientId}
+              onChange={handleChange}
+              disabled={true}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
+            <Input
+              id="age"
+              name="age"
+              type="number"
+              value={formData.age}
+              onChange={handleChange}
+              disabled={isEditing}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gender">Gender</Label>
+            <Select
+              name="gender"
+              value={formData.gender}
+              onValueChange={(value) => handleChange({ target: { name: "gender", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="M">Male</SelectItem>
+                <SelectItem value="F">Female</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="dateOfAdmission">Date of Admission</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !dateOfAdmission && "text-muted-foreground"
+                  )}
+                  disabled={isEditing}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {dateOfAdmission ? format(dateOfAdmission, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={dateOfAdmission}
+                  onSelect={(date) => handleDateChange(date, "dateOfAdmission")}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="dateOfProcedure">Date of Procedure</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !dateOfProcedure && "text-muted-foreground"
+                  )}
+                  disabled={isEditing}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {dateOfProcedure ? format(dateOfProcedure, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={dateOfProcedure}
+                  onSelect={(date) => handleDateChange(date, "dateOfProcedure")}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
 
-export default PatientData;
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="admittingDepartment">Admitting Department</Label>
+            <Select
+              name="admittingDepartment"
+              value={formData.admittingDepartment}
+              onValueChange={(value) => handleChange({ target: { name: "admittingDepartment", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select department" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Cardiology", "Dermatology", "Endocrinology", "Gastroenterology", "General Surgery", "Neurology", "GIS Hepatobiliary Surgery", "Others"].map((dept) => (
+                  <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="departmentPrimarySurgeon">Department's Primary Surgeon</Label>
+            <Select
+              name="departmentPrimarySurgeon"
+              value={formData.departmentPrimarySurgeon}
+              onValueChange={(value) => handleChange({ target: { name: "departmentPrimarySurgeon", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select surgeon" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Dr. A", "Dr. B", "Dr. C", "Dr. D", "Dr. Rajesh Kapoor"].map((surgeon) => (
+                  <SelectItem key={surgeon} value={surgeon}>{surgeon}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="procedureName">Procedure Name</Label>
+            <Select
+              name="procedureName"
+              value={formData.procedureName}
+              onValueChange={(value) => handleChange({ target: { name: "procedureName", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select procedure" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Appendectomy", "Cholecystectomy", "Hernioplasty", "Hysterectomy", "Mastectomy", "Thyroidectomy", "Exploratory Laprotomy", "Others"].map((procedure) => (
+                  <SelectItem key={procedure} value={procedure}>{procedure}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="diagnosis">Diagnosis</Label>
+            <Select
+              name="diagnosis"
+              value={formData.diagnosis}
+              onValueChange={(value) => handleChange({ target: { name: "diagnosis", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select diagnosis" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Appendicitis", "Cholecystitis", "Hernia", "Malignancy", "Thyroid Disease", "Acute Intestinal Obstruction, COPD", "Others"].map((diagnosis) => (
+                  <SelectItem key={diagnosis} value={diagnosis}>{diagnosis}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="procedureDoneBy">Procedure Done By</Label>
+            <Select
+              name="procedureDoneBy"
+              value={formData.procedureDoneBy}
+              onValueChange={(value) => handleChange({ target: { name: "procedureDoneBy", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select surgeon" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Dr. A", "Dr. B", "Dr. C", "Dr. D", "Dr. Rajesh Kapoor"].map((surgeon) => (
+                  <SelectItem key={surgeon} value={surgeon}>{surgeon}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="otno">Operation Theatre Number</Label>
+            <Select
+              name="otno"
+              value={formData.otno?.toString()}
+              onValueChange={(value) => handleChange({ target: { name: "otno", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select OT number" />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3].map((num) => (
+                  <SelectItem key={num} value={num.toString()}>Operation Theatre {num}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="outpatientProcedure">Outpatient Procedure</Label>
+            <Select
+              name="outpatientProcedure"
+              value={formData.outpatientProcedure ? "true" : "false"}
+              onValueChange={(value) => handleChange({ target: { name: "outpatientProcedure", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Yes</SelectItem>
+                <SelectItem value="false">No</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="scenarioOfProcedure">Scenario of Procedure</Label>
+            <Select
+              name="scenarioOfProcedure"
+              value={formData.scenarioOfProcedure}
+              onValueChange={(value) => handleChange({ target: { name: "scenarioOfProcedure", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select scenario" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Elective">Elective</SelectItem>
+                <SelectItem value="Emergency">Emergency</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="woundClass">Wound Class</Label>
+            <Select
+              name="woundClass"
+              value={formData.woundClass}
+              onValueChange={(value) => handleChange({ target: { name: "woundClass", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select wound class" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Clean", "Clean Contaminated", "Contaminated", "Dirty/Infected"].map((woundClass) => (
+                  <SelectItem key={woundClass} value={woundClass}>{woundClass}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="papGiven">PAP Given</Label>
+            <Select
+              name="papGiven"
+              value={formData.papGiven ? "true" : "false"}
+              onValueChange={(value) => handleChange({ target: { name: "papGiven", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Yes</SelectItem>
+                <SelectItem value="false">No</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {formData.papGiven && (
+            <div className="space-y-2">
+              <Label htmlFor="papDuration">PAP Duration (HH:MM)</Label>
+              <Input
+                id="papDuration"
+                name="papDuration"
+                type="time"
+                value={formData.papDuration}
+                onChange={handleChange}
+                disabled={isEditing}
+              />
+            </div>
+          )}
+          {formData.papGiven && (
+            <div className="space-y-2">
+              <Label htmlFor="antibioticGiven">Antibiotic Given</Label>
+              <Input
+                id="antibioticGiven"
+                name="antibioticGiven"
+                value={formData.antibioticGiven}
+                onChange={handleChange}
+                disabled={isEditing}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="ssiEventOccurred">SSI Event Occurred</Label>
+            <Select
+              name="ssiEventOccurred"
+              value={formData.ssiEventOccurred ? "true" : "false"}
+              onValueChange={(value) => handleChange({ target: { name: "ssiEventOccurred", value } } as React.ChangeEvent<HTMLSelectElement>)}
+              disabled={isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Yes</SelectItem>
+                <SelectItem value="false">No</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {formData.ssiEventOccurred && (
+            <div className="space-y-2">
+              <Label htmlFor="dateOfSSIEvent">Date of SSI Event</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.dateOfSSIEvent && "text-muted-foreground"
+                    )}
+                    disabled={isEditing}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.dateOfSSIEvent ? format(new Date(formData.dateOfSSIEvent), "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={formData.dateOfSSIEvent ? new Date(formData.dateOfSSIEvent) : undefined}
+                    onSelect={(date) => handleDateChange(date, "dateOfSSIEvent")}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

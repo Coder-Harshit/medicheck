@@ -1,77 +1,76 @@
-import React from 'react';
-import ToggleSwitch from '../../components/ToggleSwitch';
-import { FormData } from './page';
-import { days, symptoms } from './constants';
+"use client"
 
-interface PostOpProps {
-  formData: FormData;
-  handlePostOpChange: (
-    symptom: string,
-    day: number | string,
-    value: boolean
-  ) => void;
-  isEditing?: boolean;
+import * as React from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Switch } from "@/components/ui/switch"
+import { FormData } from "@/app/ssiForm/page"
+import { days, symptoms } from "./constants"
+
+interface PostOpSheetProps {
+  formData: FormData
+  handlePostOpChange: (symptom: string, day: number | string, value: boolean) => void
+  isEditing?: boolean
 }
 
-const PostOpForm: React.FC<PostOpProps> = ({
+const symptomLabels: Record<string, string> = {
+  purulentDischarge: "Purulent Discharge",
+  localizedPain: "Localized Pain",
+  localizedSwelling: "Localized Swelling",
+  fever: "Fever",
+  incisionOpened: "Incision Opened",
+  dehiscence: "Dehiscence",
+  abscess: "Abscess",
+  microorganismsSeen: "Microorganisms Seen",
+  imagingEvidence: "Imaging Evidence",
+  positiveCulture: "Positive Culture",
+  bloodCultureSent: "Blood Culture Sent",
+  diagnosisSSI: "Diagnosis SSI"
+}
+
+export default function PostOpSheet({
   formData,
   handlePostOpChange,
-  isEditing,
-}) => {
-  const handleToggleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    symptom: string,
-    day: string
-  ) => {
-    handlePostOpChange(symptom, day, e.target.checked);
-  };
-
+  isEditing
+}: PostOpSheetProps) {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center text-primary">
-        Post-op Monitoring Form
-      </h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
-                Symptom
-              </th>
-              {days.map((day, index) => (
-                <th
-                  key={index}
-                  className="px-4 py-2 text-center text-sm font-medium text-gray-700"
-                >
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Post-operative Monitoring Sheet</CardTitle>
+      </CardHeader>
+      <CardContent className="overflow-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Symptom</TableHead>
+              {days.map((day) => (
+                <TableHead key={day} className="text-center">
                   Day {day}
-                </th>
+                </TableHead>
               ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {symptoms.map((symptom, symptomIndex) => (
-              <tr key={symptomIndex}>
-                <td className="px-4 py-2 text-sm font-semibold text-gray-800">
-                  {symptom}
-                </td>
-                {days.map((day, dayIndex) => (
-                  <td key={dayIndex} className="px-4 py-2 text-center">
-                    <ToggleSwitch
-                      id={`symptom_${symptomIndex}_day_${dayIndex}`}
-                      name={`symptom_${symptomIndex}_day_${dayIndex}`}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {symptoms.map((symptom) => (
+              <TableRow key={symptom}>
+                <TableCell className="font-medium">
+                  {symptomLabels[symptom] || symptom}
+                </TableCell>
+                {days.map((day) => (
+                  <TableCell key={`${symptom}-${day}`} className="text-center">
+                    <Switch
                       checked={!!formData.symptomsDict[symptom][day]}
-                      onChange={(e) => handleToggleChange(e, symptom, day)}
+                      onCheckedChange={(checked) => handlePostOpChange(symptom, day, checked)}
                       disabled={isEditing}
+                      className="data-[state=checked]:bg-green-500"
                     />
-                  </td>
+                  </TableCell>
                 ))}
-              </tr>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
-export default PostOpForm;
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  )
+}

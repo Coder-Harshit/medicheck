@@ -109,7 +109,7 @@ export default function SSIForm() {
     const [isSaving, setIsSaving] = React.useState(false)
     const [activeTab, setActiveTab] = React.useState("patient-data")
     const { toast } = useToast()
-
+    formData.patientId = formId || ''
     // State to control editing sections
     const [isEditing, setIsEditing] = React.useState({
         patientData: true,
@@ -452,7 +452,6 @@ export default function SSIForm() {
                             <MicrobiologyData formData={formData} handleChange={handleChange} handleIsolateChange={handleIsolateChange}/>
                         </TabsContent>
                         <TabsContent value="antibiotic-prescription">
-                            {/* <AntibioticPrescription formData={formData} handleChange={handleChange} addAntibiotic={addAntibiotic} removeAntibiotic={removeAntibiotic} handleAntibioticChange={handleAntibioticChange}/> */}
                             <AntibioticPrescription formData={formData} handleAntibioticChange={handleAntibioticChange}/>
                         </TabsContent>
                         <TabsContent value="post-op-sheet">

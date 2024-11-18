@@ -8,8 +8,6 @@ interface SSIEventProps {
   formData: FormData;
   handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // handleDetectedChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isEditing?: boolean;
 }
 

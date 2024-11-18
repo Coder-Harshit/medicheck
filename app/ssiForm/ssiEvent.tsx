@@ -1,198 +1,132 @@
-// FILE: ssiEvent.tsx
+"use client"
 
-import React from 'react';
-import {FormData}  from './page';
-import InputBox from '../../components/InputBox';
+import * as React from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
+import { FormData } from "@/app/ssiForm/page"
 
 interface SSIEventProps {
-  formData: FormData;
-  handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isEditing?: boolean;
+  formData: FormData
+  handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  isEditing?: boolean
 }
 
-const SSIEvent: React.FC<SSIEventProps> = ({
+export default function SSIEvent({
   formData,
   handleSpecificEventChange,
   handleChange,
   isEditing,
-}) => {
+}: SSIEventProps) {
+  const specificEvents = [
+    { id: "sip", label: "Superficial Incisional Primary (SIP)" },
+    { id: "sis", label: "Superficial Incisional Secondary (SIS)" },
+    { id: "dip", label: "Deep Incisional Primary (DIP)" },
+    { id: "dis", label: "Deep Incisional Secondary (DIS)" },
+    { id: "organSpace", label: "Organ/Space" },
+  ]
+
+  const detectionTypes = [
+    { id: "A", label: "During admission (A)" },
+    { id: "P", label: "Post-discharge surveillance (P)" },
+    { id: "RF", label: "Readmission to facility (RF)" },
+  ]
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-2xl font-bold mb-6 text-center text-primary">
-        Event Details
-      </h3>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">
+            Specific Event
+            <span className="text-red-500 ml-1">*</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RadioGroup
+            disabled={isEditing}
+            value={formData.specificEvent}
+            onValueChange={(value) => 
+              handleSpecificEventChange({ 
+                target: { name: "specificEvent", value } 
+              } as React.ChangeEvent<HTMLInputElement>)
+            }
+            className="space-y-4"
+          >
+            {specificEvents.map((event) => (
+              <div key={event.id} className="flex items-center space-x-2">
+                <RadioGroupItem 
+                  value={event.id} 
+                  id={event.id}
+                  disabled={isEditing}
+                  className="text-blue-500 hover:text-blue-400 bg-gray-200"
+                />
+                <Label 
+                  htmlFor={event.id}
+                  className={cn(
+                    "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  )}
+                >
+                  {event.label}
+                </Label>
+                {event.id === "organSpace" && formData.specificEvent === "organSpace" && (
+                  <Input
+                    id="organSpaceInput"
+                    name="organSpace"
+                    value={formData.organSpace}
+                    onChange={handleChange}
+                    placeholder="Specify site"
+                    className="ml-4 w-[200px]"
+                    disabled={isEditing}
+                  />
+                )}
+              </div>
+            ))}
+          </RadioGroup>
+        </CardContent>
+      </Card>
 
-      {/* Specific Event Section */}
-      <div className="space-y-4">
-        <h4 className="text-lg font-semibold mb-4 text-primary">
-          Specific Event
-          <span className="text-red-500 ml-1">*</span>
-        </h4>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* SIP */}
-          <div className="flex items-center">
-            <input
-              type="radio"
-              id="sip"
-              name="specificEvent"
-              value="sip"
-              checked={formData.specificEvent === 'sip'}
-              onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-        disabled={isEditing}
-
-            />
-            <label htmlFor="sip" className="ml-2 block text-sm font-medium text-gray-700">
-              Superficial Incisional Primary (SIP)
-            </label>
-          </div>
-
-          {/* SIS */}
-          <div className="flex items-center">
-            <input
-              type="radio"
-              id="sis"
-              name="specificEvent"
-              value="sis"
-              checked={formData.specificEvent === 'sis'}
-              onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-              disabled={isEditing}
-            />
-            <label htmlFor="sis" className="ml-2 block text-sm font-medium text-gray-700">
-              Superficial Incisional Secondary (SIS)
-            </label>
-          </div>
-
-          {/* DIP */}
-          <div className="flex items-center">
-            <input
-              type="radio"
-              id="dip"
-              name="specificEvent"
-              value="dip"
-              checked={formData.specificEvent === 'dip'}
-              onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-              disabled={isEditing}
-
-            />
-            <label htmlFor="dip" className="ml-2 block text-sm font-medium text-gray-700 disabled:bg-slate-100 disabled:cursor-not-allowed">
-              Deep Incisional Primary (DIP)
-            </label>
-          </div>
-
-          {/* DIS */}
-          <div className="flex items-center">
-            <input
-              type="radio"
-              id="dis"
-              name="specificEvent"
-              value="dis"
-              checked={formData.specificEvent === 'dis'}
-              onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-              disabled={isEditing}
-            />
-            <label htmlFor="dis" className="ml-2 block text-sm font-medium text-gray-700">
-              Deep Incisional Secondary (DIS)
-            </label>
-          </div>
-
-          {/* Organ/Space */}
-          <div className="flex items-center md:col-span-2">
-            <input
-              type="radio"
-              id="organSpace"
-              name="specificEvent"
-              value="organSpace"
-              checked={formData.specificEvent === 'organSpace'}
-              onChange={handleSpecificEventChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-              disabled={isEditing}
-            />
-            <label htmlFor="organSpace" className="ml-2 block text-sm font-medium text-gray-700">
-              Organ/Space (specify site):
-            </label>
-            {formData.specificEvent === 'organSpace' && (
-              <InputBox
-                id="organSpaceInput"
-                name="organSpace"
-                value={formData.organSpace}
-                onChange={handleChange}
-                className="ml-4 input-field"
-                placeholder="Enter organ/space site"
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">
+            Detection Type
+            <span className="text-red-500 ml-1">*</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RadioGroup
+            disabled={isEditing}
+            value={formData.detected}
+            onValueChange={(value) =>
+              handleChange({
+                target: { name: "detected", value }
+              } as React.ChangeEvent<HTMLInputElement>)
+            }
+            className="space-y-4"
+          >
+            {detectionTypes.map((type) => (
+              <div key={type.id} className="flex items-center space-x-2">
+              <RadioGroupItem 
+                value={type.id} 
+                id={type.id}
                 disabled={isEditing}
+                className="text-blue-500 hover:text-blue-400 bg-gray-200"
               />
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Detected Section */}
-      <div className="mt-8 space-y-4">
-        <h4 className="text-lg font-semibold mb-4 text-primary">
-          Detected
-          <span className="text-red-500 ml-1">*</span>
-        </h4>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* During Admission (A) */}
-          <div className="flex items-center">
-            <input
-              type="radio"
-              id="duringAdmission"
-              name="detected"
-              value="A"
-              checked={formData.detected === 'A'}
-              onChange={handleChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-              disabled={isEditing}
-            />
-            <label htmlFor="duringAdmission" className="ml-2 block text-sm font-medium text-gray-700">
-              A (During admission)
-            </label>
-          </div>
-
-          {/* Post-discharge Surveillance (P) */}
-          <div className="flex items-center">
-            <input
-              type="radio"
-              id="postDischarge"
-              name="detected"
-              value="P"
-              checked={formData.detected === 'P'}
-              onChange={handleChange}
-              disabled={isEditing}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-            />
-            <label htmlFor="postDischarge" className="ml-2 block text-sm font-medium text-gray-700">
-              P (Post-discharge surveillance)
-            </label>
-          </div>
-
-          {/* Readmission to Facility (RF) */}
-          <div className="flex items-center md:col-span-2">
-            <input
-              type="radio"
-              id="readmissionFacility"
-              name="detected"
-              value="RF"
-              checked={formData.detected === 'RF'}
-              onChange={handleChange}
-              disabled={isEditing}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 disabled:bg-slate-100 disabled:cursor-not-allowed"
-            />
-            <label htmlFor="readmissionFacility" className="ml-2 block text-sm font-medium text-gray-700">
-              RF (Readmission to facility)
-            </label>
-          </div>
-        </div>
-      </div>
+                <Label
+                  htmlFor={type.id}
+                  className={cn(
+                    "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  )}
+                >
+                  {type.label}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </CardContent>
+      </Card>
     </div>
-  );
-};
-
-export default SSIEvent;
+  )
+}

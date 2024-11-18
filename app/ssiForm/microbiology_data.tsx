@@ -126,7 +126,7 @@ export default function MicrobiologyData({
 
 interface IsolateFormProps {
   isolate: 'isolate1' | 'isolate2'
-  formData: { sensitive: string; resistant: string; intermediate: string }
+  formData: { sensitive: string[]; resistant: string[]; intermediate: string[] }
   handleIsolateChange: (
     isolate: 'isolate1' | 'isolate2',
     category: 'sensitive' | 'resistant' | 'intermediate',
@@ -155,7 +155,7 @@ function IsolateForm({ isolate, formData, handleIsolateChange, isEditing, title 
               onValueChange={(selectedValues) =>
                 handleIsolateChange(isolate, category, selectedValues)
               }
-              defaultValue={formData[category]}
+              // defaultValue={formData[category]}
               placeholder={`Select ${category} antibiotics`}
               disabled={isEditing}
             />

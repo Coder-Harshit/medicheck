@@ -1,204 +1,172 @@
-import React from 'react';
-import { FormData } from './page';
-import InputBox from '../../components/InputBox';
-import DropdownBox from '../../components/DropdownBox';
-import DateTimePickerBox from '../../components/DateTimePickerBox';
+"use client"
 
+import * as React from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Plus, Trash2 } from 'lucide-react'
+import { FormData } from "@/app/ssiForm/page"
 
 interface AntibioticPrescriptionProps {
-  formData: FormData;
-  handleAntibioticChange: (index: number, name: string, value: string) => void;
-  addAntibiotic: () => void;
-  removeAntibiotic: () => void;
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-  isEditing?: boolean;
+  formData: FormData
+  handleAntibioticChange: (prescriptions: AntibioticPrescription[]) => void
+  isEditing?: boolean
 }
 
-const AntibioticPrescription: React.FC<AntibioticPrescriptionProps> = ({
+interface AntibioticPrescription {
+  id: string
+  name: string
+  stage: 'prior' | 'pre_peri' | 'after'
+  dose: number
+  route: string
+  duration: string
+}
+
+const routes = ["Oral", "Intravenous", "Intramuscular", "Topical"]
+
+export default function AntibioticPrescription({
   formData,
   handleAntibioticChange,
-  addAntibiotic,
-  removeAntibiotic,
-  handleChange,
   isEditing,
-}) => {
+}: AntibioticPrescriptionProps) {
+  const [prescriptions, setPrescriptions] = React.useState<AntibioticPrescription[]>(
+    formData.antibioticPrescriptions || []
+  )
+
+  const addPrescription = () => {
+    const newPrescription: AntibioticPrescription = {
+      id: Date.now().toString(),
+      name: "",
+      stage: "prior",
+      dose: 0,
+      route: "",
+      duration: "",
+    }
+    setPrescriptions([...prescriptions, newPrescription])
+    handleAntibioticChange([...prescriptions, newPrescription])
+  }
+
+  const removePrescription = (id: string) => {
+    const updatedPrescriptions = prescriptions.filter((p) => p.id !== id)
+    setPrescriptions(updatedPrescriptions)
+    handleAntibioticChange(updatedPrescriptions)
+  }
+
+  const updatePrescription = (id: string, field: keyof AntibioticPrescription, value: string) => {
+    const updatedPrescriptions = prescriptions.map((p) =>
+      p.id === id ? { ...p, [field]: value } : p
+    )
+    setPrescriptions(updatedPrescriptions)
+    handleAntibioticChange(updatedPrescriptions)
+  }
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-2xl font-bold mb-6 text-center text-primary">
-        Antibiotic Prescription
-      </h3>
-      {/* Secondary BSI contributed to Death ? */}
-      <DropdownBox
-        label="Secondary BSI contributed to Death ?"
-        labelClass="truncate"
-        id="secondaryBSIdeath"
-        name="secondaryBSIdeath"
-        value={formData.secondaryBSIdeath ? 'true' : 'false'}
-        options={[
-          { value: 'true', label: 'Yes' },
-          { value: 'false', label: 'No' },
-        ]}
-        onChange={handleChange}
-        required={true}
-        className="input-field"
-        isDisabled={isEditing}
-      />
-      {formData.antibiotics.map((antibiotic, index: number) => (
-        <div
-          key={index}
-          className="border border-gray-200 rounded-lg p-4 my-6">
-          <h4 className="text-lg font-semibold mb-4 text-primary">
-            Antibiotic {index + 1}
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Stage */}
-            <DropdownBox
-              label='Stage'
-              id={`stage_${index}`}
-              name="abop_stage"
-              value={antibiotic.abop_stage}
-              options={[
-                // { value: '', label: 'Select Stage' },
-                { value: 'prior', label: 'PRIOR to Operation' },
-                { value: 'pre_peri', label: 'PRE/PERI Operatively' },
-                { value: 'after', label: 'AFTER PeriOperatively' },
-              ]}
-              required={true}
-              className="input-field"
-              isDisabled={isEditing}
-              onChange={(e) =>
-                handleAntibioticChange(index, 'abop_stage', e.target.value)
-              }
-            />
-
-            {/* Antibiotic Name */}
-            <InputBox
-              label="Antibiotic Name"
-              type="text"
-              id={`antibiotic_${index}`}
-              name="antibiotic"
-              className="input-field"
-              required={true}
-              value={antibiotic.antibiotic}
-              onChange={(e) =>
-                handleAntibioticChange(index, 'antibiotic', e.target.value)
-              }
-              disabled={isEditing}
-            />
-
-            {/* Route of Administration */}
-            <DropdownBox
-              label="Route of Administration"
-              id={`route_${index}`}
-              name="route"
-              className="input-field"
-              value={antibiotic.route}
-              options={[
-                // { value: '', label: 'Select Route' },
-                { value: 'IV', label: 'IV' },
-                { value: 'Oral', label: 'Oral' },
-                { value: 'IM', label: 'IM' },
-              ]}
-              required={true}
-              onChange={(e) =>
-                handleAntibioticChange(index, 'route', e.target.value)
-              }
-              isDisabled={isEditing}
-            />
-
-            {/* Duration (mins) */}
-            <InputBox
-              label="Duration (mins)"
-              type="number"
-              className="input-field"
-              id={`duration_${index}`}
-              name="duration"
-              value={antibiotic.duration}
-              required={true}
-              onChange={(e) =>
-                handleAntibioticChange(index, 'duration', e.target.value)
-              }
-              nonnegative={true}
-              disabled={isEditing}
-            />
-
-            {/* No. of Doses */}
-            <InputBox
-              label="No. of Doses"
-              type="number"
-              id={`doses_${index}`}
-              className="input-field"
-              name="doses"
-              value={antibiotic.doses}
-              required={true}
-              onChange={(e) =>
-                handleAntibioticChange(index, 'doses', e.target.value)
-              }
-              nonnegative={true}
-              disabled={isEditing}
-            />
-          </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Antibiotic Prescription</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Antibiotic Name</TableHead>
+                <TableHead>Stage</TableHead>
+                <TableHead>Dose</TableHead>
+                <TableHead>Route</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {prescriptions.map((prescription) => (
+                <TableRow key={prescription.id}>
+                  <TableCell>
+                    <Input
+                      value={prescription.name}
+                      onChange={(e) => updatePrescription(prescription.id, "name", e.target.value)}
+                      placeholder="Enter antibiotic name"
+                      disabled={isEditing}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      value={prescription.stage}
+                      onValueChange={(value) => updatePrescription(prescription.id, "stage", value)}
+                      disabled={isEditing}
+                    >
+                      <SelectTrigger>
+                      <SelectValue placeholder="Select stage" />
+                      </SelectTrigger>
+                      <SelectContent>
+                      {["prior", "pre_peri", "after"].map((stage) => (
+                        <SelectItem key={stage} value={stage}>
+                        {stage}
+                        </SelectItem>
+                      ))}
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={prescription.dose}
+                      onChange={(e) => updatePrescription(prescription.id, "dose", e.target.value)}
+                      placeholder="Enter dose"
+                      disabled={isEditing}
+                      type="number"
+                      min="0"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      value={prescription.route}
+                      onValueChange={(value) => updatePrescription(prescription.id, "route", value)}
+                      disabled={isEditing}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select route" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {routes.map((route) => (
+                          <SelectItem key={route} value={route}>
+                            {route}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={prescription.duration}
+                      onChange={(e) => updatePrescription(prescription.id, "duration", e.target.value)}
+                      placeholder="Enter duration (in Minutes)"
+                      disabled={isEditing}
+                      type="number"
+                      min="0"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => removePrescription(prescription.id)}
+                      disabled={isEditing}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Button onClick={addPrescription} disabled={isEditing} className="bg-black hover:bg-gray-800">
+            <Plus className="mr-2 h-4 w-4" /> Add Prescription
+          </Button>
         </div>
-      ))}
-
-      <div className="flex justify-between mt-4">
-        <button
-          type="button"
-          onClick={removeAntibiotic}
-          className="btn-secondary"
-        >
-          Remove Antibiotic
-        </button>
-        <button type="button" onClick={addAntibiotic} className="btn-primary">
-          Add Antibiotic
-        </button>
-      </div>
-
-      {/* Timing Information */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-        {/* Time of Induction */}
-        <DateTimePickerBox
-          label="Time of Induction"
-          id="timeOfInduction"
-          className="input-field"
-          name="timeOfInduction"
-          value={formData.timeOfInduction}
-          required={true}
-          onChange={handleChange}
-          type="time"
-          isDisabled={isEditing}
-        />
-
-        {/* Time of Incision */}
-        <DateTimePickerBox
-          label="Time of Incision"
-          id="timeOfSkinIncision"
-          name="timeOfSkinIncision"
-          className="input-field"
-          value={formData.timeOfSkinIncision}
-          required={true}
-          onChange={handleChange}
-          type="time"
-          isDisabled={isEditing}
-        />
-
-        {/* End Time of Surgery */}
-        <DateTimePickerBox
-          label="End Time of Surgery"
-          id="timeOfEndSurgery"
-          className="input-field"
-          name="timeOfEndSurgery"
-          value={formData.timeOfEndSurgery}
-          required={true}
-          onChange={handleChange}
-          type="time"
-          isDisabled={isEditing}
-        />
-      </div>
-    </div>
-  );
-};
-
-export default AntibioticPrescription;
+      </CardContent>
+    </Card>
+  )
+}

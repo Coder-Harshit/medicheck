@@ -109,6 +109,14 @@ export interface FormData {
     organSpace: string;
     detected: string;
     status: 'ongoing' | 'to-be-reviewed' | 'reviewed';
+    antibioticPrescriptions: {
+        id: string
+        name: string
+        stage: 'prior' | 'pre_peri' | 'after'
+        dose: number
+        route: string
+        duration: string
+      }[]
 }
 
 export default function SSIForm() {
@@ -236,14 +244,21 @@ export default function SSIForm() {
         }));
     };
 
-    const handleAntibioticChange = (index: number, name: string, value: string | number) => {
-        setFormData(prevData => ({
-            ...prevData,
-            antibiotics: prevData.antibiotics.map((antibiotic, i) =>
-                i === index ? { ...antibiotic, [name]: value } : antibiotic
-            )
-        }));
-    };
+    // const handleAntibioticChange = (index: number, name: string, value: string | number) => {
+    //     setFormData(prevData => ({
+    //         ...prevData,
+    //         antibiotics: prevData.antibiotics.map((antibiotic, i) =>
+    //             i === index ? { ...antibiotic, [name]: value } : antibiotic
+    //         )
+    //     }));
+    // };
+
+    const handleAntibioticChange = (prescriptions: FormData['antibioticPrescriptions']) => {
+        setFormData(prev => ({
+          ...prev,
+          antibioticPrescriptions: prescriptions
+        }))
+      }
 
     const handleIsolateChange = (isolate: 'isolate1' | 'isolate2', category: 'sensitive' | 'resistant' | 'intermediate', value: string) => {
         setFormData(prevData => ({
@@ -453,7 +468,8 @@ export default function SSIForm() {
                             <MicrobiologyData formData={formData} handleChange={handleChange} handleIsolateChange={handleIsolateChange}/>
                         </TabsContent>
                         <TabsContent value="antibiotic-prescription">
-                            <AntibioticPrescription formData={formData} handleChange={handleChange} addAntibiotic={addAntibiotic} removeAntibiotic={removeAntibiotic} handleAntibioticChange={handleAntibioticChange}/>
+                            {/* <AntibioticPrescription formData={formData} handleChange={handleChange} addAntibiotic={addAntibiotic} removeAntibiotic={removeAntibiotic} handleAntibioticChange={handleAntibioticChange}/> */}
+                            <AntibioticPrescription formData={formData} handleAntibioticChange={handleAntibioticChange}/>
                         </TabsContent>
                         <TabsContent value="post-op-sheet">
                             <PostOpSheet formData={formData} handlePostOpChange={handlePostOpChange} />
@@ -477,7 +493,7 @@ export default function SSIForm() {
                             variant="secondary"
                             onClick={() => handleSubmit(true)}
                             disabled={isSaving}
-                            // className="bg-green-500"
+                            className="bg-lime-500 text-primary hover:bg-lime-600"
                         >
                             {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                             Save Draft
@@ -485,7 +501,7 @@ export default function SSIForm() {
                         <Button
                             onClick={() => handleSubmit(false)}
                             disabled={isSaving}
-                            className="bg-green-500"
+                            className="bg-green-500 hover:bg-green-600"
                         >
                             {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
                             Submit
@@ -528,6 +544,14 @@ function getInitialFormData(): FormData {
             route: '',
             duration: 0,
             doses: 0,
+        }],
+        antibioticPrescriptions: [{
+            id: '',
+            name: '',
+            stage: 'prior',
+            dose: 0,
+            route: '',
+            duration: '',
         }],
         timeOfInduction: new Date().toLocaleTimeString(),
         timeOfSkinIncision: new Date().toLocaleTimeString(),

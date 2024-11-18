@@ -9,7 +9,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/hooks/use-toast"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 import { Loader2, Save, Send } from 'lucide-react'
+// import { AlertCircle, Lock, Unlock} from 'lucide-react'
+// import { Alert, AlertDescription } from "@/components/ui/alert"
 import PatientData from './patient_data'
 import MicrobiologyData from './microbiology_data'
 import AntibioticPrescription from './antibiotic_prescription'
@@ -67,7 +71,7 @@ export interface FormData {
     microorganism1: string;
     microorganism2: string;
     secondaryBSIdeath: boolean;
-    antibiotics: Antibiotic[];
+    // antibiotics: Antibiotic[];
     timeOfInduction: string;
     timeOfSkinIncision: string;
     timeOfEndSurgery: string;
@@ -96,7 +100,7 @@ export interface FormData {
         dose: number
         route: string
         duration: string
-      }[]
+    }[]
 }
 
 export default function SSIForm() {
@@ -110,15 +114,16 @@ export default function SSIForm() {
     const [activeTab, setActiveTab] = React.useState("patient-data")
     const { toast } = useToast()
     formData.patientId = formId || ''
-    // State to control editing sections
+
+    // For granular editing control
     const [isEditing, setIsEditing] = React.useState({
-        patientData: true,
-        microbiologyData: true,
-        antibioticData: true,
-        postOpData: true,
-        ssiEventData: true,
-        ssiEvalData: true, // Unlocked by default for doctors   
-    });
+        patientData: userRole?.role === 'nurse',
+        microbiologyData: userRole?.role === 'nurse',
+        antibioticData: userRole?.role === 'nurse',
+        postOpData: userRole?.role === 'nurse',
+        ssiEventData: userRole?.role === 'nurse',
+        ssiEvalData: false, // Always locked initially for doctors
+    })
 
     React.useEffect(() => {
         if (!loading) {
@@ -140,7 +145,7 @@ export default function SSIForm() {
             }
         }
     }, [user, loading, userRole, router])
-        
+
     React.useEffect(() => {
         if (!loading) {
             if (!user) {
@@ -182,7 +187,7 @@ export default function SSIForm() {
                     dateOfProcedure: data.dateOfProcedure || formatDate(new Date()),
                     dateOfSSIEvent: data.dateOfSSIEvent || formatDate(new Date()),
                     // Ensure arrays and objects are properly structured
-                    antibiotics: Array.isArray(data.antibiotics) ? data.antibiotics : [getInitialFormData().antibiotics[0]],
+                    // antibiotics: Array.isArray(data.antibiotics) ? data.antibiotics : [getInitialFormData().antibiotics[0]],
                     symptomsDict: {
                         ...symptomsDict,
                         ...(data.symptomsDict || {})
@@ -235,10 +240,10 @@ export default function SSIForm() {
 
     const handleAntibioticChange = (prescriptions: FormData['antibioticPrescriptions']) => {
         setFormData(prev => ({
-          ...prev,
-          antibioticPrescriptions: prescriptions
+            ...prev,
+            antibioticPrescriptions: prescriptions
         }))
-      }
+    }
 
     const handleIsolateChange = (
         isolate: 'isolate1' | 'isolate2',
@@ -281,27 +286,27 @@ export default function SSIForm() {
         }));
     };
 
-    const addAntibiotic = () => {
-        setFormData(prevData => ({
-            ...prevData,
-            antibiotics: [...prevData.antibiotics, {
-                abop_stage: 'prior',
-                antibiotic: '',
-                route: '',
-                duration: 0,
-                doses: 0,
-            }]
-        }));
-    };
+    // const addAntibiotic = () => {
+    //     setFormData(prevData => ({
+    //         ...prevData,
+    //         antibiotics: [...prevData.antibiotics, {
+    //             abop_stage: 'prior',
+    //             antibiotic: '',
+    //             route: '',
+    //             duration: 0,
+    //             doses: 0,
+    //         }]
+    //     }));
+    // };
 
-    const removeAntibiotic = () => {
-        setFormData(prevData => ({
-            ...prevData,
-            antibiotics: prevData.antibiotics.length > 1
-                ? prevData.antibiotics.slice(0, -1)
-                : [getInitialFormData().antibiotics[0]]
-        }));
-    };
+    // const removeAntibiotic = () => {
+    //     setFormData(prevData => ({
+    //         ...prevData,
+    //         antibiotics: prevData.antibiotics.length > 1
+    //             ? prevData.antibiotics.slice(0, -1)
+    //             : [getInitialFormData().antibiotics[0]]
+    //     }));
+    // };
 
     const handlePostOpChange = (symptom: string, day: number | string, value: boolean) => {
         setFormData(prevData => ({
@@ -388,8 +393,7 @@ export default function SSIForm() {
                 .from('SSI_Form')
                 .upsert({
                     ...formData,
-                    // nuid: userID,
-                    nuid: user,
+                    nuid: userID,
                     status: status,
                 })
 
@@ -413,8 +417,21 @@ export default function SSIForm() {
         } finally {
             setIsSaving(false)
         }
+        router.push('/dashboard')
     }
 
+    const toggleEditing = (section: keyof typeof isEditing) => {
+        if (userRole?.role === 'doctor') {
+            setIsEditing(prev => ({
+                ...prev,
+                [section]: !prev[section]
+            }))
+            toast({
+                title: isEditing[section] ? `${section} Locked` : `${section} Unlocked`,
+                description: isEditing[section] ? `${section} is now in read-only mode.` : `You can now edit ${section}.`,
+            })
+        }
+    }
 
     if (loading || isLoading) {
         return (
@@ -445,24 +462,145 @@ export default function SSIForm() {
                                 <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
                             )}
                         </TabsList>
+
                         <TabsContent value="patient-data">
-                            <PatientData formData={formData} handleChange={handleChange} />
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Patient Data</h3>
+                                {userRole?.role === 'doctor' && (
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            id="patient-data-lock"
+                                            checked={isEditing.patientData}
+                                            onCheckedChange={() => toggleEditing('patientData')}
+                                            className="data-[state=checked]:bg-red-400"
+                                        />
+                                        <Label htmlFor="patient-data-lock">
+                                            {isEditing.patientData ? 'Locked' : 'Unlocked'}
+                                        </Label>
+                                    </div>
+                                )}
+                            </div>
+                            <PatientData
+                                formData={formData}
+                                handleChange={handleChange}
+                                isEditing={isEditing.patientData}
+                            />
                         </TabsContent>
+
                         <TabsContent value="microbiology-data">
-                            <MicrobiologyData formData={formData} handleChange={handleChange} handleIsolateChange={handleIsolateChange}/>
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Microbiology Data</h3>
+                                {userRole?.role === 'doctor' && (
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            id="microbiology-data-lock"
+                                            checked={isEditing.microbiologyData}
+                                            onCheckedChange={() => toggleEditing('microbiologyData')}
+                                            className="data-[state=checked]:bg-red-400"
+                                        />
+                                        <Label htmlFor="microbiology-data-lock">
+                                            {isEditing.microbiologyData ? 'Locked' : 'Unlocked'}
+                                        </Label>
+                                    </div>
+                                )}
+                            </div>
+                            <MicrobiologyData
+                                formData={formData}
+                                handleChange={handleChange}
+                                handleIsolateChange={handleIsolateChange}
+                                isEditing={isEditing.microbiologyData}
+                            />
                         </TabsContent>
+
                         <TabsContent value="antibiotic-prescription">
-                            <AntibioticPrescription formData={formData} handleAntibioticChange={handleAntibioticChange}/>
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Antibiotic Prescription</h3>
+                                {userRole?.role === 'doctor' && (
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            id="antibiotic-data-lock"
+                                            checked={isEditing.antibioticData}
+                                            onCheckedChange={() => toggleEditing('antibioticData')}
+                                            className="data-[state=checked]:bg-red-400"
+                                        />
+                                        <Label htmlFor="antibiotic-data-lock">
+                                            {isEditing.antibioticData ? 'Locked' : 'Unlocked'}
+                                        </Label>
+                                    </div>
+                                )}
+                            </div>
+                            <AntibioticPrescription
+                                formData={formData}
+                                handleAntibioticChange={handleAntibioticChange}
+                                isEditing={isEditing.antibioticData}
+                            />
                         </TabsContent>
+
                         <TabsContent value="post-op-sheet">
-                            <PostOpSheet formData={formData} handlePostOpChange={handlePostOpChange} />
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">Post-Op Sheet</h3>
+                                {userRole?.role === 'doctor' && (
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            id="post-op-data-lock"
+                                            checked={isEditing.postOpData}
+                                            onCheckedChange={() => toggleEditing('postOpData')}
+                                            className="data-[state=checked]:bg-red-400"
+                                        />
+                                        <Label htmlFor="post-op-data-lock">
+                                            {isEditing.postOpData ? 'Locked' : 'Unlocked'}
+                                        </Label>
+                                    </div>
+                                )}
+                            </div>
+                            <PostOpSheet
+                                formData={formData}
+                                handlePostOpChange={handlePostOpChange}
+                                isEditing={isEditing.postOpData}
+                            />
                         </TabsContent>
+
                         <TabsContent value="ssi-event">
-                            <SSIEvent formData={formData} handleSpecificEventChange={handleSpecificEventChange} handleChange={handleChange}/>
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold">SSI Event</h3>
+                                {userRole?.role === 'doctor' && (
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            id="ssi-event-data-lock"
+                                            checked={isEditing.ssiEventData}
+                                            onCheckedChange={() => toggleEditing('ssiEventData')}
+                                            className="data-[state=checked]:bg-red-400"
+                                        />
+                                        <Label htmlFor="ssi-event-data-lock">
+                                            {isEditing.ssiEventData ? 'Locked' : 'Unlocked'}
+                                        </Label>
+                                    </div>
+                                )}
+                            </div>
+                            <SSIEvent
+                                formData={formData}
+                                handleSpecificEventChange={handleSpecificEventChange}
+                                handleChange={handleChange}
+                                isEditing={isEditing.ssiEventData}
+                            />
                         </TabsContent>
                         {userRole?.role === 'doctor' && (
                             <TabsContent value="ssi-eval">
-                                <SSIEval formData={formData} handleRemarkChange={handleRemarkChange} handleYesNoChange={handleYesNoChange} />
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-lg font-semibold">SSI Evaluation</h3>
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            id="ssi-eval-data-lock"
+                                            checked={isEditing.ssiEvalData}
+                                            onCheckedChange={() => toggleEditing('ssiEvalData')}
+                                            className="data-[state=checked]:bg-red-400"
+                                        />
+                                        <Label htmlFor="ssi-eval-data-lock">
+                                            {isEditing.ssiEvalData ? 'Locked' : 'Unlocked'}
+                                        </Label>
+                                    </div>
+                                </div>
+                                <SSIEval formData={formData} handleRemarkChange={handleRemarkChange} handleYesNoChange={handleYesNoChange} isEditing={isEditing.ssiEvalData} />
                             </TabsContent>
                         )}
                     </Tabs>
@@ -521,13 +659,13 @@ function getInitialFormData(): FormData {
         microorganism1: '',
         microorganism2: '',
         secondaryBSIdeath: false,
-        antibiotics: [{
-            abop_stage: 'prior',
-            antibiotic: '',
-            route: '',
-            duration: 0,
-            doses: 0,
-        }],
+        // antibiotics: [{
+        //     abop_stage: 'prior',
+        //     antibiotic: '',
+        //     route: '',
+        //     duration: 0,
+        //     doses: 0,
+        // }],
         antibioticPrescriptions: [{
             id: '',
             name: '',

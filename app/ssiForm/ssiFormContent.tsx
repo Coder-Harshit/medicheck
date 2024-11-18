@@ -115,20 +115,11 @@ export default function SSIFormContent() {
 
     React.useEffect(() => {
         if (!loading) {
-            // console.log('Auth state:', {
-            //     user: user,
-            //     userRole: userRole,
-            //     loading: loading,
-            //     userID: userID
-            // })            
             if (!user) {
-                // console.log('No user found, redirecting to login')
                 router.push('/login')
             } else if (userRole?.role !== 'nurse' && userRole?.role !== 'doctor') {
-                // console.log('Invalid role, redirecting to dashboard')
                 router.push('/dashboard')
             } else {
-                // console.log('User authorized, fetching form data')
                 fetchFormData()
             }
         }
@@ -151,7 +142,6 @@ export default function SSIFormContent() {
     }, [user, loading, userRole, router])
 
     const fetchFormData = async () => {
-        // if (!formId || !userID) return
         if (!formId || !user) return
 
         setIsLoading(true)
@@ -161,8 +151,6 @@ export default function SSIFormContent() {
                 .select('*')
                 .eq('patientId', formId)
                 .eq('nuid', userID)
-                // .eq('nuid', user)
-                // .eq('status', 'ongoing')
                 .single()
 
             if (error) throw error
@@ -174,8 +162,6 @@ export default function SSIFormContent() {
                     dateOfAdmission: data.dateOfAdmission || formatDate(new Date()),
                     dateOfProcedure: data.dateOfProcedure || formatDate(new Date()),
                     dateOfSSIEvent: data.dateOfSSIEvent || formatDate(new Date()),
-                    // Ensure arrays and objects are properly structured
-                    // antibiotics: Array.isArray(data.antibiotics) ? data.antibiotics : [getInitialFormData().antibiotics[0]],
                     symptomsDict: {
                         ...symptomsDict,
                         ...(data.symptomsDict || {})
@@ -201,7 +187,6 @@ export default function SSIFormContent() {
         const { name, value, type } = e.target
         setFormData(prevData => ({
             ...prevData,
-            // [name]: type === 'number' ? Number(value) : value
             [name]: (name === 'papGiven' || name === 'outpatientProcedure' || name === 'ssiEventOccurred' || name === 'secondaryBSIdeath')
                 ? value === "true"
                 : type === 'number'
@@ -258,28 +243,6 @@ export default function SSIFormContent() {
         }));
     };
 
-    // const addAntibiotic = () => {
-    //     setFormData(prevData => ({
-    //         ...prevData,
-    //         antibiotics: [...prevData.antibiotics, {
-    //             abop_stage: 'prior',
-    //             antibiotic: '',
-    //             route: '',
-    //             duration: 0,
-    //             doses: 0,
-    //         }]
-    //     }));
-    // };
-
-    // const removeAntibiotic = () => {
-    //     setFormData(prevData => ({
-    //         ...prevData,
-    //         antibiotics: prevData.antibiotics.length > 1
-    //             ? prevData.antibiotics.slice(0, -1)
-    //             : [getInitialFormData().antibiotics[0]]
-    //     }));
-    // };
-
     const handlePostOpChange = (symptom: string, day: number | string, value: boolean) => {
         setFormData(prevData => ({
             ...prevData,
@@ -293,40 +256,6 @@ export default function SSIFormContent() {
         }));
     };
 
-
-    // const handleSubmit = async (isDraft: boolean = false) => {
-    //     setIsSaving(true)
-    //     try {
-    //         const status = isDraft ? 'ongoing' : 'to-be-reviewed'
-    //         const { error } = await supabase
-    //             .from('SSI_Form')
-    //             .upsert({
-    //                 ...formData,
-    //                 nuid: userID,
-    //                 status: status,
-    //             })
-
-    //         if (error) throw error
-
-    //         toast({
-    //             title: isDraft ? "Draft Saved" : "Form Submitted",
-    //             description: isDraft ? "Your progress has been saved." : "The form has been submitted for review.",
-    //         })
-
-    //         if (!isDraft) {
-    //             router.push('/dashboard')
-    //         }
-    //     } catch (error) {
-    //         console.error('Error saving form:', error)
-    //         toast({
-    //             title: "Error",
-    //             description: "Failed to save the form. Please try again.",
-    //             variant: "destructive",
-    //         })
-    //     } finally {
-    //         setIsSaving(false)
-    //     }
-    // }
     const handleSubmit = async (isDraft: boolean = false) => {
         // e.preventDefault();
         if (!isDraft) {
@@ -376,9 +305,6 @@ export default function SSIFormContent() {
                 description: isDraft ? "Your progress has been saved." : "The form has been submitted for review.",
             })
 
-            // if (!isDraft) {
-            //     router.push('/dashboard')
-            // }
         } catch (error) {
             console.error('Error saving form:', error)
             toast({

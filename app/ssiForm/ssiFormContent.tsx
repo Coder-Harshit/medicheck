@@ -202,7 +202,7 @@ export default function SSIFormContent() {
             }
 
             const result = await response.json();
-            setPredictionResult(result.prediction);
+            setPredictionResult(result.message);
         } catch (err) {
             setPredictionError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
@@ -552,20 +552,23 @@ export default function SSIFormContent() {
 
                             {userRole?.role === 'doctor' && (
                                 <TabsContent value="summary_and_predict">
-                                    return (
-                                    <div>
-                                        <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
-                                            {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
-                                        </Button>
-                                        {predictionResult && <p>Prediction: {predictionResult}</p>}
-                                        {predictionError && <p className="text-red-500">Error: {predictionError}</p>}
-                                    </div>
-                                    );
-                                    <div className="flex justify-between items-center mb-4">
-                                        <h3 className="text-lg font-semibold">Summary & Prediction</h3>
-                                        <Label htmlFor="prediction">
-                                            Prediction: <span className="font-semibold">No</span>
-                                        </Label>
+                                    <div className="flex flex-col space-y-4">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-lg font-semibold">Summary & Prediction</h3>
+                                            <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
+                                                {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
+                                            </Button>
+                                        </div>
+                                        {predictionResult && (
+                                            <div className="p-4 bg-green-100 text-green-800 rounded-md">
+                                                <p>Prediction: {predictionResult}</p>
+                                            </div>
+                                        )}
+                                        {predictionError && (
+                                            <div className="p-4 bg-red-100 text-red-800 rounded-md">
+                                                <p>Error: {predictionError}</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </TabsContent>
                             )}

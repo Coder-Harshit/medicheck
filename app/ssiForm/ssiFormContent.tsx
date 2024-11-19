@@ -61,7 +61,6 @@ export interface SSIFormData {
     microorganism1: string;
     microorganism2: string;
     secondaryBSIdeath: boolean;
-    // antibiotics: Antibiotic[];
     timeOfInduction: string;
     timeOfSkinIncision: string;
     timeOfEndSurgery: string;
@@ -407,7 +406,7 @@ export default function SSIFormContent() {
                     </CardHeader>
                     <CardContent>
                         <Tabs value={activeTab} onValueChange={setActiveTab}>
-                            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+                            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
                                 <TabsTrigger value="patient-data">Patient Data</TabsTrigger>
                                 <TabsTrigger value="microbiology-data">Microbiology</TabsTrigger>
                                 <TabsTrigger value="antibiotic-prescription">Antibiotics</TabsTrigger>

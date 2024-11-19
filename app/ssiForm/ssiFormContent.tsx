@@ -356,9 +356,10 @@ export default function SSIFormContent() {
                                 <TabsTrigger value="antibiotic-prescription">Antibiotics</TabsTrigger>
                                 <TabsTrigger value="post-op-sheet">Post-Op Sheet</TabsTrigger>
                                 <TabsTrigger value="ssi-event">SSI Event</TabsTrigger>
-                                {userRole?.role === 'doctor' && (
+                                {/* {userRole?.role === 'doctor' && (
                                     <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
-                                )}
+                                )} */}
+                                <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
                             </TabsList>
 
                             <TabsContent value="patient-data">
@@ -482,10 +483,11 @@ export default function SSIFormContent() {
                                     isEditing={isEditing.ssiEventData}
                                 />
                             </TabsContent>
-                            {userRole?.role === 'doctor' && (
-                                <TabsContent value="ssi-eval">
-                                    <div className="flex justify-between items-center mb-4">
-                                        <h3 className="text-lg font-semibold">SSI Evaluation</h3>
+                            {/* {userRole?.role === 'doctor' && ( */}
+                            <TabsContent value="ssi-eval">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-lg font-semibold">SSI Evaluation</h3>
+                                    {userRole?.role === 'doctor' && (
                                         <div className="flex items-center space-x-2">
                                             <Switch
                                                 id="ssi-eval-data-lock"
@@ -497,10 +499,11 @@ export default function SSIFormContent() {
                                                 {isEditing.ssiEvalData ? 'Locked' : 'Unlocked'}
                                             </Label>
                                         </div>
-                                    </div>
-                                    <SSIEval formData={formData} handleRemarkChange={handleRemarkChange} handleYesNoChange={handleYesNoChange} isEditing={isEditing.ssiEvalData} />
-                                </TabsContent>
-                            )}
+                                    )}
+                                </div>
+                                <SSIEval formData={formData} handleRemarkChange={handleRemarkChange} handleYesNoChange={handleYesNoChange} isEditing={isEditing.ssiEvalData} />
+                            </TabsContent>
+                            {/* )} */}
                         </Tabs>
                     </CardContent>
                     <CardFooter className="flex justify-between">

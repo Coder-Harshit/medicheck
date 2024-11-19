@@ -19,12 +19,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { supabase } from "@/utils/supabase/client"
+import { Trash2 } from "lucide-react"
 
 interface OngoingSSITableProps {
   data: FormData[]
 }
 
 export default function OngoingSSITable({ data }: OngoingSSITableProps) {
+  const [dataValue, setData] = React.useState(data)
   const [currentPage, setCurrentPage] = React.useState(1)
   const [pageSize] = React.useState(10)
   const router = useRouter()
@@ -39,8 +42,29 @@ export default function OngoingSSITable({ data }: OngoingSSITableProps) {
     router.push(`/ssiForm?formId=${id}`)
   }
 
-  const paginatedData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  const totalPages = Math.ceil(data.length / pageSize)
+  const handleDelete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('SSI_Form')
+        .delete()
+        .eq('patientId', id)
+
+      if (error) throw error
+    } catch (error) {
+      console.error('Error:', error)
+    }
+    setData((prevData) => {
+      const filteredData = prevData.filter((item) => item.patientId !== id);
+      if (filteredData.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1); // Decrement page if last page is now empty
+      }
+      return filteredData;
+    });
+    // console.log(`Delete button clicked for ID: ${id}`)
+  }
+
+  const paginatedData = dataValue.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const totalPages = Math.ceil(dataValue.length / pageSize)
 
   return (
     <div className="space-y-4">
@@ -71,6 +95,16 @@ export default function OngoingSSITable({ data }: OngoingSSITableProps) {
                     Continue
                   </Button>
                 </TableCell>
+                <TableCell>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-red-600 hover:bg-red-700 hover:text-white text-white"  // Optional: Change the button color to indicate danger/deletion
+                    onClick={() => handleDelete(row.patientId)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -79,15 +113,14 @@ export default function OngoingSSITable({ data }: OngoingSSITableProps) {
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious 
+            <PaginationPrevious
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-              // disabled={currentPage === 1}
               className={currentPage === 1 ? 'disabled' : ''}
             />
           </PaginationItem>
           {[...Array(totalPages)].map((_, i) => (
             <PaginationItem key={i}>
-              <PaginationLink 
+              <PaginationLink
                 onClick={() => setCurrentPage(i + 1)}
                 isActive={currentPage === i + 1}
               >
@@ -96,9 +129,8 @@ export default function OngoingSSITable({ data }: OngoingSSITableProps) {
             </PaginationItem>
           ))}
           <PaginationItem>
-            <PaginationNext 
+            <PaginationNext
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              // disabled={currentPage === totalPages}
               className={currentPage === totalPages ? 'disabled' : ''}
             />
           </PaginationItem>

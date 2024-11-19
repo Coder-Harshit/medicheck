@@ -150,20 +150,41 @@ export default function SSIFormContent() {
         console.log('Form data:', formData);
         setIsPredicting(true);
         setPredictionError(null);
-
+        //     try {
+        //         const formDataToSubmit = new FormData();
+        //         Object.entries(formData).forEach(([key, value]) => {
+        //             if (typeof value === 'object' && value !== null) {
+        //                 formDataToSubmit.append(key, JSON.stringify(value));
+        //             } else {
+        //                 formDataToSubmit.append(key, String(value));
+        //             }
+        //         });
+        //         const prediction = await predictSSI(formDataToSubmit);
+        //         setPredictionResult(prediction);
+        //     } catch (err) {
+        //         setPredictionError(err instanceof Error ? err.message : 'An error occurred');
+        //     } finally {
+        //         setIsPredicting(false);
+        //     }
+        // };
         try {
             const formDataToSubmit = new FormData();
             Object.entries(formData).forEach(([key, value]) => {
                 if (key === 'symptomsDict') {
-                    const convertedSymptomsDict = Object.fromEntries(
-                        Object.entries(value).map(([symptom, days]) => [
+                    // Convert boolean strings to Python-style boolean strings
+                    const pythonStyleDict = Object.fromEntries(
+                        Object.entries(value as { [key: string]: { [key: string]: string } }).map(([symptom, days]) => [
                             symptom,
                             Object.fromEntries(
-                                Object.entries(days as { [key: string]: boolean }).map(([day, val]) => [day, val])
+                                Object.entries(days).map(([day, val]) => [
+                                    day,
+                                    val === 'true' ? 'True' : 'False'
+                                ])
                             )
                         ])
                     );
-                    formDataToSubmit.append(key, JSON.stringify(convertedSymptomsDict));
+                    // formDataToSubmit.append(key, JSON.stringify(value));
+                    formDataToSubmit.append(key, JSON.stringify(pythonStyleDict));
                 } else if (typeof value === 'object' && value !== null) {
                     formDataToSubmit.append(key, JSON.stringify(value));
                 } else {
@@ -181,7 +202,7 @@ export default function SSIFormContent() {
             }
 
             const result = await response.json();
-            setPredictionResult(result);
+            setPredictionResult(result.prediction);
         } catch (err) {
             setPredictionError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
@@ -351,7 +372,7 @@ export default function SSIFormContent() {
                         continue;
                     }
                     // non-required fields
-                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2' || key==='reviewedAt' || key==='reviewedBy') { continue; }
+                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2' || key === 'reviewedAt' || key === 'reviewedBy') { continue; }
                     else if (value === null || value === undefined || value === "") {
                         alert(`Please fill out the ${key} field.`);
                         return;

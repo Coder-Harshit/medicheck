@@ -303,31 +303,51 @@ def predict():
             return range_start + 0.5  # Make sure range days are placed after the last integer day
 
     def convert_data_to_format(symptomsDict):
-        for i in symptomsDict:
-            print(i)
+        print(symptomsDict)
         result = {}
-        print("YYYY")
-        # Order days first (this will only sort by days)
-        # day_keys = sorted(symptomsDict["abscess"].keys(), key=sort_key)
         day_keys = symptomsDict["abscess"].keys()
-        print("QQQQ")
+        
         for day in day_keys:
             day = int(day)
-            # Add symptoms for each day (preserving the order of symptoms)
             for symptom_key, day_values in symptomsDict.items():
                 day_str = f"Day {day}"
-                status_str = "Yes" if day_values.get(day, False) else "No"
-                result[f"{day_str}: {symptom_key.replace('_', ' ')}"] = status_str  # Remove .title() to keep original name
+                # Convert JavaScript 'true'/'false' strings to Python boolean string format
+                status_str = "Yes" if day_values.get(str(day), 'false').lower() == 'true' else "No"
+                result[f"{day_str}: {symptom_key.replace('_', ' ')}"] = status_str
             
-            # Add "Any other" with default value "No" at the end
             result[f"Day {day}: Any Other"] = "No"
-
+        
         return result
 
+    # def convert_data_to_format(symptomsDict):
+    #     for i in symptomsDict:
+    #         print(i)
+    #     result = {}
+    #     print("YYYY")
+    #     # Order days first (this will only sort by days)
+    #     # day_keys = sorted(symptomsDict["abscess"].keys(), key=sort_key)
+    #     day_keys = symptomsDict["abscess"].keys()
+    #     print("QQQQ")
+    #     for day in day_keys:
+    #         day = int(day)
+    #         # Add symptoms for each day (preserving the order of symptoms)
+    #         for symptom_key, day_values in symptomsDict.items():
+    #             day_str = f"Day {day}"
+    #             status_str = "Yes" if day_values.get(day, False) else "No"
+    #             result[f"{day_str}: {symptom_key.replace('_', ' ')}"] = status_str  # Remove .title() to keep original name
+            
+    #         # Add "Any other" with default value "No" at the end
+    #         result[f"Day {day}: Any Other"] = "No"
+
+    #     return result
 
     try:
         form_data = request.form.to_dict(flat=True)
         # raw_data = pd.DataFrame([form_data], columns=default_columns)
+        # Parse symptomsDict from JSON string
+        # if 'symptomsDict' in form_data:
+        #     form_data['symptomsDict'] = json.loads(form_data['symptomsDict'])
+
         raw_data = pd.DataFrame([form_data])
         print("AAA")
         print(raw_data)

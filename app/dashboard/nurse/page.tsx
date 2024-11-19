@@ -5,7 +5,7 @@ import { useUser } from '@/hooks/useUser'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/utils/supabase/client'
 import OngoingSSITable from '@/components/ssiForms/OngoingSSITable'
-import { FormData } from '@/app/ssiForm/ssiFormContent'
+import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, LogOut, Plus } from 'lucide-react'

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useRouter } from 'next/navigation'
-import { FormData } from '@/app/ssiForm/ssiFormContent'
+import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent'
 import {
   Table,
   TableBody,

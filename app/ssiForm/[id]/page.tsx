@@ -5,7 +5,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
-import { FormData } from '@/app/ssiForm/ssiFormContent';
+import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent';
 import { useUser } from '@/hooks/useUser';
 
 const SSIDetail = () => {

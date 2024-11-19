@@ -116,7 +116,7 @@ export default function AntibioticPrescription({
                       placeholder="Enter dose"
                       disabled={isEditing}
                       type="number"
-                      min="0"
+                      min={0}
                     />
                   </TableCell>
                   <TableCell>
@@ -144,7 +144,7 @@ export default function AntibioticPrescription({
                       placeholder="Enter duration (in Minutes)"
                       disabled={isEditing}
                       type="number"
-                      min="0"
+                      min={0}
                     />
                   </TableCell>
                   <TableCell>

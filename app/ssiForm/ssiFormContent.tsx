@@ -178,7 +178,7 @@ export default function SSIFormContent() {
                             Object.fromEntries(
                                 Object.entries(days).map(([day, val]) => [
                                     day,
-                                    val === 'true' ? 'True' : 'False'
+                                    val === true ? 'True' : 'False'
                                 ])
                             )
                         ])

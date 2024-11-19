@@ -99,7 +99,7 @@ interface IsolateFormProps {
   title: string
 }
 
-function IsolateForm({ isolate, handleIsolateChange, isEditing, title }: IsolateFormProps) {
+function IsolateForm({ isolate, formData, handleIsolateChange, isEditing, title }: IsolateFormProps) {
   const categories = ['sensitive', 'resistant', 'intermediate'] as const;
 
   return (
@@ -112,12 +112,15 @@ function IsolateForm({ isolate, handleIsolateChange, isEditing, title }: Isolate
               {category}
             </Label>
             <MultiSelect
+              name={`${isolate}_${category}`}
+              selected={formData[category]}
               options={antibioticOptions}
               onValueChange={(selectedValues) =>
                 handleIsolateChange(isolate, category, selectedValues)
               }
               placeholder={`Select ${category} antibiotics`}
               disabled={isEditing}
+              defaultValue={formData[category]}
             />
           </div>
         ))}

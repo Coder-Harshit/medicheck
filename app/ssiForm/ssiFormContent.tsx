@@ -625,16 +625,16 @@ export default function SSIFormContent() {
                         </Button>
                         <div className="space-x-2">
                             {userRole?.role === 'nurse' && (
-                            <Button
-                                variant="secondary"
-                                onClick={() => handleSubmit(true)}
-                                disabled={isSaving}
-                                className="bg-lime-500 text-primary hover:bg-lime-600"
-                            >
-                                {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                                Save Draft
-                            </Button>
-                        )}
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => handleSubmit(true)}
+                                    disabled={isSaving}
+                                    className="bg-lime-500 text-primary hover:bg-lime-600"
+                                >
+                                    {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                                    Save Draft
+                                </Button>
+                            )}
                             {activeTab === 'ssi-eval' ? (
                                 <Button
                                     onClick={() => handleSubmit(false)}

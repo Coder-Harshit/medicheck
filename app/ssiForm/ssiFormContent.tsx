@@ -198,15 +198,23 @@ export default function SSIFormContent() {
     };
 
     const getNextTab = (currentTab: string) => {
-        const tabs = [
-            'patient-data',
-            'microbiology-data',
-            'antibiotic-prescription',
-            'post-op-sheet',
-            'summary_and_predict',
-            'ssi-event',
-            'ssi-eval'
-        ];
+        const tabs = userRole?.role === 'doctor' ?
+            [
+                'patient-data',
+                'microbiology-data',
+                'antibiotic-prescription',
+                'post-op-sheet',
+                'summary_and_predict',
+                'ssi-event',
+                'ssi-eval'
+            ] : [
+                'patient-data',
+                'microbiology-data',
+                'post-op-sheet',
+                'ssi-event',
+                'ssi-eval'
+            ];
+
         const currentIndex = tabs.indexOf(currentTab);
         return tabs[currentIndex + 1] || 'ssi-eval';
     };
@@ -327,11 +335,13 @@ export default function SSIFormContent() {
     };
 
     const handleSubmit = async (isDraft: boolean = false) => {
+        console.log('Submitting form...');
+        console.log('Form data:', formData);
         // e.preventDefault();
-        if (!isDraft) {
-            alert("Please complete all steps before submitting");
-            return;
-        }
+        // if (!isDraft) {
+        //     alert("Please complete all steps before submitting");
+        //     return;
+        // }
 
         setIsSaving(true)
         // FORM VALIDATION
@@ -349,7 +359,7 @@ export default function SSIFormContent() {
                         continue;
                     }
                     // non-required fields
-                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2') { continue; }
+                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2' || key==='reviewedAt' || key==='reviewedBy') { continue; }
                     else if (value === null || value === undefined || value === "") {
                         alert(`Please fill out the ${key} field.`);
                         return;
@@ -420,12 +430,12 @@ export default function SSIFormContent() {
                     </CardHeader>
                     <CardContent>
                         <Tabs value={activeTab} onValueChange={setActiveTab}>
-                            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
+                            <TabsList className={`grid w-full ${userRole?.role === 'doctor' ? 'grid-cols-7' : 'grid-cols-6'}`}>
                                 <TabsTrigger value="patient-data">Patient Data</TabsTrigger>
                                 <TabsTrigger value="microbiology-data">Microbiology</TabsTrigger>
                                 <TabsTrigger value="antibiotic-prescription">Antibiotics</TabsTrigger>
                                 <TabsTrigger value="post-op-sheet">Post-Op Sheet</TabsTrigger>
-                                <TabsTrigger value="summary_and_predict">Summary & Prediction</TabsTrigger>
+                                {userRole?.role === 'doctor' && <TabsTrigger value="summary_and_predict">Summary & Prediction</TabsTrigger>}
                                 <TabsTrigger value="ssi-event">SSI Event</TabsTrigger>
                                 <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
                             </TabsList>
@@ -527,25 +537,25 @@ export default function SSIFormContent() {
                                 />
                             </TabsContent>
 
-                            <TabsContent value="summary_and_predict">
-
-                                return (
-                                <div>
-                                    <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
-                                        {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
-                                    </Button>
-                                    {predictionResult && <p>Prediction: {predictionResult}</p>}
-                                    {predictionError && <p className="text-red-500">Error: {predictionError}</p>}
-                                </div>
-                                );
-                                <div className="flex justify-between items-center mb-4">
-                                    <h3 className="text-lg font-semibold">Summary & Prediction</h3>
-                                    <Label htmlFor="prediction">
-                                        Prediction: <span className="font-semibold">No</span>
-                                    </Label>
-                                </div>
-                            </TabsContent>
-
+                            {userRole?.role === 'doctor' && (
+                                <TabsContent value="summary_and_predict">
+                                    return (
+                                    <div>
+                                        <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
+                                            {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
+                                        </Button>
+                                        {predictionResult && <p>Prediction: {predictionResult}</p>}
+                                        {predictionError && <p className="text-red-500">Error: {predictionError}</p>}
+                                    </div>
+                                    );
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="text-lg font-semibold">Summary & Prediction</h3>
+                                        <Label htmlFor="prediction">
+                                            Prediction: <span className="font-semibold">No</span>
+                                        </Label>
+                                    </div>
+                                </TabsContent>
+                            )}
                             <TabsContent value="ssi-event">
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="text-lg font-semibold">SSI Event</h3>
@@ -621,7 +631,7 @@ export default function SSIFormContent() {
                                     onClick={() => setActiveTab(getNextTab(activeTab))}
                                     className="bg-blue-500 hover:bg-blue-600"
                                 >
-                                    
+
                                     <ArrowBigRight className="mr-2 h-4 w-4" />
                                     Next
                                 </Button>

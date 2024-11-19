@@ -74,6 +74,8 @@ export default function PatientData({ formData, handleChange, isEditing }: Patie
               value={formData.age}
               onChange={handleChange}
               disabled={isEditing}
+              min={0}
+              max={200}
             />
           </div>
           <div className="space-y-2">

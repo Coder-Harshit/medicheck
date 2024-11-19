@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/hooks/use-toast"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Loader2, Save, Send } from 'lucide-react'
+import { Loader2, Save, Send, ArrowBigRight } from 'lucide-react'
 import PatientData from './patient_data'
 import MicrobiologyData from './microbiology_data'
 import AntibioticPrescription from './antibiotic_prescription'
@@ -61,7 +61,6 @@ export interface SSIFormData {
     microorganism1: string;
     microorganism2: string;
     secondaryBSIdeath: boolean;
-    // antibiotics: Antibiotic[];
     timeOfInduction: string;
     timeOfSkinIncision: string;
     timeOfEndSurgery: string;
@@ -196,6 +195,20 @@ export default function SSIFormContent() {
         } finally {
             setIsPredicting(false);
         }
+    };
+
+    const getNextTab = (currentTab: string) => {
+        const tabs = [
+            'patient-data',
+            'microbiology-data',
+            'antibiotic-prescription',
+            'post-op-sheet',
+            'summary_and_predict',
+            'ssi-event',
+            'ssi-eval'
+        ];
+        const currentIndex = tabs.indexOf(currentTab);
+        return tabs[currentIndex + 1] || 'ssi-eval';
     };
 
     const fetchFormData = async () => {
@@ -407,7 +420,7 @@ export default function SSIFormContent() {
                     </CardHeader>
                     <CardContent>
                         <Tabs value={activeTab} onValueChange={setActiveTab}>
-                            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+                            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
                                 <TabsTrigger value="patient-data">Patient Data</TabsTrigger>
                                 <TabsTrigger value="microbiology-data">Microbiology</TabsTrigger>
                                 <TabsTrigger value="antibiotic-prescription">Antibiotics</TabsTrigger>
@@ -594,14 +607,25 @@ export default function SSIFormContent() {
                                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                                 Save Draft
                             </Button>
-                            <Button
-                                onClick={() => handleSubmit(false)}
-                                disabled={isSaving}
-                                className="bg-green-500 hover:bg-green-600"
-                            >
-                                {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-                                Submit
-                            </Button>
+                            {activeTab === 'ssi-eval' ? (
+                                <Button
+                                    onClick={() => handleSubmit(false)}
+                                    disabled={isSaving}
+                                    className="bg-green-500 hover:bg-green-600"
+                                >
+                                    {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+                                    Submit
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={() => setActiveTab(getNextTab(activeTab))}
+                                    className="bg-blue-500 hover:bg-blue-600"
+                                >
+                                    
+                                    <ArrowBigRight className="mr-2 h-4 w-4" />
+                                    Next
+                                </Button>
+                            )}
                         </div>
                     </CardFooter>
                 </Card>
@@ -635,13 +659,6 @@ function getInitialFormData(): SSIFormData {
         microorganism1: '',
         microorganism2: '',
         secondaryBSIdeath: false,
-        // antibiotics: [{
-        //     abop_stage: 'prior',
-        //     antibiotic: '',
-        //     route: '',
-        //     duration: 0,
-        //     doses: 0,
-        // }],
         antibioticPrescriptions: [{
             id: '',
             name: '',

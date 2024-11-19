@@ -41,7 +41,7 @@ export default function SSIEvent({
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             Specific Event
-            <span className="text-red-500 ml-1">*</span>
+            {/* <span className="text-red-500 ml-1">*</span> */}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -92,7 +92,7 @@ export default function SSIEvent({
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             Detection Type
-            <span className="text-red-500 ml-1">*</span>
+            {/* <span className="text-red-500 ml-1">*</span> */}
           </CardTitle>
         </CardHeader>
         <CardContent>

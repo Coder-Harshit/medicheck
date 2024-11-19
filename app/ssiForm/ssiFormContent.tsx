@@ -372,7 +372,7 @@ export default function SSIFormContent() {
                         continue;
                     }
                     // non-required fields
-                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2' || key === 'reviewedAt' || key === 'reviewedBy') { continue; }
+                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2' || key === 'reviewedAt' || key === 'reviewedBy' || key === 'specificEvent' || key === 'detected') { continue; }
                     else if (value === null || value === undefined || value === "") {
                         alert(`Please fill out the ${key} field.`);
                         return;

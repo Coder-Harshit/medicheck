@@ -188,6 +188,8 @@ interface MultiSelectProps
     icon?: React.ComponentType<{ className?: string }>;
   }[];
 
+  selected?: string[];
+
   /**
    * Callback function triggered when the selected values change.
    * Receives an array of the new selected values.
@@ -304,6 +306,7 @@ export const MultiSelect = React.forwardRef<
         onValueChange(allValues);
       }
     };
+    
 
     return (
       <Popover

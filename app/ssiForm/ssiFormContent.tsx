@@ -171,7 +171,20 @@ export default function SSIFormContent() {
             const formDataToSubmit = new FormData();
             Object.entries(formData).forEach(([key, value]) => {
                 if (key === 'symptomsDict') {
-                    formDataToSubmit.append(key, JSON.stringify(value));
+                    // Convert boolean strings to Python-style boolean strings
+                    const pythonStyleDict = Object.fromEntries(
+                        Object.entries(value as { [key: string]: { [key: string]: string } }).map(([symptom, days]) => [
+                            symptom,
+                            Object.fromEntries(
+                                Object.entries(days).map(([day, val]) => [
+                                    day,
+                                    val === 'true' ? 'True' : 'False'
+                                ])
+                            )
+                        ])
+                    );
+                    // formDataToSubmit.append(key, JSON.stringify(value));
+                    formDataToSubmit.append(key, JSON.stringify(pythonStyleDict));
                 } else if (typeof value === 'object' && value !== null) {
                     formDataToSubmit.append(key, JSON.stringify(value));
                 } else {
@@ -179,7 +192,7 @@ export default function SSIFormContent() {
                 }
             });
 
-            const response = await fetch('http://127.0.0.1:5000/predict', {
+            const response = await fetch('https://medicheck-prediction-api.onrender.com/predict', {
                 method: 'POST',
                 body: formDataToSubmit,
             });
@@ -189,7 +202,7 @@ export default function SSIFormContent() {
             }
 
             const result = await response.json();
-            setPredictionResult(result.prediction);
+            setPredictionResult(result.message);
         } catch (err) {
             setPredictionError(err instanceof Error ? err.message : 'An error occurred');
         } finally {
@@ -198,15 +211,23 @@ export default function SSIFormContent() {
     };
 
     const getNextTab = (currentTab: string) => {
-        const tabs = [
-            'patient-data',
-            'microbiology-data',
-            'antibiotic-prescription',
-            'post-op-sheet',
-            'summary_and_predict',
-            'ssi-event',
-            'ssi-eval'
-        ];
+        const tabs = userRole?.role === 'doctor' ?
+            [
+                'patient-data',
+                'microbiology-data',
+                'antibiotic-prescription',
+                'post-op-sheet',
+                'summary_and_predict',
+                'ssi-event',
+                'ssi-eval'
+            ] : [
+                'patient-data',
+                'microbiology-data',
+                'post-op-sheet',
+                'ssi-event',
+                'ssi-eval'
+            ];
+
         const currentIndex = tabs.indexOf(currentTab);
         return tabs[currentIndex + 1] || 'ssi-eval';
     };
@@ -327,11 +348,13 @@ export default function SSIFormContent() {
     };
 
     const handleSubmit = async (isDraft: boolean = false) => {
+        console.log('Submitting form...');
+        console.log('Form data:', formData);
         // e.preventDefault();
-        if (!isDraft) {
-            alert("Please complete all steps before submitting");
-            return;
-        }
+        // if (!isDraft) {
+        //     alert("Please complete all steps before submitting");
+        //     return;
+        // }
 
         setIsSaving(true)
         // FORM VALIDATION
@@ -349,7 +372,7 @@ export default function SSIFormContent() {
                         continue;
                     }
                     // non-required fields
-                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2') { continue; }
+                    else if (key === 'microorganism1' || key === 'microorganism2' || key === 'isloate1' || key === 'isloate2' || key === 'reviewedAt' || key === 'reviewedBy') { continue; }
                     else if (value === null || value === undefined || value === "") {
                         alert(`Please fill out the ${key} field.`);
                         return;
@@ -420,12 +443,12 @@ export default function SSIFormContent() {
                     </CardHeader>
                     <CardContent>
                         <Tabs value={activeTab} onValueChange={setActiveTab}>
-                            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
+                            <TabsList className={`grid w-full ${userRole?.role === 'doctor' ? 'grid-cols-7' : 'grid-cols-6'}`}>
                                 <TabsTrigger value="patient-data">Patient Data</TabsTrigger>
                                 <TabsTrigger value="microbiology-data">Microbiology</TabsTrigger>
                                 <TabsTrigger value="antibiotic-prescription">Antibiotics</TabsTrigger>
                                 <TabsTrigger value="post-op-sheet">Post-Op Sheet</TabsTrigger>
-                                <TabsTrigger value="summary_and_predict">Summary & Prediction</TabsTrigger>
+                                {userRole?.role === 'doctor' && <TabsTrigger value="summary_and_predict">Summary & Prediction</TabsTrigger>}
                                 <TabsTrigger value="ssi-event">SSI Event</TabsTrigger>
                                 <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
                             </TabsList>
@@ -527,25 +550,28 @@ export default function SSIFormContent() {
                                 />
                             </TabsContent>
 
-                            <TabsContent value="summary_and_predict">
-
-                                return (
-                                <div>
-                                    <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
-                                        {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
-                                    </Button>
-                                    {predictionResult && <p>Prediction: {predictionResult}</p>}
-                                    {predictionError && <p className="text-red-500">Error: {predictionError}</p>}
-                                </div>
-                                );
-                                <div className="flex justify-between items-center mb-4">
-                                    <h3 className="text-lg font-semibold">Summary & Prediction</h3>
-                                    <Label htmlFor="prediction">
-                                        Prediction: <span className="font-semibold">No</span>
-                                    </Label>
-                                </div>
-                            </TabsContent>
-
+                            {userRole?.role === 'doctor' && (
+                                <TabsContent value="summary_and_predict">
+                                    <div className="flex flex-col space-y-4">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-lg font-semibold">Summary & Prediction</h3>
+                                            <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
+                                                {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
+                                            </Button>
+                                        </div>
+                                        {predictionResult && (
+                                            <div className="p-4 bg-green-100 text-green-800 rounded-md">
+                                                <p>Prediction: {predictionResult}</p>
+                                            </div>
+                                        )}
+                                        {predictionError && (
+                                            <div className="p-4 bg-red-100 text-red-800 rounded-md">
+                                                <p>Error: {predictionError}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </TabsContent>
+                            )}
                             <TabsContent value="ssi-event">
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="text-lg font-semibold">SSI Event</h3>
@@ -598,15 +624,17 @@ export default function SSIFormContent() {
                             Cancel
                         </Button>
                         <div className="space-x-2">
-                            <Button
-                                variant="secondary"
-                                onClick={() => handleSubmit(true)}
-                                disabled={isSaving}
-                                className="bg-lime-500 text-primary hover:bg-lime-600"
-                            >
-                                {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                                Save Draft
-                            </Button>
+                            {userRole?.role === 'nurse' && (
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => handleSubmit(true)}
+                                    disabled={isSaving}
+                                    className="bg-lime-500 text-primary hover:bg-lime-600"
+                                >
+                                    {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                                    Save Draft
+                                </Button>
+                            )}
                             {activeTab === 'ssi-eval' ? (
                                 <Button
                                     onClick={() => handleSubmit(false)}
@@ -621,7 +649,7 @@ export default function SSIFormContent() {
                                     onClick={() => setActiveTab(getNextTab(activeTab))}
                                     className="bg-blue-500 hover:bg-blue-600"
                                 >
-                                    
+
                                     <ArrowBigRight className="mr-2 h-4 w-4" />
                                     Next
                                 </Button>

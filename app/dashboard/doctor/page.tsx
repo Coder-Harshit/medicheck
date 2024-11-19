@@ -32,7 +32,7 @@ const DoctorDashboard = () => {
   }, [user]);
 
   const handleViewForm = (patientId: string) => {
-    router.push(`/ssiForm/${patientId}?mode=review`);
+    router.push(`/ssiForm/?formId=${patientId}&mode=review`);
   };
 
   const handleLogout = async () => {

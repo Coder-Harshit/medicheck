@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
 import { MultiSelect } from "@/components/multi-select-dropdown"
+import { antibioticOptions, microorganisms } from "@/app/ssiForm/constants"
 
 interface MicrobiologyDataProps {
   formData: FormData
@@ -17,36 +18,6 @@ interface MicrobiologyDataProps {
   ) => void
   isEditing?: boolean
 }
-
-const antibioticOptions = [
-  { value: "amoxicillin", label: "Amoxicillin" },
-  { value: "ampicillin", label: "Ampicillin" },
-  { value: "azithromycin", label: "Azithromycin" },
-  { value: "cefazolin", label: "Cefazolin" },
-  { value: "ceftriaxone", label: "Ceftriaxone" },
-  { value: "ciprofloxacin", label: "Ciprofloxacin" },
-  { value: "clindamycin", label: "Clindamycin" },
-  { value: "doxycycline", label: "Doxycycline" },
-  { value: "erythromycin", label: "Erythromycin" },
-  { value: "gentamicin", label: "Gentamicin" },
-  { value: "levofloxacin", label: "Levofloxacin" },
-  { value: "metronidazole", label: "Metronidazole" },
-  { value: "penicillin", label: "Penicillin" },
-  { value: "tetracycline", label: "Tetracycline" },
-  { value: "trimethoprim_sulfamethoxazole", label: "Trimethoprim-Sulfamethoxazole" },
-  { value: "vancomycin", label: "Vancomycin" },
-]
-
-const microorganisms = [
-  "Staphylococcus aureus",
-  "Escherichia coli",
-  "Pseudomonas aeruginosa",
-  "Klebsiella pneumoniae",
-  "Enterococcus faecalis",
-  "Proteus mirabilis",
-  "Candida albicans",
-  "Acinetobacter baumannii",
-]
 
 export default function MicrobiologyData({
   formData,
@@ -128,7 +99,7 @@ interface IsolateFormProps {
   title: string
 }
 
-function IsolateForm({ isolate, handleIsolateChange, isEditing, title }: IsolateFormProps) {
+function IsolateForm({ isolate, formData, handleIsolateChange, isEditing, title }: IsolateFormProps) {
   const categories = ['sensitive', 'resistant', 'intermediate'] as const;
 
   return (
@@ -141,12 +112,15 @@ function IsolateForm({ isolate, handleIsolateChange, isEditing, title }: Isolate
               {category}
             </Label>
             <MultiSelect
+              name={`${isolate}_${category}`}
+              selected={formData[category]}
               options={antibioticOptions}
               onValueChange={(selectedValues) =>
                 handleIsolateChange(isolate, category, selectedValues)
               }
               placeholder={`Select ${category} antibiotics`}
               disabled={isEditing}
+              defaultValue={formData[category]}
             />
           </div>
         ))}

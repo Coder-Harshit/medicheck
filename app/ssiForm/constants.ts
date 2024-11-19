@@ -34,3 +34,34 @@ export const SSIEvalChecklistItems = [
   "Keep OR doors closed during surgery except as needed.",
   "Maintain immediate post-op normothermia.",
 ];
+
+
+export const antibioticOptions = [
+  { value: "amoxicillin", label: "Amoxicillin" },
+  { value: "ampicillin", label: "Ampicillin" },
+  { value: "azithromycin", label: "Azithromycin" },
+  { value: "cefazolin", label: "Cefazolin" },
+  { value: "ceftriaxone", label: "Ceftriaxone" },
+  { value: "ciprofloxacin", label: "Ciprofloxacin" },
+  { value: "clindamycin", label: "Clindamycin" },
+  { value: "doxycycline", label: "Doxycycline" },
+  { value: "erythromycin", label: "Erythromycin" },
+  { value: "gentamicin", label: "Gentamicin" },
+  { value: "levofloxacin", label: "Levofloxacin" },
+  { value: "metronidazole", label: "Metronidazole" },
+  { value: "penicillin", label: "Penicillin" },
+  { value: "tetracycline", label: "Tetracycline" },
+  { value: "trimethoprim_sulfamethoxazole", label: "Trimethoprim-Sulfamethoxazole" },
+  { value: "vancomycin", label: "Vancomycin" },
+]
+
+export const microorganisms = [
+  "Staphylococcus aureus",
+  "Escherichia coli",
+  "Pseudomonas aeruginosa",
+  "Klebsiella pneumoniae",
+  "Enterococcus faecalis",
+  "Proteus mirabilis",
+  "Candida albicans",
+  "Acinetobacter baumannii",
+]

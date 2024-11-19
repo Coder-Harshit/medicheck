@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { FormData } from "@/app/ssiForm/ssiFormContent"
+import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
 
 interface SSIEventProps {
   formData: FormData

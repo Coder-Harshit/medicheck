@@ -267,7 +267,7 @@ export default function SSIFormContent() {
         setFormData(prevData => ({
             ...prevData,
             [isolate]: {
-                ...prevData[isolate],
+                ...prevData[isolate] || {},
                 [category]: value
             }
         }));

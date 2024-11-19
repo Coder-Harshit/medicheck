@@ -19,6 +19,8 @@ import PostOpSheet from './postop_form'
 import SSIEvent from './ssiEvent'
 import SSIEval from './ssiEval'
 import { days, symptoms, SSIEvalChecklistItems } from './constants';
+// import { predictSSI } from '@/api';
+
 
 export interface SSIEvalCheckListItem {
     item: string;   // The description of the checklist item.
@@ -35,7 +37,7 @@ symptoms.forEach(symptom => {
     });
 });
 
-export interface FormData {
+export interface SSIFormData {
     patientName: string;
     patientId: string;
     age: number;
@@ -96,12 +98,15 @@ export default function SSIFormContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const formId = searchParams.get('formId')
-    const [formData, setFormData] = React.useState<FormData>(getInitialFormData())
+    const [formData, setFormData] = React.useState<SSIFormData>(getInitialFormData())
     const [isLoading, setIsLoading] = React.useState(true)
     const [isSaving, setIsSaving] = React.useState(false)
     const [activeTab, setActiveTab] = React.useState("patient-data")
     const { toast } = useToast()
     formData.patientId = formId || ''
+    const [predictionResult, setPredictionResult] = React.useState<string | null>(null);
+    const [predictionError, setPredictionError] = React.useState<string | null>(null);
+    const [isPredicting, setIsPredicting] = React.useState(false);
 
     // For granular editing control
     const [isEditing, setIsEditing] = React.useState({
@@ -140,6 +145,58 @@ export default function SSIFormContent() {
             }
         }
     }, [user, loading, userRole, router])
+
+    const handlePrediction = async () => {
+        console.log('Predicting SSI...');
+        console.log('Form data:', formData);
+        setIsPredicting(true);
+        setPredictionError(null);
+        //     try {
+        //         const formDataToSubmit = new FormData();
+        //         Object.entries(formData).forEach(([key, value]) => {
+        //             if (typeof value === 'object' && value !== null) {
+        //                 formDataToSubmit.append(key, JSON.stringify(value));
+        //             } else {
+        //                 formDataToSubmit.append(key, String(value));
+        //             }
+        //         });
+        //         const prediction = await predictSSI(formDataToSubmit);
+        //         setPredictionResult(prediction);
+        //     } catch (err) {
+        //         setPredictionError(err instanceof Error ? err.message : 'An error occurred');
+        //     } finally {
+        //         setIsPredicting(false);
+        //     }
+        // };
+        try {
+            const formDataToSubmit = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                if (key === 'symptomsDict') {
+                    formDataToSubmit.append(key, JSON.stringify(value));
+                } else if (typeof value === 'object' && value !== null) {
+                    formDataToSubmit.append(key, JSON.stringify(value));
+                } else {
+                    formDataToSubmit.append(key, value as string);
+                }
+            });
+
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                body: formDataToSubmit,
+            });
+            console.log('Response:', response);
+            if (!response.ok) {
+                throw new Error('Prediction request failed');
+            }
+
+            const result = await response.json();
+            setPredictionResult(result.prediction);
+        } catch (err) {
+            setPredictionError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setIsPredicting(false);
+        }
+    };
 
     const fetchFormData = async () => {
         if (!formId || !user) return
@@ -195,7 +252,7 @@ export default function SSIFormContent() {
         }));
     }
 
-    const handleAntibioticChange = (prescriptions: FormData['antibioticPrescriptions']) => {
+    const handleAntibioticChange = (prescriptions: SSIFormData['antibioticPrescriptions']) => {
         setFormData(prev => ({
             ...prev,
             antibioticPrescriptions: prescriptions
@@ -269,7 +326,7 @@ export default function SSIFormContent() {
             for (const key in formData) {
                 // Use Object.prototype.hasOwnProperty to avoid inherited properties
                 if (Object.prototype.hasOwnProperty.call(formData, key)) {
-                    const value = formData[key as keyof FormData];
+                    const value = formData[key as keyof SSIFormData];
 
                     // Skip validation for `organSpace` unless specificEvent is 'organSpace'
                     if (key === 'organSpace' && formData.specificEvent !== 'organSpace') {
@@ -355,10 +412,8 @@ export default function SSIFormContent() {
                                 <TabsTrigger value="microbiology-data">Microbiology</TabsTrigger>
                                 <TabsTrigger value="antibiotic-prescription">Antibiotics</TabsTrigger>
                                 <TabsTrigger value="post-op-sheet">Post-Op Sheet</TabsTrigger>
+                                <TabsTrigger value="summary_and_predict">Summary & Prediction</TabsTrigger>
                                 <TabsTrigger value="ssi-event">SSI Event</TabsTrigger>
-                                {/* {userRole?.role === 'doctor' && (
-                                    <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
-                                )} */}
                                 <TabsTrigger value="ssi-eval">SSI Evaluation</TabsTrigger>
                             </TabsList>
 
@@ -459,6 +514,25 @@ export default function SSIFormContent() {
                                 />
                             </TabsContent>
 
+                            <TabsContent value="summary_and_predict">
+
+                                return (
+                                <div>
+                                    <Button onClick={handlePrediction} disabled={isPredicting} className="bg-black">
+                                        {isPredicting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Predict SSI'}
+                                    </Button>
+                                    {predictionResult && <p>Prediction: {predictionResult}</p>}
+                                    {predictionError && <p className="text-red-500">Error: {predictionError}</p>}
+                                </div>
+                                );
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-lg font-semibold">Summary & Prediction</h3>
+                                    <Label htmlFor="prediction">
+                                        Prediction: <span className="font-semibold">No</span>
+                                    </Label>
+                                </div>
+                            </TabsContent>
+
                             <TabsContent value="ssi-event">
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="text-lg font-semibold">SSI Event</h3>
@@ -536,7 +610,7 @@ export default function SSIFormContent() {
     )
 }
 
-function getInitialFormData(): FormData {
+function getInitialFormData(): SSIFormData {
     return {
         patientName: '',
         patientId: '',

@@ -81,11 +81,8 @@ def predict():
         form_data = request.form.to_dict()
 
         raw_data = pd.DataFrame([form_data])
-        raw_data.to_csv('new2.csv')
-        print("AAA")
         # Step 1: Drop unnecessary columns
         raw_data = raw_data.drop(columns=columns_to_drop, errors="ignore")
-        print("BBB")
 
         # Get the formatted data
         formatted_data = convert_data_to_format(raw_data["symptomsDict"])
@@ -95,15 +92,11 @@ def predict():
         raw_data = raw_data.drop(columns=["symptomsDict"], errors="ignore")
         # Step 2: Replace "Yes"/"No" with 1/0 in Day-related columns
         day_columns = [col for col in raw_data.columns if col.startswith("Day ")]
-        print(raw_data[day_columns])
         raw_data[day_columns] = raw_data[day_columns].replace({"Yes": 1, "No": 0})
-        raw_data.to_csv('output.csv',index=False)
         # print(raw_data)
         # Ordinal Encoding for woundClass
         ordinal_encoder = OrdinalEncoder(categories=[["Clean", "Clean Contaminated", "Contaminated", "Dirty/Infected"]])
-        print("HHHh")
         raw_data["woundClass_encoded"] = ordinal_encoder.fit_transform(raw_data[['woundClass']])
-        print("r4gtrsdf")
         # Binary Encoding for "papGiven"
         raw_data["papGiven_encoded"] = raw_data["papGiven"].apply(lambda x: 1 if x == "TRUE" else 0)
 
@@ -112,15 +105,13 @@ def predict():
         # Scenario Encoding
         raw_data["scenarioOfProcedure_emergency"] = raw_data["scenarioOfProcedure"].apply(lambda x: 1 if x == "emergency" else 0)
         raw_data = raw_data.drop(columns=categorical_columns)
-        print(raw_data)
-        raw_data.to_csv('output3.csv',index=False)
+        # print(raw_data)
+        # raw_data.to_csv('output3.csv',index=False)
 
-        print("BBBB")
         # Step 4: Scale features
         # Assuming scaler is loaded elsewhere in your code
         scaled_features = scaler.transform(raw_data)
-        print("AAAA")
-        print(scaled_features)
+        # print(scaled_features)
         
         # Prediction
         probabilities = model.predict(scaled_features)
@@ -143,7 +134,7 @@ def predict():
 
 if __name__ == "__main__":
     try:
-        app.run(debug=False)
+        app.run(debug=False, port=10000)
         # app.run(debug=True, use_reloader=False, port=5050)
     except SystemExit:
         print("Flask app exited.")

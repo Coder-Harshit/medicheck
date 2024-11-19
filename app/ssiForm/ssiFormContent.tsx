@@ -192,7 +192,7 @@ export default function SSIFormContent() {
                 }
             });
 
-            const response = await fetch('http://127.0.0.1:5000/predict', {
+            const response = await fetch('https://medicheck-prediction-api.onrender.com/predict', {
                 method: 'POST',
                 body: formDataToSubmit,
             });
@@ -624,6 +624,7 @@ export default function SSIFormContent() {
                             Cancel
                         </Button>
                         <div className="space-x-2">
+                            {userRole?.role === 'nurse' && (
                             <Button
                                 variant="secondary"
                                 onClick={() => handleSubmit(true)}
@@ -633,6 +634,7 @@ export default function SSIFormContent() {
                                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                                 Save Draft
                             </Button>
+                        )}
                             {activeTab === 'ssi-eval' ? (
                                 <Button
                                     onClick={() => handleSubmit(false)}

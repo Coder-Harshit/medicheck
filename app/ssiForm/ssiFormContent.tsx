@@ -150,28 +150,20 @@ export default function SSIFormContent() {
         console.log('Form data:', formData);
         setIsPredicting(true);
         setPredictionError(null);
-        //     try {
-        //         const formDataToSubmit = new FormData();
-        //         Object.entries(formData).forEach(([key, value]) => {
-        //             if (typeof value === 'object' && value !== null) {
-        //                 formDataToSubmit.append(key, JSON.stringify(value));
-        //             } else {
-        //                 formDataToSubmit.append(key, String(value));
-        //             }
-        //         });
-        //         const prediction = await predictSSI(formDataToSubmit);
-        //         setPredictionResult(prediction);
-        //     } catch (err) {
-        //         setPredictionError(err instanceof Error ? err.message : 'An error occurred');
-        //     } finally {
-        //         setIsPredicting(false);
-        //     }
-        // };
+
         try {
             const formDataToSubmit = new FormData();
             Object.entries(formData).forEach(([key, value]) => {
                 if (key === 'symptomsDict') {
-                    formDataToSubmit.append(key, JSON.stringify(value));
+                    const convertedSymptomsDict = Object.fromEntries(
+                        Object.entries(value).map(([symptom, days]) => [
+                            symptom,
+                            Object.fromEntries(
+                                Object.entries(days as { [key: string]: boolean }).map(([day, val]) => [day, val])
+                            )
+                        ])
+                    );
+                    formDataToSubmit.append(key, JSON.stringify(convertedSymptomsDict));
                 } else if (typeof value === 'object' && value !== null) {
                     formDataToSubmit.append(key, JSON.stringify(value));
                 } else {
@@ -189,7 +181,7 @@ export default function SSIFormContent() {
             }
 
             const result = await response.json();
-            setPredictionResult(result.prediction);
+            setPredictionResult(result);
         } catch (err) {
             setPredictionError(err instanceof Error ? err.message : 'An error occurred');
         } finally {

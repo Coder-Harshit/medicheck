@@ -5,11 +5,14 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
 import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent';
+import { saveAs } from 'file-saver';
+import Papa from 'papaparse';
 
 const DoctorDashboard = () => {
   const { user, userRole, loading } = useUser();
   const router = useRouter();
   const [pendingReviews, setPendingReviews] = useState<FormData[]>([]);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Fetch SSI forms that need review
   useEffect(() => {
@@ -31,6 +34,54 @@ const DoctorDashboard = () => {
     fetchPendingReviews();
   }, [user]);
 
+  const flattenData = (data: any) => {
+    return data.map((item: any) => {
+      const flattenedItem: any = { ...item };
+
+      // Flatten antibioticPrescriptions
+      if (item.antibioticPrescriptions) {
+        flattenedItem.antibioticPrescriptions = item.antibioticPrescriptions.map((prescription: any) => `${prescription.name} (${prescription.stage}, ${prescription.dose}mg, ${prescription.route}, ${prescription.duration} days)`).join('; ');
+      }
+
+      // Flatten SSIEvalCheckList
+      if (item.SSIEvalCheckList) {
+        flattenedItem.SSIEvalCheckList = item.SSIEvalCheckList.map((checklistItem: any) => `${checklistItem.item}: ${checklistItem.yesNo ? 'Yes' : 'No'} (${checklistItem.remark})`).join('; ');
+      }
+
+      // Flatten isolate1 and isolate2
+      if (item.isolate1) {
+        flattenedItem.isolate1 = `Sensitive: ${item.isolate1.sensitive.join(', ')}, Resistant: ${item.isolate1.resistant.join(', ')}, Intermediate: ${item.isolate1.intermediate.join(', ')}`;
+      }
+      if (item.isolate2) {
+        flattenedItem.isolate2 = `Sensitive: ${item.isolate2.sensitive.join(', ')}, Resistant: ${item.isolate2.resistant.join(', ')}, Intermediate: ${item.isolate2.intermediate.join(', ')}`;
+      }
+
+      // Flatten symptomsDict
+      if (item.symptomsDict) {
+        flattenedItem.symptomsDict = Object.entries(item.symptomsDict).map(([symptom, days]) => {
+          return `${symptom}: ${Object.entries(days).map(([day, val]) => `Day ${day}: ${val ? 'Yes' : 'No'}`).join(', ')}`;
+        }).join('; ');
+      }
+
+      return flattenedItem;
+    });
+  };
+  
+  const exportToCSV = async () => {
+    setIsExporting(true);
+    try {
+        const response = await fetch('/api/exportPatients');
+        const data = await response.json();
+        const flattenedData = flattenData(data);
+        const csv = Papa.unparse(flattenData);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        saveAs(blob, 'all_patients_data.csv');
+    } catch (error) {
+        console.error('Error exporting data:', error);
+    } finally {
+        setIsExporting(false);
+    }
+};
   const handleViewForm = (patientId: string) => {
     router.push(`/ssiForm/?formId=${patientId}&mode=review`);
   };
@@ -91,6 +142,9 @@ const DoctorDashboard = () => {
               </tbody>
             </table>
           </div>
+          <button onClick={exportToCSV} disabled={isExporting}>
+                {isExporting ? 'Exporting...' : 'Export All Patients to CSV'}
+            </button>
         </div>
       </div>
     );

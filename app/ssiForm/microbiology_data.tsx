@@ -7,17 +7,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
 import { MultiSelect } from "@/components/multi-select-dropdown"
 import { antibioticOptions, microorganisms } from "@/app/ssiForm/constants"
+import { MicrobiologyDataProps } from "@/interfaces"
 
-interface MicrobiologyDataProps {
-  formData: FormData
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
-  handleIsolateChange: (
-    isolate: 'isolate1' | 'isolate2',
-    category: 'sensitive' | 'resistant' | 'intermediate',
-    values: string[]
-  ) => void
-  isEditing?: boolean
-}
+// interface MicrobiologyDataProps {
+//   formData: FormData
+//   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+//   handleIsolateChange: (
+//     isolate: 'isolate1' | 'isolate2',
+//     category: 'sensitive' | 'resistant' | 'intermediate',
+//     values: string[]
+//   ) => void
+//   isEditing?: boolean
+// }
 
 export default function MicrobiologyData({
   formData,

@@ -12,12 +12,13 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import PatientDataProps from "@/interfaces"
 
-interface PatientDataProps {
-  formData: FormData
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
-  isEditing?: boolean
-}
+// interface PatientDataProps {
+//   formData: FormData
+//   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+//   isEditing?: boolean
+// }
 
 export default function PatientData({ formData, handleChange, isEditing }: PatientDataProps) {
   const [dateOfAdmission, setDateOfAdmission] = React.useState<Date | undefined>(

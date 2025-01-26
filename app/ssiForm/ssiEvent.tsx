@@ -7,13 +7,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
-
-interface SSIEventProps {
-  formData: FormData
-  handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  isEditing?: boolean
-}
+import ssionEventProps from "@/interfaces"
+// interface SSIEventProps {
+//   formData: FormData
+//   handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+//   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+//   isEditing?: boolean
+// }
 
 export default function SSIEvent({
   formData,

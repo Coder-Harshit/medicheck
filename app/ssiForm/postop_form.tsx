@@ -6,12 +6,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Switch } from "@/components/ui/switch"
 import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
 import { days, symptoms } from "./constants"
+import PostOpSheetProps from "@/interfaces"
 
-interface PostOpSheetProps {
-  formData: FormData
-  handlePostOpChange: (symptom: string, day: number | string, value: boolean) => void
-  isEditing?: boolean
-}
+// interface PostOpSheetProps {
+//   formData: FormData
+//   handlePostOpChange: (symptom: string, day: number | string, value: boolean) => void
+//   isEditing?: boolean
+// }
 
 const symptomLabels: Record<string, string> = {
   purulentDischarge: "Purulent Discharge",

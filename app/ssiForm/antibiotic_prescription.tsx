@@ -8,21 +8,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Trash2 } from 'lucide-react'
 import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
+import AntibioticPrescriptionProps, { AntibioticPrescription } from "@/interfaces"
 
-interface AntibioticPrescriptionProps {
-  formData: FormData
-  handleAntibioticChange: (prescriptions: AntibioticPrescription[]) => void
-  isEditing?: boolean
-}
+// interface AntibioticPrescriptionProps {
+//   formData: FormData
+//   handleAntibioticChange: (prescriptions: AntibioticPrescription[]) => void
+//   isEditing?: boolean
+// }
 
-interface AntibioticPrescription {
-  id: string
-  name: string
-  stage: 'prior' | 'pre_peri' | 'after'
-  dose: number
-  route: string
-  duration: string
-}
+// interface AntibioticPrescription {
+//   id: string
+//   name: string
+//   stage: 'prior' | 'pre_peri' | 'after'
+//   dose: number
+//   route: string
+//   duration: string
+// }
 
 const routes = ["Oral", "Intravenous", "Intramuscular", "Topical"]
 

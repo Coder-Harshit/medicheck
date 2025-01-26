@@ -7,13 +7,14 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { SSIFormData as FormData, SSIEvalCheckListItem } from "@/app/ssiForm/ssiFormContent"
+import ssievalProps from "@/interfaces"
 
-interface SSIEvalProps {
-  formData: FormData
-  handleYesNoChange: (index: number, value: boolean) => void
-  handleRemarkChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void
-  isEditing?: boolean
-}
+// interface SSIEvalProps {
+//   formData: FormData
+//   handleYesNoChange: (index: number, value: boolean) => void
+//   handleRemarkChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void
+//   isEditing?: boolean
+// }
 
 export default function SSIEval({
   formData,

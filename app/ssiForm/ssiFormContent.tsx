@@ -99,6 +99,11 @@ export default function SSIFormContent() {
     const router = useRouter();
     const {userRole} = useUser();
 
+    const handleCancel = () => {
+        if (confirm("Are you sure you want to discard the changes?")) {
+            router.push('/dashboard');
+        }
+    };
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -304,7 +309,7 @@ export default function SSIFormContent() {
                     </Tabs>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                    <Button variant="outline" onClick={() => router.push('/dashboard')}>
+                    <Button variant="outline" onClick={handleCancel}>
                         Cancel
                     </Button>
                     <div className="space-x-2">

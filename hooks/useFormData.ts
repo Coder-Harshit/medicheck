@@ -1,6 +1,6 @@
 // hooks/useFormData.ts
 import { useState, useEffect } from 'react';
-import { SSIFormData, SSIEvalCheckListItem } from '@/app/interfaces';
+import { SSIFormData } from '@/app/interfaces';
 import { supabase } from '@/utils/supabase/client';
 import { useUser } from '@/hooks/useUser';
 import { useRouter, useSearchParams } from 'next/navigation';

@@ -1,12 +1,12 @@
 // hooks/useFormData.ts
 import { useState, useEffect } from 'react';
-import { SSIFormData } from '@/app/interfaces';
+import { SSIFormData, SSIEvalCheckListItem } from '@/app/interfaces';
 import { supabase } from '@/utils/supabase/client';
 import { useUser } from '@/hooks/useUser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
 import {formatDate} from "@/utils/dateHandling";
-import {SSIEvalChecklistItems, symptoms, days} from "@/app/ssiForm/constants";
+import { SSIEvalChecklistItems, symptoms, days} from "@/app/ssiForm/constants";
 import * as React from "react";
 
 function getInitialFormData(): SSIFormData {
@@ -133,19 +133,27 @@ export const useFormData = () => {
             if (error) throw error;
 
             if (data) {
+                const symptomsDict: { [key: string]: { [key: string]: boolean } } = {};
+                symptoms.forEach(symptom => {
+                    symptomsDict[symptom] = {};
+                    days.forEach(day => {
+                        symptomsDict[symptom][day] = false;
+                    });
+                });
+
                 setFormData({
                     ...getInitialFormData(),
                     ...data,
-                    // dateOfAdmission: data.dateOfAdmission || formatDate(new Date()),
-                    // dateOfProcedure: data.dateOfProcedure || formatDate(new Date()),
-                    // dateOfSSIEvent: data.dateOfSSIEvent || formatDate(new Date()),
-                    // symptomsDict: {
-                    //     ...symptomsDict,
-                    //     ...(data.symptomsDict || {}),
-                    // },
-                    // SSIEvalCheckList: Array.isArray(data.SSIEvalCheckList)
-                    //     ? data.SSIEvalCheckList
-                    //     : getInitialFormData().SSIEvalCheckList,
+                    dateOfAdmission: data.dateOfAdmission || formatDate(new Date()),
+                    dateOfProcedure: data.dateOfProcedure || formatDate(new Date()),
+                    dateOfSSIEvent: data.dateOfSSIEvent || formatDate(new Date()),
+                    symptomsDict: {
+                        ...symptomsDict,
+                        ...(data.symptomsDict || {}),
+                    },
+                    SSIEvalCheckList: Array.isArray(data.SSIEvalCheckList)
+                        ? data.SSIEvalCheckList
+                        : getInitialFormData().SSIEvalCheckList,
                 });
             }
         } catch (error) {
@@ -383,5 +391,6 @@ export const useFormData = () => {
         setActiveTab,
         handlePrediction,
         getNextTab,
+        formId
     };
 };

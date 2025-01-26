@@ -5,7 +5,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/utils/supabase/client';
-import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent';
+import { SSIFormData as FormData } from '@/app/interfaces';
 import { useUser } from '@/hooks/useUser';
 
 const SSIDetail = () => {
@@ -157,10 +157,10 @@ const SSIDetail = () => {
                 <td className='table-cell border'>{formData.procedureDoneBy}</td>
               </tr>
             )}
-            {formData.outpatientProcedure == true && (
+            {formData.outpatientProcedure && (
               <tr>
                 <td className="table-cell border font-bold">Out Patient Procedure:</td>
-                <td className='table-cell border'>{formData.outpatientProcedure == true ? 'Yes' : 'No'}</td>
+                <td className='table-cell border'>{formData.outpatientProcedure ? 'Yes' : 'No'}</td>
               </tr>
             )}
             {formData.scenarioOfProcedure && (

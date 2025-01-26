@@ -115,3 +115,43 @@ export interface PostOpSheetProps {
   handlePostOpChange: (symptom: string, day: number | string, value: boolean) => void;
   isEditing?: boolean;
 }
+
+export interface FormattedSSIFormData {
+  patientName: string;
+  age: number;
+  gender: string;
+  dateOfAdmission: string;
+  dateOfProcedure: string;
+  admittingDepartment: string;
+  departmentPrimarySurgeon: string;
+  procedureDoneBy: string;
+  procedureName: string;
+  diagnosis: string;
+  otno: number;
+  outpatientProcedure: boolean;
+  scenarioOfProcedure: string;
+  woundClass: string;
+  papGiven: boolean;
+  papDuration: string;
+  ssiEventOccurred: boolean;
+  dateOfSSIEvent: string | null;
+  microorganism1: string | null;
+  antibioticPrescriptions: string;
+  timeOfInduction: string;
+  timeOfSkinIncision: string;
+  timeOfEndSurgery: string;
+  isolate1: string;
+  isolate2: string;
+  symptomsDict: string;
+  SSIEvalCheckList: string;
+  specificEvent: string;
+  organSpace: string;
+  detected: string;
+  status: string | null;
+  patientId: number;
+  microorganism2: string | null;
+  secondaryBSIdeath: boolean | null;
+  antibioticGiven: string | null;
+  // reviewedBy: string | null;
+  // reviewedAt: string | null;
+}

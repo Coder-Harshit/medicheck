@@ -93,7 +93,8 @@ export default function SSIFormContent() {
         predictionResult,
         predictionError,
         isPredicting,
-        getNextTab
+        getNextTab,
+        formId,
     } = useFormData();
     const router = useRouter();
     const {userRole} = useUser();
@@ -106,7 +107,7 @@ export default function SSIFormContent() {
         );
     }
 
-    // formData.patientId = formId || ''
+    formData.patientId = formId || ''
 
     return (
         // <React.Suspense>

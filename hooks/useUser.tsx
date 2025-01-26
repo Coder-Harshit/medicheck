@@ -26,7 +26,9 @@ export function useUser() {
         console.error('Error fetching user role:', error.message)
         return null
       }
-
+      // console.log(userId);
+      // alert(userId);
+      // console.log("something something");
       setUserRole(data)
       return data
     } catch (error) {

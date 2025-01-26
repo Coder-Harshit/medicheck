@@ -89,6 +89,9 @@ export const useFormData = () => {
     const [predictionError, setPredictionError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState("patient-data");
 
+    console.log(formId)
+    console.log(formData)
+
     // For granular editing control
     const [isEditing, setIsEditing] = React.useState({
         patientData: userRole?.role === 'nurse',
@@ -122,13 +125,26 @@ export const useFormData = () => {
         if (!formId || !user) return;
 
         setIsLoading(true);
+        // try {
+        //     const { data, error } = await supabase
+        //         .from('SSI_Form')
+        //         .select('*')
+        //         .eq('patientId', formId)
+        //         .eq('nuid', userID)
+        //         .single();
+
         try {
-            const { data, error } = await supabase
+            let query = supabase
                 .from('SSI_Form')
                 .select('*')
-                .eq('patientId', formId)
-                .eq('nuid', userID)
-                .single();
+                .eq('patientId', formId);
+
+            if (userRole?.role === 'nurse') {
+                query = query.eq('nuid', userID);
+            }
+
+            const { data, error } = await query.single();
+
 
             if (error) throw error;
 

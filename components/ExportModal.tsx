@@ -17,9 +17,12 @@ const ExportModal: React.FC<ExportModalProps> = ({ data }) => {
         let filteredData = data;
 
         if (selectedPatients.length > 0) {
-            filteredData = data.filter((patient) => selectedPatients.includes(patient.patientId));
+            const selectedPatientIds = selectedPatients.map(id => parseInt(id, 10));
+            filteredData = data.filter((patient) => selectedPatientIds.includes(Number(patient.patientId)));
         } else if (range.start && range.end) {
-            filteredData = data.filter((patient) => patient.patientId >= range.start && patient.patientId <= range.end);
+            const startId = parseInt(range.start, 10);
+            const endId = parseInt(range.end, 10);
+            filteredData = data.filter((patient) => Number(patient.patientId) >= startId && Number(patient.patientId) <= endId);
         }
 
         exportToCSV(filteredData, 'handpicked_patients.csv');

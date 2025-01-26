@@ -108,7 +108,6 @@ export default function SSIFormContent() {
     }
 
     formData.patientId = formId || ''
-
     return (
         // <React.Suspense>
         <div className="container mx-auto py-10">

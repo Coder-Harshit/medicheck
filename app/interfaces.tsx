@@ -1,7 +1,7 @@
 // app/interfaces.ts
 
-import {formatDate} from "@/utils/dateHandling";
-import {SSIEvalChecklistItems} from "@/app/ssiForm/constants";
+// import {formatDate} from "@/utils/dateHandling";
+// import {SSIEvalChecklistItems} from "@/app/ssiForm/constants";
 
 export interface AntibioticPrescriptionProps {
   formData: SSIFormData;

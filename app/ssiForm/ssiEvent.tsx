@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
-import ssionEventProps from "@/interfaces"
+import {SSIEventProps} from "@/app/interfaces"
+
 // interface SSIEventProps {
 //   formData: FormData
 //   handleSpecificEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void

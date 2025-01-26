@@ -4,9 +4,8 @@ import * as React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Switch } from "@/components/ui/switch"
-import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
 import { days, symptoms } from "./constants"
-import PostOpSheetProps from "@/interfaces"
+import {PostOpSheetProps} from "@/app/interfaces"
 
 // interface PostOpSheetProps {
 //   formData: FormData

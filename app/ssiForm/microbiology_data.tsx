@@ -4,10 +4,9 @@ import * as React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
 import { MultiSelect } from "@/components/multi-select-dropdown"
 import { antibioticOptions, microorganisms } from "@/app/ssiForm/constants"
-import { MicrobiologyDataProps } from "@/interfaces"
+import { MicrobiologyDataProps } from "@/app/interfaces"
 
 // interface MicrobiologyDataProps {
 //   formData: FormData

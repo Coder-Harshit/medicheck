@@ -1,11 +1,11 @@
 "use client"
 
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import { useUser } from '@/hooks/useUser'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/utils/supabase/client'
 import OngoingSSITable from '@/components/ssiForms/OngoingSSITable'
-import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent'
+import { SSIFormData as FormData } from '@/app/interfaces'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, LogOut, Plus } from 'lucide-react'

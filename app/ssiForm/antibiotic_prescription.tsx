@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Trash2 } from 'lucide-react'
-import { SSIFormData as FormData } from "@/app/ssiForm/ssiFormContent"
-import AntibioticPrescriptionProps, { AntibioticPrescription } from "@/interfaces"
+import type {AntibioticPrescription, AntibioticPrescriptionProps} from "@/app/interfaces"
 
 // interface AntibioticPrescriptionProps {
 //   formData: FormData

@@ -59,7 +59,7 @@ export default function PostOpSheet({
                 {days.map((day) => (
                   <TableCell key={`${symptom}-${day}`} className="text-center">
                     <Switch
-                      checked={!!formData.symptomsDict[symptom][day]}
+                      checked={formData.symptomsDict[symptom][day]}
                       onCheckedChange={(checked) => handlePostOpChange(symptom, day, checked)}
                       disabled={isEditing}
                       className="data-[state=checked]:bg-green-500"

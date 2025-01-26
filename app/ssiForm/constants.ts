@@ -1,3 +1,5 @@
+// app/ssiForm/constants.ts
+
 export const days = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16-30', '31-60', '61-90'];
 
 export const symptoms = [
@@ -13,7 +15,6 @@ export const symptoms = [
   'positiveCulture',
   'bloodCultureSent',
   'diagnosisSSI',
-  // 'anyOther'
 ];
 
 export const SSIEvalChecklistItems = [
@@ -35,7 +36,6 @@ export const SSIEvalChecklistItems = [
   "Maintain immediate post-op normothermia.",
 ];
 
-
 export const antibioticOptions = [
   { value: "amoxicillin", label: "Amoxicillin" },
   { value: "ampicillin", label: "Ampicillin" },
@@ -53,7 +53,7 @@ export const antibioticOptions = [
   { value: "tetracycline", label: "Tetracycline" },
   { value: "trimethoprim_sulfamethoxazole", label: "Trimethoprim-Sulfamethoxazole" },
   { value: "vancomycin", label: "Vancomycin" },
-]
+];
 
 export const microorganisms = [
   "Staphylococcus aureus",
@@ -64,4 +64,4 @@ export const microorganisms = [
   "Proteus mirabilis",
   "Candida albicans",
   "Acinetobacter baumannii",
-]
+];

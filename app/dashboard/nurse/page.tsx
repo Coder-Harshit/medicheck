@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import React, {useEffect, useState} from "react"
 import { useUser } from '@/hooks/useUser'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/utils/supabase/client'
@@ -9,16 +9,15 @@ import { SSIFormData as FormData } from '@/app/ssiForm/ssiFormContent'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, LogOut, Plus } from 'lucide-react'
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "@/hooks/use-toast"
 
 export default function NurseDashboard() {
   const { user, userRole, loading } = useUser()
   const router = useRouter()
   const [ssiForms, setSsiForms] = React.useState<FormData[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
-  const { toast } = useToast()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!loading) {
       if (!user) {
         router.push('/login')
@@ -69,6 +68,13 @@ export default function NurseDashboard() {
     }
   }
 
+  if (loading || isLoading) {
+    return (
+        <div className="flex justify-center items-center h-screen">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+    )
+  }
   const handleNewForm = async () => {
     try {
       const { data, error } = await supabase
@@ -92,13 +98,6 @@ export default function NurseDashboard() {
     }
   }
 
-  if (loading || isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    )
-  }
 
   return (
     <div className="container mx-auto py-10">
